@@ -1,0 +1,4 @@
+# 参考サイトの画面写真は容量が大きいので履歴に入れない
+references/design/
+references/screenshots/
+__pycache__/

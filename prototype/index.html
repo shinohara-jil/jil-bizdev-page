@@ -1,0 +1,421 @@
+<title>JIL 事業開発 v12</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: 写真ベタ貼り → 立ち位置の一文 → 特徴 → 成長曲線と4列のステップ（各ステップに写真）→ 事業開発×AI（グレーの面に図入りのカード）→ 黄色の面で締める。12列・最大1280px */
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-500.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-700.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-900.woff2") format("woff2");font-weight:900;font-display:swap}
+/* 配色：白と墨が基本。黄色は強調（蛍光ペン風の下線）とボタン、面は最後の「ご相談」だけ
+   accent=ボタンの色／line-accent=線や点／em-bg=蛍光ペン風の下線／deep=ご相談の面 */
+:root{
+  --bg:#FFFFFF; --paper:#FFFFFF; --ink:#111111; --sub:#555555; --line:#E4E4E4; --line-2:#BDBDBD;
+  --yellow:#FFF000; --gray:#F4F4F2;
+  --accent:var(--yellow); --accent-ink:var(--ink); --on-accent:var(--ink); --line-accent:var(--ink);
+  --em:var(--ink); --em-bg:linear-gradient(transparent 60%,var(--yellow) 60%);
+  --curve-a:var(--ink); --curve-b:var(--ink); --curve-c:var(--ink); --area:#9A9A9A;
+  --zone:rgba(0,0,0,.035); --base-bg:var(--gray); --tag-on:var(--ink); --tag-on-ink:#FFFFFF;
+  --deep:var(--yellow); --deep-bg:var(--yellow); --on-deep:var(--ink); --hi:var(--ink);
+  --stmt-bg:var(--bg); --stmt-ink:var(--ink); --stmt-em:var(--ink); --stmt-em-bg:var(--em-bg);
+  --cta-bg:var(--yellow); --cta-ink:var(--ink); --cta-dot:var(--ink); --cta-dot-ink:var(--yellow);
+  --deep-cta-bg:var(--ink); --deep-cta-ink:#FFFFFF; --deep-cta-dot:var(--yellow); --deep-cta-dot-ink:var(--ink);
+  --mesh:0; --g1:transparent; --g2:transparent; --g3:transparent;
+}
+:root{
+  --en:"Satoshi","Helvetica Neue",Arial,sans-serif;
+  --jp:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:var(--jp);font-size:16px;line-height:1.9;letter-spacing:.02em;font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+h1,h2,h3,p{margin:0} h1,h2,h3{text-wrap:balance}
+.ph{display:inline-block}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:720px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+@media (min-width:1200px){.wrap{padding-left:max(80px,env(safe-area-inset-left,0px));padding-right:max(80px,env(safe-area-inset-right,0px))}}
+.in{max-width:1280px;margin:0 auto}
+.grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
+.mono{font-family:var(--mono),var(--jp);font-size:13px;letter-spacing:.08em;text-transform:uppercase;line-height:1.6}
+.jl{font-family:var(--jp);font-size:14px;letter-spacing:.04em;line-height:1.6;color:var(--sub)}
+.logo{font-family:var(--en);font-weight:900;font-size:26px;letter-spacing:-.02em;line-height:1}
+.lbl{grid-column:1 / span 3}
+.lbl .jl{display:inline-flex;align-items:center;gap:10px;color:var(--ink);font-size:clamp(17px,1.5vw,20px);font-weight:700;letter-spacing:.02em}
+.lbl .jl::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--line-accent)}
+.h2{grid-column:4 / span 6;font-size:clamp(32px,4.4vw,64px);font-weight:700;letter-spacing:-.025em;line-height:1.2}
+.h2 em{font-style:normal;color:var(--em);background:var(--em-bg)}
+.stmt-text em{font-style:normal;color:var(--stmt-em);background:var(--stmt-em-bg)}
+.note{grid-column:10 / span 3;font-size:15px;color:var(--sub);align-self:end}
+
+/* 色のにじむ面 */
+.mesh{position:relative;isolation:isolate}
+.mesh::before,.mesh::after{content:"";position:absolute;inset:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 82%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 14%,#000 82%,transparent 100%)}
+.mesh::before{z-index:-2;opacity:var(--mesh);background:
+  radial-gradient(48% 62% at 12% 18%,var(--g1) 0%,transparent 66%),
+  radial-gradient(44% 58% at 88% 22%,var(--g2) 0%,transparent 64%),
+  radial-gradient(52% 56% at 60% 84%,var(--g3) 0%,transparent 66%),var(--bg)}
+.mesh.soft::before{opacity:var(--mesh);background:
+  radial-gradient(40% 26% at 96% 8%,color-mix(in srgb,var(--g2) 75%,transparent) 0%,transparent 70%),
+  radial-gradient(42% 28% at 0% 40%,color-mix(in srgb,var(--g1) 75%,transparent) 0%,transparent 70%),
+  radial-gradient(46% 26% at 92% 90%,color-mix(in srgb,var(--g3) 80%,transparent) 0%,transparent 70%),var(--bg)}
+.mesh::after{z-index:-1;opacity:calc(var(--mesh) * .35);mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+.pill{display:inline-flex;align-items:center;gap:14px;text-decoration:none;border-radius:999px;font-weight:500;line-height:1;white-space:nowrap}
+.pill .dot{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;font-family:var(--en);font-weight:700;font-size:14px;transition:transform .2s}
+.pill:hover .dot{transform:translateX(3px)}
+.pill.solid{background:var(--cta-bg);color:var(--cta-ink);padding:9px 9px 9px 24px;font-size:15px}
+.pill.solid .dot{background:var(--cta-dot);color:var(--cta-dot-ink)}
+.pill.line-w{border:1px solid rgba(255,255,255,.7);color:#fff;padding:8px 8px 8px 22px;font-size:15px}
+.pill.line-w .dot{border:1px solid rgba(255,255,255,.7);width:34px;height:34px}
+a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);outline-offset:4px}
+
+/* hero */
+.hero{position:relative;min-height:clamp(600px,92vh,880px);color:#fff;display:flex;flex-direction:column;background:#222}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 16%,rgba(0,0,0,0) 46%,rgba(0,0,0,.42) 74%,rgba(0,0,0,.6) 100%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1;width:100%}
+.hd{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:24px}
+.nav{display:flex;align-items:center;gap:8px 28px;font-size:14px}
+.nav a{text-decoration:none}
+.nav .pill{background:#fff;color:var(--ink);padding:6px 6px 6px 18px;font-size:14px}
+.nav .pill .dot{background:var(--accent);color:var(--on-accent);width:28px;height:28px;font-size:12px}
+.hero-body{margin-top:auto;padding-bottom:clamp(32px,4vw,56px)}
+.hero h1{font-weight:700;font-size:clamp(36px,5.6vw,80px);line-height:1.2;letter-spacing:-.025em}
+.hero h1 .g{font-weight:500;color:rgba(255,255,255,.86)}
+.hero-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;margin-top:clamp(24px,3vw,40px);border-top:1px solid rgba(255,255,255,.35);padding-top:20px}
+.hero-row p{grid-column:1 / span 5;font-size:16px;color:rgba(255,255,255,.9);max-width:34em}
+.hero-row .cta{grid-column:7 / span 6;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+.hero-meta{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%) rotate(90deg);transform-origin:right center;color:rgba(255,255,255,.75);z-index:1}
+
+/* clients */
+.clients-band{background:var(--paper);border-bottom:1px solid var(--line)}
+.clients{display:grid;grid-template-columns:220px repeat(5,minmax(0,1fr))}
+.clients>*{padding:30px 16px;display:flex;align-items:center;min-height:100px}
+.clients>*+*{border-left:1px solid var(--line);justify-content:center}
+.clients img{display:block;max-width:100%;height:auto;max-height:34px;width:auto}
+.clients .fss{display:flex;flex-direction:column;align-items:center;gap:6px}
+.clients .fss img:first-child{max-height:20px}
+.clients .fss img:last-child{max-height:11px}
+
+/* statement */
+.stmt{padding-block:clamp(112px,13vw,184px)}
+.stmt-body{grid-column:4 / span 9}
+.stmt-text{font-size:clamp(22px,2.8vw,40px);font-weight:700;line-height:1.6;letter-spacing:-.01em}
+.stmt-text .g{font-weight:400}
+.stmt-sec{background:var(--stmt-bg);color:var(--stmt-ink)}
+.stmt-sec::before,.stmt-sec::after{display:none}
+.stmt-sec .lbl .jl{color:var(--stmt-ink)}
+.stmt-sec .lbl .jl::before{background:var(--stmt-ink)}
+
+/* features */
+.feat{padding-bottom:clamp(40px,4vw,64px)}
+.feat-head{margin-bottom:clamp(48px,5vw,72px)}
+.traits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.trait{padding:24px 28px 32px 0}
+.trait+.trait{padding-left:28px;border-left:1px solid var(--line)}
+.trait .mono{color:var(--accent-ink);display:flex;justify-content:space-between}
+.trait h3{font-size:clamp(26px,2.6vw,36px);font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
+.trait .num{font-family:var(--en);font-weight:500;font-size:clamp(30px,3vw,44px);letter-spacing:-.03em;line-height:1.1;margin:22px 0 4px;color:var(--accent-ink)}
+.trait .num small{font-family:var(--jp);font-size:.36em;font-weight:500;letter-spacing:0;margin-left:4px;color:var(--ink)}
+.trait .cap{font-size:14px;color:var(--sub)}
+.trait p.d{font-size:16px;margin-top:16px}
+
+.ai-sec{padding-bottom:clamp(112px,12vw,176px)}
+.ai{background:var(--gray);border-radius:6px;padding:clamp(32px,4.4vw,64px)}
+.ai-top{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end}
+.ai-k{grid-column:1 / span 12;display:flex;align-items:center;gap:12px;font-family:var(--en);font-weight:700;font-size:16px;letter-spacing:.04em}
+.ai-k i{font-style:normal;color:var(--sub)}
+.ai h3{grid-column:1 / span 7;font-size:clamp(28px,3.4vw,48px);font-weight:700;line-height:1.3;letter-spacing:-.025em}
+.ai h3 em{font-style:normal;background:var(--em-bg)}
+.ai .lead{grid-column:8 / span 5;font-size:16px;color:var(--sub)}
+.boxes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:clamp(36px,4vw,56px)}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;overflow:hidden}
+.box .art{display:grid;place-items:center;padding:22px 18px 14px;border-bottom:1px solid var(--line)}
+.box .art svg{display:block;width:100%;max-width:240px;height:auto}
+.box .body{padding:18px 22px 24px}
+.box .en{font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--sub);text-transform:uppercase}
+.box .kw{color:var(--ink);font-size:clamp(24px,2.2vw,30px);font-weight:700;letter-spacing:-.01em;line-height:1.2;margin:6px 0 14px}
+.box .to{display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.box .to span{display:inline-grid;place-items:center;flex:0 0 22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--en);font-weight:700;font-size:11px}
+.box .to b{font-size:16px;font-weight:700;line-height:1.5}
+.box p{font-size:15px;color:var(--sub);margin-top:8px;line-height:1.8}
+.ai-foot{margin-top:18px;font-size:13px;color:var(--sub)}
+
+/* flow */
+.flow{padding-block:clamp(72px,7vw,112px) clamp(64px,7vw,96px)}
+.flow-head{margin-bottom:clamp(40px,4vw,56px)}
+.chart{position:relative}
+.chart-scroll{overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:760px;height:auto}
+.zone{fill:transparent;transition:fill .3s}
+.zone.on{fill:var(--zone)}
+.tag rect{fill:#fff;stroke:var(--line-2);transition:fill .3s,stroke .3s}
+.tag text{font-family:var(--jp);font-size:15px;font-weight:700;fill:var(--ink);transition:fill .3s}
+.tag .n{font-family:var(--mono);font-size:12px;font-weight:500;fill:var(--accent-ink)}
+.tag.on rect{fill:var(--tag-on);stroke:var(--tag-on)}
+.tag.on text,.tag.on .n{fill:var(--tag-on-ink)}
+.stem{stroke:var(--line-2);stroke-width:1}
+.stem.on{stroke:var(--line-accent)}
+.pt{fill:#fff;stroke:var(--line-accent);stroke-width:2}
+.pt.on{fill:var(--line-accent)}
+.curve{stroke-dasharray:1600;stroke-dashoffset:0}
+.chart.pre .curve{stroke-dashoffset:1600}
+.chart.go .curve{transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1)}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink);margin-top:8px}
+.card{padding:22px 22px 28px;border-right:1px solid var(--line);cursor:pointer;transition:background .25s;min-width:0}
+.card:last-child{border-right:0}
+.card:hover,.card.on{background:var(--gray)}
+.card .shot{display:block;width:100%;max-width:100%;aspect-ratio:3 / 2;object-fit:cover;margin-bottom:18px;border-radius:2px}
+.card .mono{color:var(--sub);display:flex;justify-content:space-between}
+.card.on .mono{color:var(--accent-ink)}
+.card h3{font-size:clamp(20px,1.9vw,26px);font-weight:700;letter-spacing:-.02em;line-height:1.35;margin-top:10px}
+.card .what{font-size:14px;color:var(--sub);margin-top:2px}
+.card ul{margin:16px 0 0;padding:0;list-style:none;font-size:15px}
+.card li{display:flex;gap:10px;line-height:1.7;padding:3px 0}
+.card li::before{content:"";flex:0 0 5px;height:5px;border-radius:50%;background:var(--line-accent);margin-top:.68em}
+.card dl{margin:16px 0 0;font-size:14px;border-top:1px solid var(--line);padding-top:12px}
+.card dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--sub)}
+.card dd{margin:2px 0 0}
+.base{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;margin-top:16px;background:var(--base-bg);border-radius:4px;padding:26px 28px;cursor:pointer;border:1px solid transparent;transition:border-color .25s}
+.base.on{border-color:var(--line-accent)}
+.base .t{grid-column:1 / span 5}
+.base .t .mono{color:var(--accent-ink)}
+.base .t h3{font-size:clamp(20px,1.9vw,26px);font-weight:700;margin-top:8px}
+.base .t p{font-size:15px;color:var(--sub);margin-top:4px}
+.base ul{grid-column:6 / span 7;margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 28px;align-self:center;font-size:16px}
+.base li{display:flex;gap:10px;align-items:center}
+.base li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--line-accent)}
+
+/* deep */
+.deep{background:var(--deep-bg);color:var(--on-deep);position:relative;overflow:hidden;isolation:isolate}
+.deep::before{content:"";position:absolute;inset:0;z-index:-1;opacity:var(--mesh);background:
+  radial-gradient(40% 60% at 92% 12%,color-mix(in srgb,var(--g2) 40%,transparent) 0%,transparent 70%),
+  radial-gradient(36% 55% at 70% 100%,color-mix(in srgb,var(--g1) 32%,transparent) 0%,transparent 70%)}
+.deep-in{padding-block:clamp(96px,10vw,148px);align-items:end}
+.deep .jl{color:color-mix(in srgb,var(--on-deep) 70%,transparent)}
+.deep .lbl .jl{color:var(--on-deep)}
+.deep h2{grid-column:1 / span 7;font-size:clamp(30px,4.2vw,60px);font-weight:700;line-height:1.3;letter-spacing:-.025em}
+.deep .card2{grid-column:9 / span 4;border-top:1px solid color-mix(in srgb,var(--on-deep) 25%,transparent);padding-top:18px}
+.deep .card2 p{font-size:15px;color:color-mix(in srgb,var(--on-deep) 80%,transparent);margin:14px 0 28px}
+.who{display:flex;gap:28px;font-size:16px;font-weight:500;margin-top:14px}
+.who small{display:block;font-family:var(--mono);font-size:12px;color:color-mix(in srgb,var(--on-deep) 60%,transparent);font-weight:400;letter-spacing:.08em}
+.foot{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-block:28px 40px;border-top:1px solid color-mix(in srgb,var(--on-deep) 20%,transparent);color:color-mix(in srgb,var(--on-deep) 60%,transparent)}
+.deep .pill.solid{background:var(--deep-cta-bg);color:var(--deep-cta-ink)}
+.deep .pill.solid .dot{background:var(--deep-cta-dot);color:var(--deep-cta-dot-ink)}
+.foot .logo{font-size:clamp(64px,12vw,176px);color:var(--on-deep);line-height:.8}
+
+@media (max-width:1000px){
+  .boxes{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card:nth-child(2){border-right:0}
+  .card:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:900px){
+  .grid12,.hero-row,.ai-top,.base{grid-template-columns:minmax(0,1fr)}
+  .hero-row p,.hero-row .cta,.lbl,.stmt-body,.h2,.note,.deep h2,.deep .card2,.ai-k,.ai h3,.ai .lead,.base .t,.base ul{grid-column:1 / -1}
+  .hero-row .cta{justify-content:flex-start}
+  .hero-meta{display:none}
+  .nav a:not(.pill){display:none}
+  .clients{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .clients>:first-child{grid-column:1 / -1;border-bottom:1px solid var(--line)}
+  .clients>*+*{border-left:0}
+  .traits{grid-template-columns:minmax(0,1fr)}
+  .trait+.trait{padding-left:0;border-left:0;border-top:1px solid var(--line)}
+}
+@media (max-width:560px){
+  .boxes,.cards{grid-template-columns:minmax(0,1fr)}
+  .card{border-right:0;border-bottom:1px solid var(--line)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<section class="hero" aria-label="ファーストビュー">
+  <img src="img/hero_escalator.jpg" alt="オフィスビルのエスカレーターを行き交う人々" style="object-position:50% 50%;filter:brightness(.85)">
+  <div class="wrap">
+    <header class="in hd">
+      <span class="logo">JIL</span>
+      <nav class="nav" aria-label="ページ内">
+        <a href="#feature">JILの特徴</a><a href="#flow">支援の流れ</a><a href="#flow">お客様の声</a><a href="#flow">メンバー</a>
+        <a class="pill" href="#contact">壁打ち相談<span class="dot" aria-hidden="true">→</span></a>
+      </nav>
+    </header>
+  </div>
+  <p class="hero-meta mono">New Business Development ／ For Enterprise</p>
+  <div class="wrap hero-body">
+    <div class="in">
+      <h1><span class="ph">戦略から、</span><span class="ph">現場の人まで。</span><br><span class="g"><span class="ph">新規事業を、</span><span class="ph">ひとつの</span><span class="ph">チームで。</span></span></h1>
+      <div class="hero-row">
+        <p>事業審査の経験を持つ事業開発のプロが、戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。大企業の新規事業を、ひとつのチームで最後まで支えます。</p>
+        <div class="cta">
+          <a class="pill solid" href="#contact">30分の壁打ち相談<span class="dot" aria-hidden="true">→</span></a>
+          <a class="pill line-w" href="#contact">サービス資料<span class="dot" aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="clients-band">
+  <div class="wrap"><div class="in clients" aria-label="ご支援企業">
+    <div class="jl">ご支援企業（一部）</div>
+    <div><img src="logos/nikkei-research.svg" alt="日経リサーチ"></div>
+    <div><img src="logos/knowbe.svg" alt="ノウビー"></div>
+    <div class="fss"><img src="logos/fujifilm.svg" alt="富士フイルム"><img src="logos/fss-name.svg" alt="富士フイルムシステムサービス株式会社"></div>
+    <div><img src="logos/m-out.png" alt="エムアウト" style="max-height:44px"></div>
+    <div><img src="logos/mitsubishi-electric.svg" alt="三菱電機" style="max-height:40px"></div>
+  </div></div>
+</div>
+
+<section class="mesh stmt-sec" aria-label="JILのやり方">
+  <div class="wrap"><div class="in stmt grid12">
+    <p class="lbl"><span class="jl">JILのやり方</span></p>
+    <div class="stmt-body">
+      <p class="stmt-text"><span class="ph">戦略を描くだけの</span><span class="ph">コンサルでも、</span><span class="ph">作るだけの</span><span class="ph">開発会社でもなく。</span><span class="g"><span class="ph"><em>構想から、</em></span><span class="ph"><em>売る人・</em></span><span class="ph"><em>回す人まで。</em></span><span class="ph">必要な職種の</span><span class="ph">メンバーが、</span><span class="ph">貴社のチームの</span><span class="ph">一員として</span><span class="ph">入ります。</span></span></p>
+    </div>
+  </div></div>
+</section>
+
+<section id="feature" aria-label="JILの事業開発の特徴">
+  <div class="wrap"><div class="in feat">
+    <div class="feat-head grid12">
+      <p class="lbl"><span class="jl">JILの事業開発の特徴</span></p>
+      <h2 class="h2"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>で。</span></h2>
+      <p class="note">事業開発の経験を持つメンバーが、考える・つくる・売る・回すを、ひとつのチームで引き受けます。</p>
+    </div>
+    <div class="traits">
+      <div class="trait"><p class="mono"><span>Judgement</span><span>01</span></p><h3>見極める</h3><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p><div class="num">1,500<small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p></div>
+      <div class="trait"><p class="mono"><span>Execution</span><span>02</span></p><h3>動かす</h3><p class="d">設計して終わりにせず、マーケティング・営業・CS・業務まで、常駐や業務委託で人が入り、事業を実際に動かします。</p><div class="num">常駐<small>・業務委託</small></div><p class="cap">売る人・回す人まで、チームの一員として</p></div>
+      <div class="trait"><p class="mono"><span>Organization</span><span>03</span></p><h3>残す</h3><p class="d">起案制度・カルチャー・研修まで設計し、一度きりで終わらず、事業が生まれ続ける組織を社内に残します。</p><div class="num">300<small>社超</small></div><p class="cap">役員による人事・組織コンサルティングの実績</p></div>
+    </div>
+  </div></div>
+</section>
+
+<section class="mesh soft" id="flow" aria-label="事業づくりの流れ">
+  <div class="wrap"><div class="in flow">
+    <div class="flow-head grid12">
+      <p class="lbl"><span class="jl">事業づくりの流れ</span></p>
+      <h2 class="h2"><span class="ph">0→1から、</span><span class="ph"><em>1→10へ。</em></span><br><span class="ph">事業を育てる</span><span class="ph">4つのステップ。</span></h2>
+      <p class="note">どのステップからでもご依頼いただけます。必要な職種のメンバーが、ステップごとに入れ替わりながら伴走します。</p>
+    </div>
+
+    <div class="chart" id="chart">
+      <div class="chart-scroll">
+        <svg viewBox="0 0 1280 470" role="img" aria-label="左下から右上へ立ち上がる成長曲線。曲線上に構想する、確かめる、つくる、立ち上げ・伸ばすの4つのステップが並び、下に0→1と1→10の目盛りがある">
+          <defs>
+            <linearGradient id="gStroke" x1="0" x2="1" y1="0" y2="0"><stop offset="0" style="stop-color:var(--curve-a)"/><stop offset=".55" style="stop-color:var(--curve-b)"/><stop offset="1" style="stop-color:var(--curve-c)"/></linearGradient>
+            <linearGradient id="gFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--area);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--area);stop-opacity:0"/></linearGradient>
+            <path id="curvePath" d="M0,392 C240,388 380,372 480,342 C600,306 700,282 800,246 C930,200 1040,150 1120,96 C1170,62 1230,40 1280,28"/>
+          </defs>
+          <rect class="zone" data-k="0" x="0" y="0" width="320" height="410"/>
+          <rect class="zone" data-k="1" x="320" y="0" width="320" height="410"/>
+          <rect class="zone" data-k="2" x="640" y="0" width="320" height="410"/>
+          <rect class="zone" data-k="3" x="960" y="0" width="320" height="410"/>
+          <g style="stroke:var(--line-2)" stroke-dasharray="2 5"><line x1="320" y1="0" x2="320" y2="410"/><line x1="640" y1="0" x2="640" y2="410"/><line x1="960" y1="0" x2="960" y2="410"/></g>
+          <path d="M0,392 C240,388 380,372 480,342 C600,306 700,282 800,246 C930,200 1040,150 1120,96 C1170,62 1230,40 1280,28 L1280,410 L0,410 Z" fill="url(#gFill)"/>
+          <use href="#curvePath" transform="translate(0,16)" fill="none" style="stroke:var(--curve-b)" stroke-opacity=".28" stroke-width="1.2" class="curve"/>
+          <use href="#curvePath" transform="translate(0,32)" fill="none" style="stroke:var(--curve-b)" stroke-opacity=".14" stroke-width="1.2" class="curve"/>
+          <use href="#curvePath" fill="none" stroke="url(#gStroke)" stroke-width="3.2" stroke-linecap="round" class="curve"/>
+          <line class="stem" data-k="0" x1="160" y1="384" x2="160" y2="318"/>
+          <line class="stem" data-k="1" x1="480" y1="342" x2="480" y2="262"/>
+          <line class="stem" data-k="2" x1="800" y1="246" x2="800" y2="160"/>
+          <line class="stem" data-k="3" x1="1120" y1="96" x2="1120" y2="62"/>
+          <circle class="pt" data-k="0" cx="160" cy="384" r="6"/>
+          <circle class="pt" data-k="1" cx="480" cy="342" r="6"/>
+          <circle class="pt" data-k="2" cx="800" cy="246" r="6"/>
+          <circle class="pt" data-k="3" cx="1120" cy="96" r="6"/>
+          <g class="tag" data-k="0"><rect x="88" y="282" width="144" height="36" rx="18"/><text class="n" x="108" y="305">01</text><text x="134" y="306">構想する</text></g>
+          <g class="tag" data-k="1"><rect x="408" y="226" width="144" height="36" rx="18"/><text class="n" x="428" y="249">02</text><text x="454" y="250">確かめる</text></g>
+          <g class="tag" data-k="2"><rect x="736" y="124" width="128" height="36" rx="18"/><text class="n" x="756" y="147">03</text><text x="782" y="148">つくる</text></g>
+          <g class="tag" data-k="3"><rect x="1018" y="26" width="204" height="36" rx="18"/><text class="n" x="1038" y="49">04</text><text x="1064" y="50">立ち上げ・伸ばす</text></g>
+          <line x1="0" y1="410" x2="1280" y2="410" style="stroke:var(--ink)"/>
+          <g style="stroke:var(--ink)"><line x1="1" y1="404" x2="1" y2="416"/><line x1="640" y1="404" x2="640" y2="416"/><line x1="1279" y1="404" x2="1279" y2="416"/></g>
+          <g font-family="Satoshi, sans-serif" font-size="16" font-weight="500" style="fill:var(--ink)"><text x="4" y="440">0</text><text x="640" y="440" text-anchor="middle">1</text><text x="1276" y="440" text-anchor="end">10</text></g>
+          <g font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="1" style="fill:var(--accent-ink)" text-anchor="middle"><text x="320" y="440">0 → 1</text><text x="960" y="440">1 → 10</text></g>
+          <text x="10" y="22" font-family="Noto Sans JP, sans-serif" font-size="14" style="fill:var(--sub)">事業の大きさ ↑</text>
+        </svg>
+      </div>
+      <div class="cards" role="list">
+        <div tabindex="0" class="card on" data-k="0" role="listitem"><img class="shot" src="img/step1_roadmap.jpg" alt="ホワイトボードのロードマップを指さしながら話すメンバー" loading="lazy"><p class="mono"><span>Step 01</span><span>0→1</span></p><h3>構想する</h3><p class="what">戦略・ビジネスモデル設計／伴走</p><ul><li>事業領域の選定</li><li>ビジネスモデルと収益の設計</li><li>事業計画と社内審査の伴走</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ</dd></dl></div>
+        <div tabindex="0" class="card" data-k="1" role="listitem"><img class="shot" src="img/step2_interview.jpg" alt="向かい合って顧客の話を聞くインタビューの様子" loading="lazy"><p class="mono"><span>Step 02</span><span>0→1</span></p><h3>確かめる</h3><p class="what">事業化検証の伴走／インキュベート</p><ul><li>顧客の課題の検証</li><li>解決策と価格の検証</li><li>テスト販売と継続の判断</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ、デザイナー</dd></dl></div>
+        <div tabindex="0" class="card" data-k="2" role="listitem"><img class="shot" src="img/step3_prototype.jpg" alt="付箋と画面の下書きを囲んで試作を考えるチーム" loading="lazy"><p class="mono"><span>Step 03</span><span>1→10</span></p><h3>つくる</h3><p class="what">プロダクト・ソリューションスキームの開発</p><ul><li>最初の製品・サービスの開発</li><li>提携や提供の座組の設計</li><li>試作と改善の繰り返し</li></ul><dl><dt>MEMBERS</dt><dd>PM、デザイナー、エンジニア</dd></dl></div>
+        <div tabindex="0" class="card" data-k="3" role="listitem"><img class="shot" src="img/step4_present.jpg" alt="売上のグラフを映した画面の前で発表する人" loading="lazy"><p class="mono"><span>Step 04</span><span>1→10</span></p><h3>立ち上げ・伸ばす</h3><p class="what">リリース後の設計と人材のアサイン</p><ul><li>売る仕組み（マーケ・営業・CS）</li><li>回す仕組み（オペレーション）</li><li>常駐・業務委託での人材のアサイン</li></ul><dl><dt>MEMBERS</dt><dd>マーケティング、IS／FS、業務設計</dd></dl></div>
+      </div>
+      <div tabindex="0" class="base" data-k="4">
+        <div class="t"><p class="mono">Foundation ／ 10→100</p><h3>土台｜組織をつくる</h3><p>4つのステップ全体を支え、事業が生まれ続ける組織へ広げます。</p></div>
+        <ul><li>起案制度の設計</li><li>カルチャーの設計</li><li>事業開発人材の研修</li><li>組織・人事、事業開発のメンバー</li></ul>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<section aria-label="事業開発×AI">
+  <div class="wrap"><div class="in ai-sec">
+    <div class="ai" aria-label="事業開発×AI">
+      <div class="ai-top">
+        <p class="ai-k">事業開発 <i>×</i> AI</p>
+        <h3><span class="ph">事業開発の知見に、</span><span class="ph"><em>AIの速さと量</em>を</span><span class="ph">掛け合わせる。</span></h3>
+        <p class="lead">新規事業は、どれだけ早く、多く試せるかで成否が分かれます。JILでは、判断は事業開発のプロが担い、調べる・つくる・試す作業をAIで加速。検証のサイクルを速く、回数を多くします。</p>
+      </div>
+      <div class="boxes">
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="打ち合わせのメモが、翌日には試作画面になる図"><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+<path d="M18 30h60v58l-12 12H18z"/><path d="M66 100V88h12"/><path d="M29 46h38M29 57h28M29 68h34"/>
+<path d="M90 65h22" stroke-dasharray="3 4"/><path d="M110 60l6 5-6 5"/>
+<rect x="128" y="20" width="96" height="98" rx="6"/><path d="M128 34h96"/>
+<rect x="138" y="44" width="76" height="28" rx="2" fill="#FFF000"/><path d="M138 83h56M138 91h40"/>
+<rect x="138" y="101" width="32" height="9" rx="4.5" fill="#111"/></g>
+<g fill="#111"><circle cx="136" cy="27" r="1.8"/><circle cx="143" cy="27" r="1.8"/><circle cx="150" cy="27" r="1.8"/></g>
+<g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="18" y="138">DAY 0</text><text x="128" y="138">DAY 1</text></g></svg></div><div class="body"><p class="en">Speed</p><p class="kw">高速</p><div class="to"><span aria-hidden="true">→</span><b>試作画面を、翌日に</b></div><p>打ち合わせで出たアイデアを、翌日には触れる試作画面にして、すぐ顧客に当てます。</p></div></div>
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="50パターンのうち、反応の良い3つを選ぶ図"><rect x="17" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="34" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="80" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="52" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="185" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="88" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="122" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">50 PATTERNS</text><text x="223" y="138" text-anchor="end">BEST 3</text></g><rect x="160" y="129" width="10" height="10" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.2"/></svg></div><div class="body"><p class="en">Volume</p><p class="kw">量産</p><div class="to"><span aria-hidden="true">→</span><b>LP・広告を50パターンで検証</b></div><p>訴求や見せ方を大量に用意し、反応の良いものを数字で選びます。</p></div></div>
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="数百社の競合・市場の分布の中から、空いている場所を見つける図"><g stroke="#111" stroke-opacity=".25" stroke-dasharray="2 4"><path d="M120 10v112M14 65h212"/></g><g fill="#111" fill-opacity=".7"><circle cx="84.1" cy="29.4" r="1.6"/><circle cx="32.8" cy="68.7" r="1.6"/><circle cx="29.8" cy="65.8" r="1.6"/><circle cx="106.5" cy="21.1" r="1.6"/><circle cx="104.6" cy="98.3" r="1.6"/><circle cx="63.5" cy="78.0" r="1.6"/><circle cx="135.7" cy="54.5" r="1.6"/><circle cx="27.5" cy="101.6" r="1.6"/><circle cx="47.4" cy="26.0" r="1.6"/><circle cx="148.3" cy="52.0" r="1.6"/><circle cx="30.8" cy="20.1" r="1.6"/><circle cx="137.5" cy="60.2" r="1.6"/><circle cx="180.1" cy="85.3" r="1.6"/><circle cx="135.2" cy="67.6" r="1.6"/><circle cx="42.1" cy="56.6" r="1.6"/><circle cx="49.0" cy="63.9" r="1.6"/><circle cx="154.3" cy="92.0" r="1.6"/><circle cx="139.3" cy="73.1" r="1.6"/><circle cx="189.4" cy="110.4" r="1.6"/><circle cx="153.5" cy="20.2" r="1.6"/><circle cx="150.0" cy="115.3" r="1.6"/><circle cx="76.1" cy="53.4" r="1.6"/><circle cx="22.6" cy="61.1" r="1.6"/><circle cx="41.9" cy="20.0" r="1.6"/><circle cx="44.4" cy="39.3" r="1.6"/><circle cx="130.1" cy="104.1" r="1.6"/><circle cx="91.2" cy="104.2" r="1.6"/><circle cx="48.8" cy="32.0" r="1.6"/><circle cx="65.6" cy="63.5" r="1.6"/><circle cx="71.6" cy="14.4" r="1.6"/><circle cx="93.3" cy="71.8" r="1.6"/><circle cx="158.9" cy="66.6" r="1.6"/><circle cx="155.9" cy="19.5" r="1.6"/><circle cx="177.1" cy="103.2" r="1.6"/><circle cx="98.0" cy="54.7" r="1.6"/><circle cx="147.4" cy="20.3" r="1.6"/><circle cx="60.6" cy="30.6" r="1.6"/><circle cx="28.7" cy="14.0" r="1.6"/><circle cx="38.7" cy="51.1" r="1.6"/><circle cx="196.4" cy="76.6" r="1.6"/><circle cx="69.5" cy="49.4" r="1.6"/><circle cx="43.1" cy="100.6" r="1.6"/><circle cx="113.1" cy="63.4" r="1.6"/><circle cx="38.8" cy="48.9" r="1.6"/><circle cx="128.8" cy="16.8" r="1.6"/><circle cx="217.6" cy="102.1" r="1.6"/><circle cx="71.3" cy="51.4" r="1.6"/><circle cx="175.5" cy="68.3" r="1.6"/><circle cx="85.3" cy="36.8" r="1.6"/><circle cx="218.9" cy="101.0" r="1.6"/><circle cx="184.9" cy="89.5" r="1.6"/><circle cx="123.6" cy="50.3" r="1.6"/><circle cx="23.7" cy="42.5" r="1.6"/><circle cx="159.3" cy="111.6" r="1.6"/><circle cx="209.2" cy="114.8" r="1.6"/><circle cx="92.4" cy="36.5" r="1.6"/><circle cx="58.1" cy="34.8" r="1.6"/><circle cx="201.7" cy="99.7" r="1.6"/><circle cx="151.2" cy="95.6" r="1.6"/><circle cx="152.8" cy="106.8" r="1.6"/><circle cx="211.1" cy="87.9" r="1.6"/><circle cx="43.9" cy="29.4" r="1.6"/><circle cx="218.0" cy="81.0" r="1.6"/><circle cx="129.9" cy="27.4" r="1.6"/><circle cx="216.1" cy="80.3" r="1.6"/><circle cx="208.5" cy="58.2" r="1.6"/><circle cx="77.8" cy="38.5" r="1.6"/><circle cx="70.9" cy="56.7" r="1.6"/><circle cx="203.6" cy="50.1" r="1.6"/><circle cx="137.0" cy="106.2" r="1.6"/><circle cx="205.2" cy="65.2" r="1.6"/><circle cx="124.8" cy="15.9" r="1.6"/><circle cx="55.4" cy="14.4" r="1.6"/><circle cx="53.2" cy="62.3" r="1.6"/><circle cx="131.5" cy="47.3" r="1.6"/><circle cx="131.3" cy="94.0" r="1.6"/><circle cx="132.3" cy="39.3" r="1.6"/><circle cx="173.0" cy="107.1" r="1.6"/><circle cx="143.0" cy="65.6" r="1.6"/><circle cx="159.3" cy="60.1" r="1.6"/><circle cx="115.5" cy="110.0" r="1.6"/><circle cx="196.8" cy="110.1" r="1.6"/><circle cx="132.1" cy="110.2" r="1.6"/><circle cx="46.0" cy="26.4" r="1.6"/><circle cx="32.8" cy="38.5" r="1.6"/><circle cx="154.6" cy="94.0" r="1.6"/><circle cx="49.5" cy="87.0" r="1.6"/><circle cx="47.2" cy="104.0" r="1.6"/><circle cx="62.8" cy="111.2" r="1.6"/><circle cx="117.4" cy="115.0" r="1.6"/><circle cx="50.9" cy="58.0" r="1.6"/><circle cx="87.2" cy="34.0" r="1.6"/><circle cx="165.3" cy="16.0" r="1.6"/><circle cx="107.9" cy="15.8" r="1.6"/><circle cx="145.3" cy="66.3" r="1.6"/><circle cx="219.0" cy="94.4" r="1.6"/><circle cx="39.4" cy="41.1" r="1.6"/><circle cx="104.1" cy="107.0" r="1.6"/><circle cx="70.8" cy="29.2" r="1.6"/><circle cx="134.4" cy="85.4" r="1.6"/><circle cx="29.7" cy="84.2" r="1.6"/><circle cx="32.8" cy="109.7" r="1.6"/><circle cx="31.6" cy="102.0" r="1.6"/><circle cx="87.2" cy="70.4" r="1.6"/><circle cx="72.6" cy="27.2" r="1.6"/><circle cx="66.6" cy="25.2" r="1.6"/><circle cx="28.3" cy="34.6" r="1.6"/><circle cx="80.2" cy="91.5" r="1.6"/><circle cx="120.0" cy="32.1" r="1.6"/><circle cx="21.7" cy="39.5" r="1.6"/><circle cx="167.5" cy="70.2" r="1.6"/><circle cx="114.9" cy="109.3" r="1.6"/><circle cx="158.3" cy="114.2" r="1.6"/><circle cx="187.8" cy="86.1" r="1.6"/><circle cx="100.6" cy="49.5" r="1.6"/><circle cx="44.5" cy="21.2" r="1.6"/><circle cx="70.1" cy="30.7" r="1.6"/><circle cx="189.6" cy="102.8" r="1.6"/><circle cx="75.5" cy="38.7" r="1.6"/><circle cx="111.7" cy="30.1" r="1.6"/><circle cx="71.7" cy="112.1" r="1.6"/><circle cx="129.6" cy="38.9" r="1.6"/><circle cx="81.1" cy="50.4" r="1.6"/><circle cx="95.9" cy="62.4" r="1.6"/><circle cx="59.0" cy="65.5" r="1.6"/><circle cx="71.9" cy="23.2" r="1.6"/><circle cx="26.5" cy="16.3" r="1.6"/><circle cx="65.5" cy="73.7" r="1.6"/><circle cx="171.1" cy="81.1" r="1.6"/><circle cx="218.9" cy="29.2" r="1.6"/><circle cx="149.2" cy="18.5" r="1.6"/><circle cx="200.0" cy="78.0" r="1.6"/><circle cx="120.9" cy="99.2" r="1.6"/><circle cx="186.6" cy="73.6" r="1.6"/><circle cx="157.3" cy="84.7" r="1.6"/><circle cx="24.4" cy="27.6" r="1.6"/><circle cx="39.4" cy="99.3" r="1.6"/><circle cx="146.1" cy="77.9" r="1.6"/><circle cx="117.8" cy="14.3" r="1.6"/><circle cx="170.6" cy="65.3" r="1.6"/><circle cx="152.5" cy="20.7" r="1.6"/><circle cx="69.4" cy="21.6" r="1.6"/><circle cx="115.7" cy="83.7" r="1.6"/><circle cx="143.9" cy="79.6" r="1.6"/><circle cx="48.1" cy="39.9" r="1.6"/><circle cx="80.1" cy="71.9" r="1.6"/><circle cx="30.4" cy="41.4" r="1.6"/><circle cx="159.2" cy="82.9" r="1.6"/><circle cx="123.4" cy="61.4" r="1.6"/><circle cx="42.2" cy="105.2" r="1.6"/><circle cx="217.5" cy="109.5" r="1.6"/><circle cx="111.6" cy="97.6" r="1.6"/><circle cx="109.7" cy="41.4" r="1.6"/><circle cx="210.9" cy="35.5" r="1.6"/><circle cx="46.9" cy="67.5" r="1.6"/><circle cx="45.1" cy="97.7" r="1.6"/><circle cx="198.9" cy="85.7" r="1.6"/><circle cx="18.7" cy="64.2" r="1.6"/><circle cx="79.6" cy="28.4" r="1.6"/><circle cx="82.5" cy="99.7" r="1.6"/><circle cx="171.1" cy="99.6" r="1.6"/><circle cx="207.0" cy="86.7" r="1.6"/><circle cx="77.1" cy="52.0" r="1.6"/><circle cx="221.8" cy="74.1" r="1.6"/><circle cx="105.3" cy="42.1" r="1.6"/><circle cx="38.7" cy="99.1" r="1.6"/><circle cx="122.2" cy="33.4" r="1.6"/><circle cx="213.1" cy="104.2" r="1.6"/><circle cx="146.7" cy="107.2" r="1.6"/><circle cx="130.0" cy="87.4" r="1.6"/><circle cx="149.5" cy="43.2" r="1.6"/><circle cx="207.1" cy="27.0" r="1.6"/><circle cx="88.1" cy="44.4" r="1.6"/><circle cx="217.2" cy="40.5" r="1.6"/><circle cx="79.4" cy="70.8" r="1.6"/><circle cx="52.1" cy="30.5" r="1.6"/><circle cx="202.9" cy="115.6" r="1.6"/><circle cx="46.5" cy="33.6" r="1.6"/><circle cx="87.8" cy="23.3" r="1.6"/><circle cx="70.7" cy="72.1" r="1.6"/><circle cx="124.9" cy="52.4" r="1.6"/><circle cx="30.7" cy="42.3" r="1.6"/><circle cx="43.7" cy="65.3" r="1.6"/><circle cx="68.7" cy="54.8" r="1.6"/><circle cx="212.6" cy="100.6" r="1.6"/><circle cx="22.4" cy="17.3" r="1.6"/><circle cx="200.7" cy="62.3" r="1.6"/><circle cx="18.0" cy="53.9" r="1.6"/><circle cx="186.4" cy="101.3" r="1.6"/><circle cx="68.7" cy="25.1" r="1.6"/><circle cx="124.6" cy="83.6" r="1.6"/><circle cx="165.2" cy="80.0" r="1.6"/><circle cx="111.3" cy="70.3" r="1.6"/><circle cx="149.7" cy="45.0" r="1.6"/><circle cx="69.4" cy="78.9" r="1.6"/><circle cx="40.9" cy="21.2" r="1.6"/><circle cx="136.9" cy="53.6" r="1.6"/><circle cx="140.6" cy="15.1" r="1.6"/><circle cx="112.0" cy="111.8" r="1.6"/><circle cx="68.4" cy="112.0" r="1.6"/><circle cx="80.7" cy="16.2" r="1.6"/><circle cx="154.1" cy="108.4" r="1.6"/><circle cx="25.0" cy="48.5" r="1.6"/><circle cx="215.9" cy="45.8" r="1.6"/><circle cx="65.1" cy="36.6" r="1.6"/><circle cx="78.2" cy="111.1" r="1.6"/><circle cx="56.2" cy="36.8" r="1.6"/><circle cx="153.7" cy="110.8" r="1.6"/><circle cx="98.3" cy="35.7" r="1.6"/><circle cx="46.9" cy="19.3" r="1.6"/><circle cx="98.2" cy="105.6" r="1.6"/><circle cx="167.5" cy="115.7" r="1.6"/><circle cx="85.2" cy="32.9" r="1.6"/><circle cx="95.2" cy="52.1" r="1.6"/><circle cx="52.5" cy="14.3" r="1.6"/><circle cx="89.7" cy="111.5" r="1.6"/><circle cx="185.6" cy="97.8" r="1.6"/><circle cx="28.0" cy="62.3" r="1.6"/><circle cx="183.6" cy="92.2" r="1.6"/><circle cx="25.1" cy="20.4" r="1.6"/><circle cx="70.4" cy="90.2" r="1.6"/><circle cx="87.2" cy="41.8" r="1.6"/><circle cx="143.9" cy="40.7" r="1.6"/><circle cx="82.6" cy="42.1" r="1.6"/><circle cx="172.2" cy="107.5" r="1.6"/><circle cx="114.9" cy="111.6" r="1.6"/><circle cx="96.8" cy="39.6" r="1.6"/><circle cx="118.7" cy="108.7" r="1.6"/><circle cx="181.7" cy="89.3" r="1.6"/><circle cx="175.7" cy="75.9" r="1.6"/></g><circle cx="178" cy="40" r="19" fill="#FFF000" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M173 40h10M178 35v10" stroke="#111" stroke-width="1.5"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">N = 300+</text><text x="223" y="138" text-anchor="end">WHITE SPACE</text></g></svg></div><div class="body"><p class="en">Coverage</p><p class="kw">網羅</p><div class="to"><span aria-hidden="true">→</span><b>競合・市場を数百社規模で調査</b></div><p>人手では追い切れない範囲まで調べ、見落としを減らして構想の精度を上げます。</p></div></div>
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="大勢の候補者から、話を聞くべき3人を絞り込む図"><g fill="none" stroke="#111" stroke-opacity=".4"><circle cx="20" cy="39" r="4.2"/><circle cx="34" cy="39" r="4.2"/><circle cx="48" cy="39" r="4.2"/><circle cx="62" cy="39" r="4.2"/><circle cx="76" cy="39" r="4.2"/><circle cx="90" cy="39" r="4.2"/><circle cx="20" cy="57" r="4.2"/><circle cx="34" cy="57" r="4.2"/><circle cx="48" cy="57" r="4.2"/><circle cx="62" cy="57" r="4.2"/><circle cx="76" cy="57" r="4.2"/><circle cx="90" cy="57" r="4.2"/><circle cx="20" cy="75" r="4.2"/><circle cx="34" cy="75" r="4.2"/><circle cx="48" cy="75" r="4.2"/><circle cx="62" cy="75" r="4.2"/><circle cx="76" cy="75" r="4.2"/><circle cx="90" cy="75" r="4.2"/><circle cx="20" cy="93" r="4.2"/><circle cx="34" cy="93" r="4.2"/><circle cx="48" cy="93" r="4.2"/><circle cx="62" cy="93" r="4.2"/><circle cx="76" cy="93" r="4.2"/><circle cx="90" cy="93" r="4.2"/></g><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M104 24L140 52v28L104 108z"/><path d="M144 66h8"/><path d="M149 62l4 4-4 4"/><g><circle cx="164" cy="56" r="7" fill="#FFF000"/><path d="M153 82a11 11 0 0 1 22 0"/><circle cx="189" cy="56" r="7" fill="#FFF000"/><path d="M178 82a11 11 0 0 1 22 0"/><circle cx="214" cy="56" r="7" fill="#FFF000"/><path d="M203 82a11 11 0 0 1 22 0"/></g></g><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">PROFILES</text><text x="223" y="138" text-anchor="end">INTERVIEW</text></g></svg></div><div class="body"><p class="en">Reach</p><p class="kw">接点</p><div class="to"><span aria-hidden="true">→</span><b>話を聞くべき人を抽出</b></div><p>ビジネスSNSなどの公開情報から対象者を抽出し、すぐにインタビューへつなげます。</p></div></div>
+      </div>
+      <p class="ai-foot">※ 事例は支援内容の一例です。期間や数量は案件によって異なります。</p>
+    </div>
+  </div></div>
+</section>
+
+<section class="deep" id="contact" aria-label="ご相談">
+  <div class="wrap">
+    <div class="in grid12 deep-in">
+      <p class="lbl" style="grid-column:1 / -1"><span class="jl">ご相談</span></p>
+      <h2><span class="ph">どこから始めるかは、</span><br><span class="ph">30分の壁打ちで</span><span class="ph">整理します。</span></h2>
+      <div class="card2">
+        <p class="jl" style="margin:0">対応する役員</p>
+        <div class="who"><span><small>代表取締役</small>武井 遼太郎</span><span><small>取締役</small>篠原 孝弘</span></div>
+        <p>相談内容がまとまっていなくても構いません。いまの状況を伺い、どのステップから始めるのが良いかを一緒に整理します。</p>
+        <a class="pill solid" href="#contact">30分の壁打ちを申し込む<span class="dot" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <div class="in foot"><span class="logo">JIL</span><span class="mono">© JIL Inc.</span></div>
+  </div>
+</section>
+
+<script>
+(function(){
+  function setStep(k){document.querySelectorAll('[data-k]').forEach(el=>el.classList.toggle('on',el.dataset.k===String(k)))}
+  document.querySelectorAll('.card[data-k],.base[data-k]').forEach(r=>{
+    r.addEventListener('click',()=>setStep(r.dataset.k));
+    r.addEventListener('mouseenter',()=>setStep(r.dataset.k));
+    r.addEventListener('focus',()=>setStep(r.dataset.k));
+    r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStep(r.dataset.k)}});
+  });
+  setStep(0);
+  // 曲線が画面に入ったときに、左から右へ描く（動きを減らす設定では描かない）
+  const chart=document.getElementById('chart');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce && 'IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){
+      chart.classList.add('pre');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{chart.classList.add('go');chart.classList.remove('pre')}));
+      io.disconnect();}})},{threshold:.35});
+    io.observe(chart);
+  }
+})();
+</script>

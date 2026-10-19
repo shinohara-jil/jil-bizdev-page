@@ -1,0 +1,349 @@
+<title>JIL デザインコンセプト</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: 設計書。左に章番号と章名の列（3/12）、右に本文（9/12）。ページ本体と同じトークンで組み、設計書自体が見本になる */
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-400.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-500.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-700.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Satoshi";src:url("fonts/Satoshi-900.woff2") format("woff2");font-weight:900;font-display:swap}
+:root{
+  --paper:#F4F2EE; --paper-2:#EAE6DF; --ink:#141414; --sub:#5F5C57; --mute:#A29E97; --line:#D3CEC5; --signal:#FF5A36;
+  --en:"Satoshi","Helvetica Neue",Arial,sans-serif; --jp:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{background:var(--paper)}
+body{margin:0;color:var(--ink);font-family:var(--jp);font-size:15px;line-height:1.9;letter-spacing:.02em;font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0} h1,h2,h3{text-wrap:balance}
+a{color:inherit}
+.wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:720px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+@media (min-width:1200px){.wrap{padding-left:max(80px,env(safe-area-inset-left,0px));padding-right:max(80px,env(safe-area-inset-right,0px))}}
+.in{max-width:1280px;margin:0 auto}
+.mono{font-family:var(--mono),var(--jp);font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.6;color:var(--sub)}
+.ph{display:inline-block}
+.cover{padding-block:40px 72px}
+.cover-top{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:14px}
+.logo{font-family:var(--en);font-weight:900;font-size:24px;letter-spacing:-.02em}
+.cover h1{font-size:clamp(36px,6vw,88px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-top:clamp(48px,8vw,120px)}
+.cover h1 .g{color:var(--mute)}
+.cover-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:56px;border-top:1px solid var(--line);padding-top:16px}
+.cover-meta p{font-size:13px}
+canvas{display:block;width:100%}
+.ch{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;border-top:1px solid var(--ink);padding-block:28px 112px}
+.ch-h{grid-column:1 / span 3}
+.ch-h .n{font-family:var(--en);font-weight:500;font-size:44px;letter-spacing:-.03em;line-height:1}
+.ch-h h2{font-size:20px;font-weight:700;margin-top:12px;letter-spacing:0}
+.ch-b{grid-column:4 / span 9;min-width:0}
+.lead{font-size:clamp(20px,2.2vw,30px);font-weight:500;line-height:1.6;letter-spacing:-.01em;max-width:30em}
+.lead .g{color:var(--mute)}
+.body{max-width:46em;margin-top:20px;color:#2C2B29}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 24px;margin-top:40px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px;margin-top:40px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:40px}
+figure{margin:0}
+figure img{display:block;width:100%;max-width:100%;height:auto;border:1px solid var(--line)}
+figcaption{margin-top:10px;font-size:13px}
+figcaption b{display:block;font-weight:700}
+figcaption span{color:var(--sub)}
+.tbl{overflow-x:auto;margin-top:36px;border-top:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:13px}
+th,td{text-align:left;vertical-align:top;padding:12px 16px 12px 0;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono),var(--jp);font-size:10px;letter-spacing:.08em;color:var(--sub);font-weight:400;text-transform:uppercase}
+td.sp{white-space:nowrap}
+.sw{border-top:1px solid var(--line);padding-top:0}
+.sw .chip{height:120px;border:1px solid var(--line);display:flex;align-items:flex-end;padding:12px;font-family:var(--mono);font-size:11px}
+.sw p{font-size:13px;margin-top:10px}
+.sw p b{display:block}
+.ratio{display:flex;height:14px;margin-top:28px;border:1px solid var(--line)}
+.kw{display:flex;flex-wrap:wrap;gap:12px 40px;margin-top:36px}
+.kw div{border-top:1px solid var(--ink);padding-top:12px;min-width:200px;flex:1}
+.kw b{font-size:22px;letter-spacing:-.01em}
+.kw p{font-size:13px;color:var(--sub);margin-top:6px}
+.do{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:40px}
+.do ul{margin:12px 0 0;padding:0;list-style:none;font-size:14px}
+.do li{border-top:1px solid var(--line);padding:10px 0}
+.do h3{font-size:14px;font-weight:700;display:flex;gap:10px;align-items:center}
+.do h3 i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.do .ng h3 i{background:transparent;border:1px solid var(--ink)}
+.spec{border:1px solid var(--line);padding:18px;background:var(--paper)}
+.spec .mono{display:flex;justify-content:space-between;margin-bottom:8px}
+.modes figure{border-top:1px solid var(--line);padding-top:10px}
+.modes canvas{height:120px;margin:6px 0 4px}
+.pill{display:inline-flex;align-items:center;gap:14px;text-decoration:none;border-radius:999px;font-weight:500;line-height:1;white-space:nowrap}
+.pill .dot{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--signal);font-family:var(--en);font-weight:700}
+.pill.ink{background:var(--ink);color:var(--paper);padding:9px 9px 9px 24px}
+.pill.ghost{border:1px solid var(--ink);padding:8px 8px 8px 22px}
+.pill.ghost .dot{background:transparent;border:1px solid var(--ink)}
+.comp{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:28px;border:1px solid var(--line)}
+.dark{background:var(--ink);color:var(--paper);padding:28px}
+.pagemap{counter-reset:s}
+.pagemap li{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1.2fr) 120px;gap:16px;border-top:1px solid var(--line);padding:14px 0;font-size:13px;align-items:baseline}
+.pagemap li .no{font-family:var(--en);font-weight:500;font-size:18px}
+.pagemap li b{font-size:15px}
+.pagemap li .st{font-family:var(--mono);font-size:10px;letter-spacing:.08em}
+.pagemap li .st.done{color:var(--signal)}
+ol.pagemap{list-style:none;padding:0;margin:36px 0 0;border-bottom:1px solid var(--line)}
+.foot{border-top:1px solid var(--ink);padding-block:24px 48px;display:flex;justify-content:space-between}
+@media (max-width:900px){
+  .ch{grid-template-columns:minmax(0,1fr)}
+  .ch-h,.ch-b{grid-column:1 / -1}
+  .g3,.g4,.cover-meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pagemap li{grid-template-columns:36px minmax(0,1fr)}
+  .pagemap li>*:nth-child(3),.pagemap li>*:nth-child(4){grid-column:2}
+}
+@media (max-width:560px){.g2,.g3,.g4,.do,.cover-meta{grid-template-columns:minmax(0,1fr)}}
+</style>
+
+<div class="wrap"><div class="in">
+
+<header class="cover">
+  <div class="cover-top"><span class="logo">JIL</span><span class="mono">Design Concept ／ v3.0 ／ 2026.10.19</span></div>
+  <h1><span class="ph">撚り合わせる。</span><br><span class="g"><span class="ph">新規事業開発・B2B支援ページ</span><span class="ph">デザインコンセプト</span></span></h1>
+  <canvas id="cover" height="200" style="height:200px;margin-top:40px" aria-hidden="true"></canvas>
+  <div class="cover-meta">
+    <div><p class="mono">対象</p><p>新規事業開発・B2B支援サービスページ</p></div>
+    <div><p class="mono">読み手</p><p>大企業の新規事業部門の担当者・責任者</p></div>
+    <div><p class="mono">ゴール</p><p>役員との30分の壁打ち相談（サブ：資料DL）</p></div>
+    <div><p class="mono">キャッチ</p><p>戦略から、現場の人まで。新規事業を、ひとつのチームで。</p></div>
+  </div>
+</header>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">01</p><h2>目指す水準</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">選んでいただいた4サイトに共通するのは、</span><span class="ph g">「個性のある文字」「そのサイトだけの絵」「精密な格子」「暖かい無彩色と1色」。</span></p>
+    <p class="body">デザインの良し悪しはこの4サイトを物差しにします。制作の各段階で、同じ画面幅で撮影して並べ、見劣りしないかを確かめてから提出します。</p>
+    <div class="g2">
+      <figure><img src="ref/bundl_00.jpg" alt="Bundlの最初の画面"><figcaption><b>Bundl</b><span>太く詰めた文字と余白だけで品をつくる。大企業の新規事業支援。→ 文字組みと、立ち位置の一文（濃淡2色）を参考</span></figcaption></figure>
+      <figure><img src="ref/coral_00.jpg" alt="Coral Capitalの最初の画面"><figcaption><b>Coral Capital</b><span>生成り地に、セピア寄りに統一した実写と線画。→ 写真の色調と、写真の帯を参考</span></figcaption></figure>
+      <figure><img src="ref/pksha_00.jpg" alt="PKSHA Technologyの最初の画面"><figcaption><b>PKSHA Technology</b><span>流れる細い線と、英字＋和文の幾何学的な太字。→ 線のモチーフと書体を参考</span></figcaption></figure>
+      <figure><img src="ref/hexa_01.jpg" alt="Hexaのステップ紹介"><figcaption><b>Hexa</b><span>「FROM 0 TO 1」の等幅ラベルと、罫線の格子に線画。→ 支援の流れの格子を参考</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">02</p><h2>コンセプト</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">撚り合わせる。</span><span class="ph g">ばらばらだった細い糸を、</span><span class="ph g">1本の強い縄にする。</span></p>
+    <p class="body">大企業の新規事業は、戦略はコンサル、開発は開発会社、営業は代行会社と、依頼先が工程ごとに分かれ、つなぎ目で止まりがちです。JILは、戦略・検証・開発・営業・業務・組織の糸を、ひとつのチームに撚り合わせます。この考え方を「撚り合わさっていく細い線」として描き、ページの最初から最後まで通します。</p>
+    <div class="g3">
+      <div class="spec"><p class="mono"><span>Before</span><span>ばらばら</span></p><canvas data-mode="scatter" style="height:110px" aria-hidden="true"></canvas><p style="font-size:13px;margin-top:8px">工程ごとに依頼先が分かれ、糸がそろわない</p></div>
+      <div class="spec"><p class="mono"><span>JIL</span><span>撚る</span></p><canvas data-mode="converge" style="height:110px" aria-hidden="true"></canvas><p style="font-size:13px;margin-top:8px">JILが入り、糸が撚り合わさっていく</p></div>
+      <div class="spec"><p class="mono"><span>After</span><span>1本の縄</span></p><canvas data-mode="braid" style="height:110px" aria-hidden="true"></canvas><p style="font-size:13px;margin-top:8px">ひとつのチームとして、強く前へ進む</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">03</p><h2>トーン</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">精密で、誠実で、</span><span class="ph">静かに熱い。</span></p>
+    <div class="kw">
+      <div><b>精密</b><p>罫線の格子、等幅のラベル、揃った余白。考え抜かれた設計を感じさせる</p></div>
+      <div><b>誠実</b><p>誇張しない言葉と、加工しすぎない写真。数字は役員の経験だけを正直に出す</p></div>
+      <div><b>静かな熱量</b><p>無彩色の中に1本だけ走る朱橙の線。現場で手を動かす熱を、控えめに見せる</p></div>
+    </div>
+    <div class="do">
+      <div><h3><i></i>こう見せる</h3><ul><li>大きく、太く、詰めた日本語の見出し</li><li>1つの見出しを濃淡2色で組む（言い切り＋補足）</li><li>罫線1本と、面の切り替えで区切る</li><li>線のモチーフと、セピア寄りの写真で語る</li><li>後半は墨色の面で締める</li></ul></div>
+      <div class="ng"><h3><i></i>こう見せない</h3><ul><li>ぼかしたグラデーション、光る球体、波打つ帯</li><li>アイコン＋見出し＋説明のカードを均等に並べる</li><li>付箋・握手・会議室・夜景・空撮の写真</li><li>「こんなお悩みありませんか」の箱と下向き矢印</li><li>生成り＋明朝＋朱、黒地に蛍光色1色</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">04</p><h2>色</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">紙と墨で9割。</span><span class="ph g">朱橙は「1本の線」と「押す場所」にだけ。</span></p>
+    <div class="g4">
+      <div class="sw"><div class="chip" style="background:#F4F2EE">#F4F2EE</div><p><b>Paper 紙</b>背景の基本。真っ白は使わない</p></div>
+      <div class="sw"><div class="chip" style="background:#EAE6DF">#EAE6DF</div><p><b>Paper 2 紙・濃</b>面の切り替え、土台の帯</p></div>
+      <div class="sw"><div class="chip" style="background:#141414;color:#F4F2EE">#141414</div><p><b>Ink 墨</b>文字、罫線（強）、後半の面</p></div>
+      <div class="sw"><div class="chip" style="background:#FF5A36">#FF5A36</div><p><b>Signal 朱橙</b>強調の線1本、ボタンの丸、現在地</p></div>
+      <div class="sw"><div class="chip" style="background:#5F5C57;color:#F4F2EE">#5F5C57</div><p><b>Sub 灰</b>補足の文字、ラベル（紙の上で6.3:1）</p></div>
+      <div class="sw"><div class="chip" style="background:#A29E97">#A29E97</div><p><b>Mute 薄灰</b>濃淡見出しの「淡」側（大きな文字専用）</p></div>
+      <div class="sw"><div class="chip" style="background:#D3CEC5">#D3CEC5</div><p><b>Line 罫線</b>格子・区切りの細線</p></div>
+      <div class="sw"><div class="chip" style="background:#1E1D1B;color:#F4F2EE">写真</div><p><b>Photo セピア</b>影 #1E1B18 ／ 光 #F1ECE4</p></div>
+    </div>
+    <div class="ratio" aria-label="色の使用比率"><span style="flex:62;background:#F4F2EE"></span><span style="flex:10;background:#EAE6DF"></span><span style="flex:24;background:#141414"></span><span style="flex:1.5;background:#FF5A36"></span><span style="flex:2.5;background:#A29E97"></span></div>
+    <p class="mono" style="margin-top:8px">使用比率の目安 ／ Paper 62 ・ Paper2 10 ・ Ink 24 ・ Signal 1.5 ・ Gray 2.5</p>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">05</p><h2>文字</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">日本語は太く大きく詰める。</span><span class="ph g">英字は幾何学的に、ラベルは等幅で。</span></p>
+    <div class="g3">
+      <div class="spec"><p class="mono"><span>和文</span><span>Google Fonts ／ 無料</span></p><p style="font-size:40px;font-weight:700;letter-spacing:-.025em;line-height:1.2">戦略から、<br>現場の人まで。</p><p style="font-size:13px;margin-top:10px">Noto Sans JP 400／500／700。文字詰め（palt）を必ず有効にする</p></div>
+      <div class="spec"><p class="mono"><span>欧文・数字</span><span>Fontshare ／ 商用無料</span></p><p style="font-family:var(--en);font-size:48px;font-weight:700;letter-spacing:-.03em;line-height:1.1">JIL 1,500</p><p style="font-size:13px;margin-top:10px">Satoshi 400／500／700／900。ロゴ・数字・英語の一言に</p></div>
+      <div class="spec"><p class="mono"><span>ラベル</span><span>Google Fonts ／ 無料</span></p><p style="font-family:var(--mono);font-size:15px;letter-spacing:.08em;line-height:1.8">STEP 01 ／ 0→1<br>FOUNDATION</p><p style="font-size:13px;margin-top:10px">IBM Plex Mono 400／500。工程・範囲など「情報のあるラベル」だけに使う</p></div>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>役割</th><th>書体</th><th>PC</th><th>スマホ</th><th>太さ</th><th>行間</th><th>字間</th><th>使う場所</th></tr></thead>
+      <tbody>
+        <tr><td>Display</td><td>Noto Sans JP</td><td class="sp">80px</td><td class="sp">36px</td><td>700</td><td>1.22</td><td>-0.025em</td><td>キャッチ（濃淡2色）</td></tr>
+        <tr><td>H2</td><td>Noto Sans JP</td><td class="sp">64px</td><td class="sp">32px</td><td>700</td><td>1.2</td><td>-0.025em</td><td>セクション見出し</td></tr>
+        <tr><td>Statement</td><td>Noto Sans JP</td><td class="sp">38px</td><td class="sp">22px</td><td>500</td><td>1.6</td><td>-0.01em</td><td>立ち位置の一文（濃淡2色）</td></tr>
+        <tr><td>H3</td><td>Noto Sans JP</td><td class="sp">28px</td><td class="sp">22px</td><td>700</td><td>1.35</td><td>-0.02em</td><td>ステップ名など</td></tr>
+        <tr><td>Number</td><td>Satoshi</td><td class="sp">52px</td><td class="sp">34px</td><td>500</td><td>1.1</td><td>-0.03em</td><td>役員の経験の数字</td></tr>
+        <tr><td>Body</td><td>Noto Sans JP</td><td class="sp">15px</td><td class="sp">15px</td><td>400</td><td>1.9</td><td>0.02em</td><td>本文</td></tr>
+        <tr><td>Small</td><td>Noto Sans JP</td><td class="sp">13px</td><td class="sp">13px</td><td>400</td><td>1.85</td><td>0.02em</td><td>補足・表</td></tr>
+        <tr><td>Label</td><td>IBM Plex Mono</td><td class="sp">11px</td><td class="sp">11px</td><td>400</td><td>1.6</td><td>0.08em</td><td>工程・範囲のラベル（大文字）</td></tr>
+      </tbody>
+    </table></div>
+    <p class="body" style="font-size:13px">和文の見出しは、言葉のまとまり（文節）ごとに改行を制御し、「現／場」のように言葉の途中で切れないようにする。1つの見出しは「言い切り（墨）」と「補足（薄灰）」の濃淡2色で組む。</p>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">06</p><h2>グリッドと余白</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">12列・最大1280px。</span><span class="ph g">左3列に見出し、右9列に本文。</span></p>
+    <div style="margin-top:36px;border:1px solid var(--line);padding:16px;background:var(--paper)">
+      <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:8px;height:120px">
+        <div style="grid-column:span 3;background:#E3DED5"></div><div style="grid-column:span 9;background:#EFECE6;border:1px dashed var(--line)"></div>
+      </div>
+      <p class="mono" style="margin-top:10px">3 ＋ 9 ／ セクション見出し ＋ 本文（立ち位置・流れ・相談で共通）</p>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>項目</th><th>PC（1200px〜）</th><th>タブレット（720px〜）</th><th>スマホ</th></tr></thead>
+      <tbody>
+        <tr><td>左右の余白</td><td>80px</td><td>40px</td><td>16px</td></tr>
+        <tr><td>列の間隔</td><td>24px</td><td>24px</td><td>1列に積む</td></tr>
+        <tr><td>セクションの上下</td><td>160px</td><td>120px</td><td>88px</td></tr>
+        <tr><td>余白の段階</td><td colspan="3">8 ／ 16 ／ 24 ／ 40 ／ 56 ／ 80 ／ 104 ／ 160（この中からだけ選ぶ）</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">07</p><h2>線のモチーフ</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">線は飾りではなく、</span><span class="ph g">いま事業がどの状態かを描く。</span></p>
+    <p class="body">線の太さは1px（強調の1本だけ1.6px・朱橙）。線の本数・広がり方で状態を表し、ゆっくり動く（動きを減らす設定の人には止めて表示）。</p>
+    <div class="g3 modes">
+      <figure><p class="mono">Hero ／ 撚り合わさる</p><canvas data-mode="converge" aria-hidden="true"></canvas><figcaption><span>最初の画面。左でばらばら、右で1本の縄に</span></figcaption></figure>
+      <figure><p class="mono">Step 01 ／ 広がる</p><canvas data-mode="diverge" aria-hidden="true"></canvas><figcaption><span>構想する。1点から可能性が広がる</span></figcaption></figure>
+      <figure><p class="mono">Step 02 ／ 絞り込む</p><canvas data-mode="select" aria-hidden="true"></canvas><figcaption><span>確かめる。多くの線が途切れ、3本が残る</span></figcaption></figure>
+      <figure><p class="mono">Step 03 ／ 編み上げる</p><canvas data-mode="braid" aria-hidden="true"></canvas><figcaption><span>つくる。3本が1本に編まれる</span></figcaption></figure>
+      <figure><p class="mono">Step 04 ／ 分かれて進む</p><canvas data-mode="spread" aria-hidden="true"></canvas><figcaption><span>立ち上げ・伸ばす。人の数だけ線が前へ</span></figcaption></figure>
+      <figure><p class="mono">Foundation ／ 織る</p><canvas data-mode="weave" aria-hidden="true"></canvas><figcaption><span>土台。たて糸とよこ糸で布になる</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">08</p><h2>写真</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">東京で働く人の、</span><span class="ph">後ろ姿とシルエット。</span><span class="ph g">すべてセピア寄りのモノクロにそろえる。</span></p>
+    <div class="g4">
+      <figure><img src="img/window.jpg" alt="高層階の窓から東京を見渡す人のシルエット" style="aspect-ratio:3/4;object-fit:cover"><figcaption><b>見渡す</b><span>高い場所から街を見る</span></figcaption></figure>
+      <figure><img src="img/tower.jpg" alt="東京タワーの方角を見つめる二人の後ろ姿" style="aspect-ratio:3/4;object-fit:cover"><figcaption><b>見極める</b><span>遠くの一点を見据える</span></figcaption></figure>
+      <figure><img src="img/office.jpg" alt="上から見下ろした、人が働くオフィス" style="aspect-ratio:3/4;object-fit:cover"><figcaption><b>つくる</b><span>人が集まって働く場</span></figcaption></figure>
+      <figure><img src="img/street.jpg" alt="ビル街を歩いていく人々" style="aspect-ratio:3/4;object-fit:cover"><figcaption><b>動かす</b><span>現場へ歩いていく</span></figcaption></figure>
+    </div>
+    <div class="do">
+      <div><h3><i></i>選ぶ写真</h3><ul><li>日本（東京）の街・オフィスで撮られたもの</li><li>人物は後ろ姿・シルエット・遠景。顔が主役でない</li><li>高い視点・遠い視点など、構図に「見る」行為があるもの</li><li>加工：scripts/grade_photos.py の mono（セピア寄りモノクロ＋粒子）</li></ul></div>
+      <div class="ng"><h3><i></i>選ばない写真</h3><ul><li>付箋・ホワイトボードのアップ、握手、ハイタッチ</li><li>カメラ目線の笑顔、スーツの集合写真</li><li>海外の会議室・海外の文字が写り込むもの</li><li>夜景・空撮・青く光るCG</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">09</p><h2>部品</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">押す場所は、</span><span class="ph g">朱橙の丸で迷わせない。</span></p>
+    <div class="comp" style="margin-top:36px">
+      <a class="pill ink" href="#">30分の壁打ち相談<span class="dot" aria-hidden="true">→</span></a>
+      <a class="pill ghost" href="#">サービス資料<span class="dot" aria-hidden="true">↓</span></a>
+      <span class="mono" style="margin-left:auto">主ボタン（墨）／ 副ボタン（線）</span>
+    </div>
+    <div class="dark" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+      <a class="pill" href="#" style="background:var(--paper);color:var(--ink);padding:9px 9px 9px 24px">30分の壁打ちを申し込む<span class="dot" aria-hidden="true">→</span></a>
+      <span class="mono" style="margin-left:auto;color:#9A968F">墨の面の上のボタン（紙色）</span>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>部品</th><th>ルール</th></tr></thead>
+      <tbody>
+        <tr><td>罫線の格子</td><td>上辺だけ墨（1px）、それ以外は罫線色。カードの角丸・影は使わない</td></tr>
+        <tr><td>ラベル</td><td>等幅・大文字・11px。工程（STEP 01）、範囲（0→1）など情報がある時だけ</td></tr>
+        <tr><td>数字</td><td>Satoshi 500。単位は和文で小さく添える。会社の実績数字は使わず、役員の経験のみ</td></tr>
+        <tr><td>写真の説明</td><td>写真の下に和文の一語（見渡す・見極める・つくる・動かす）と番号</td></tr>
+        <tr><td>リンク</td><td>下線＋右向き矢印。外部リンクは↗</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">10</p><h2>ページ構成</h2></div>
+  <div class="ch-b">
+    <p class="lead"><span class="ph">紙の面で語り、</span><span class="ph g">墨の面で背中を押す。</span></p>
+    <ol class="pagemap">
+      <li><span class="no">01</span><b>最初の画面</b><span>濃淡2色のキャッチ／撚り合わさる線／写真4枚の帯</span><span class="st done">試作済み</span></li>
+      <li><span class="no">02</span><b>ご支援企業</b><span>罫線の格子に5社のロゴ（Coral型）</span><span class="st done">試作済み</span></li>
+      <li><span class="no">03</span><b>立ち位置</b><span>濃淡2色の一文＋役員の経験の数字3つ（Bundl型）</span><span class="st done">試作済み</span></li>
+      <li><span class="no">04</span><b>事業づくりの流れ</b><span>4ステップの格子＋土台の帯。各ステップに線の絵（Hexa型）</span><span class="st done">試作済み</span></li>
+      <li><span class="no">05</span><b>選ばれる理由</b><span>左に4つの理由の一覧、右に選んだ理由の説明（Bundl型）</span><span class="st">次に作成</span></li>
+      <li><span class="no">06</span><b>チーム</b><span>貴社＋JILの体制図。職種と「＋」で組む（Bundl型）</span><span class="st">次に作成</span></li>
+      <li><span class="no">07</span><b>お客様の声</b><span>セピア写真＋企業名＋見出し。5社のインタビュー</span><span class="st">取材後</span></li>
+      <li><span class="no">08</span><b>メンバー</b><span>顔写真なし。名前・経歴・職種の文字組み</span><span class="st">次に作成</span></li>
+      <li><span class="no">09</span><b>よくある質問</b><span>罫線で区切った開閉式</span><span class="st">次に作成</span></li>
+      <li><span class="no">10</span><b>相談（墨の面）</b><span>対応する役員の名前＋主ボタン。最後に大きなロゴ</span><span class="st done">試作済み</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="ch">
+  <div class="ch-h"><p class="n">11</p><h2>素材と権利</h2></div>
+  <div class="ch-b">
+    <div class="tbl" style="margin-top:0"><table>
+      <thead><tr><th>素材</th><th>出典</th><th>条件</th></tr></thead>
+      <tbody>
+        <tr><td>Satoshi</td><td>Fontshare（Indian Type Foundry）</td><td>商用無料（ITF Free Font License）</td></tr>
+        <tr><td>Noto Sans JP ／ IBM Plex Mono</td><td>Google Fonts</td><td>商用無料（SIL Open Font License）</td></tr>
+        <tr><td>写真（見渡す）</td><td>Unsplash ／ Ryunosuke Kikuno（Y_Kgw4QaYc8）</td><td>Unsplash License（商用無料）</td></tr>
+        <tr><td>写真（見極める）</td><td>Unsplash ／ Gavin Li（vWB0PRBEtzY）</td><td>同上</td></tr>
+        <tr><td>写真（つくる）</td><td>Unsplash ／ Leo Okuyama（T1lKNylbjp0）</td><td>同上</td></tr>
+        <tr><td>写真（動かす）</td><td>Unsplash ／ Tsuyoshi Kozu（MDmGL-rgmBQ）</td><td>同上</td></tr>
+      </tbody>
+    </table></div>
+    <p class="body" style="font-size:13px">本番で有料素材や撮り下ろしに差し替える場合も、08の基準で選び、同じ加工をかける。</p>
+  </div>
+</section>
+
+<footer class="foot"><span class="logo">JIL</span><span class="mono">Design Concept v3.0</span></footer>
+</div></div>
+
+<script>
+(function(){
+  const INK='20,20,20', SIG='#FF5A36';
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ss=(a,b,t)=>{t=Math.min(1,Math.max(0,(t-a)/(b-a)));return t*t*(3-2*t)}, lerp=(a,b,t)=>a+(b-a)*t;
+  function setup(c){const r=c.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);c.width=Math.max(1,Math.round(r.width*d));c.height=Math.max(1,Math.round(r.height*d));const g=c.getContext('2d');g.setTransform(d,0,0,d,0,0);return{g,W:r.width,H:r.height}}
+  function line(g,pts,color,w){g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.strokeStyle=color;g.lineWidth=w;g.stroke()}
+  function strands(g,W,H,n,f,o){o=o||{};for(let i=n-1;i>=0;i--){const pts=[],t0=o.start?o.start(i):0,t1=o.end?o.end(i):1;for(let x=t0*W;x<=t1*W;x+=2){pts.push([x,f(i,x/W)])}const a=i===(o.accent??0);line(g,pts,a?SIG:`rgba(${INK},${o.alpha?o.alpha(i):.5})`,a?1.6:1)}}
+  const modes={
+    converge(g,W,H,ph){const n=9;strands(g,W,H,n,(i,t)=>{const s=1-ss(.18,.78,t),b=(i-(n-1)/2)/((n-1)/2),w=Math.sin(t*7+i*1.7+ph)*.22,tw=Math.sin(t*46-ph*2+i*(Math.PI*2/n))*(1-s)*.055;return H/2+(b*.42+w*.35)*s*H+tw*H},{accent:3,alpha:i=>.32+.04*(i%3)})},
+    scatter(g,W,H,ph){const n=9;strands(g,W,H,n,(i,t)=>{const b=(i-(n-1)/2)/((n-1)/2);return H/2+b*H*.4+Math.sin(t*(5+i)+i*2+ph)*H*.08},{accent:3,start:i=>(i*13%30)/100,end:i=>.55+(i*29%45)/100,alpha:()=>.4})},
+    diverge(g,W,H,ph){const n=8;strands(g,W,H,n,(i,t)=>{const s=ss(0,1,t),b=(i-(n-1)/2)/((n-1)/2);return H/2+b*s*H*.42+Math.sin(t*9+i+ph)*s*H*.05},{accent:2,alpha:()=>.45});g.beginPath();g.arc(2.5,H/2,2.5,0,Math.PI*2);g.fillStyle=`rgb(${INK})`;g.fill()},
+    select(g,W,H,ph){const n=11,k=[3,5,8];strands(g,W,H,n,(i,t)=>{const b=(i-(n-1)/2)/((n-1)/2),s=1-ss(.25,.95,t)*.82;return H/2+b*s*H*.44+Math.sin(t*8+i*1.3+ph)*H*.03},{accent:5,end:i=>k.includes(i)?1:.22+((i*37)%50)/100,alpha:i=>k.includes(i)?.6:.28})},
+    braid(g,W,H,ph){const n=3;strands(g,W,H,n,(i,t)=>{const a=ss(0,.25,t);return H/2+Math.sin(t*Math.PI*2*3.2-ph+i*(Math.PI*2/n))*H*.26*a+(1-a)*(i-1)*H*.3},{accent:1,alpha:()=>.7})},
+    spread(g,W,H,ph){const n=7;strands(g,W,H,n,(i,t)=>{const s=ss(.3,.75,t),br=Math.sin(t*Math.PI*2*3-ph+i*(Math.PI*2/n))*H*.07;return H/2+lerp(br,(i-(n-1)/2)*H*.12,s)},{accent:3,alpha:()=>.5})},
+    weave(g,W,H,ph){const rows=7,st=Math.max(12,W/30);for(let x=st/2;x<W;x+=st){line(g,[[x,6],[x,H-6]],`rgba(${INK},.12)`,1)}for(let r=0;r<rows;r++){const y0=8+r*(H-16)/(rows-1),pts=[];for(let x=0;x<=W;x+=2){pts.push([x,y0+Math.sin((x/st)*Math.PI+r*Math.PI+ph*.6)*3])}line(g,pts,r===3?SIG:`rgba(${INK},.32)`,r===3?1.6:1)}}
+  };
+  const items=[...document.querySelectorAll('canvas[data-mode]')].map(c=>({c,m:c.dataset.mode}));
+  items.push({c:document.getElementById('cover'),m:'converge'});
+  let ph=0;
+  const draw=()=>items.forEach(it=>{const s=it.s||(it.s=setup(it.c));s.g.clearRect(0,0,s.W,s.H);modes[it.m](s.g,s.W,s.H,ph)});
+  draw();
+  window.addEventListener('resize',()=>{clearTimeout(window.__r);window.__r=setTimeout(()=>{items.forEach(it=>it.s=setup(it.c));draw()},120)});
+  if(!reduce){let last=performance.now();(function loop(now){ph+=(now-last)/1000*.35;last=now;draw();requestAnimationFrame(loop)})(last)}
+})();
+</script>
