@@ -1,4 +1,4 @@
-<title>JIL 事業開発 v12</title>
+<title>JIL 事業開発 v14</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -233,32 +233,15 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   .boxes,.cards{grid-template-columns:minmax(0,1fr)}
   .card{border-right:0;border-bottom:1px solid var(--line)}
 }
-/* 背景のアクセント（比較用）。html の data-bg で切り替える
-   a=縦の罫線（方眼）／b=大きな英字／c=グレーの帯と黄色の線／none=なし */
-.guides,.bgword{display:none}
-[data-bg="a"] .guides{display:block;position:fixed;inset:0;z-index:-1;pointer-events:none}
-[data-bg="a"] .guides .in{height:100%;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-right:1px solid var(--line)}
-[data-bg="a"] .guides i{border-left:1px solid var(--line)}
-[data-bg="a"] body,[data-bg="a"] .stmt-sec{background:transparent}
-[data-bg="a"] .lbl .jl::before{border-radius:0;background:var(--yellow);outline:1px solid var(--ink)}
-[data-bg="b"] .has-word{position:relative;isolation:isolate;overflow:hidden}
-[data-bg="b"] .bgword{display:block;position:absolute;right:max(16px,2vw);top:clamp(16px,3vw,48px);z-index:-1;pointer-events:none;white-space:nowrap;
-  font-family:var(--en);font-weight:900;font-size:clamp(88px,15vw,240px);line-height:.8;letter-spacing:-.045em;color:#F2F2EF}
-[data-bg="c"] #feature{background:var(--gray)}
-[data-bg="c"] .feat{padding-block:clamp(88px,9vw,136px)}
-[data-bg="c"] .flow{padding-top:clamp(88px,9vw,136px)}
-[data-bg="c"] .ai{background:var(--paper);border:1px solid var(--line)}
-[data-bg="c"] .h2::before,[data-bg="c"] .stmt-body::before,[data-bg="c"] .ai h3::before{content:"";display:block;width:56px;height:6px;background:var(--yellow);margin-bottom:28px}
-[data-bg="c"] .trait+.trait{border-left-color:#DADAD6}
-.pal{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;display:flex;gap:4px;background:#fff;color:#111;border-radius:999px;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.18);max-width:calc(100vw - 32px);overflow-x:auto;font-family:var(--jp)}
-.pal button{all:unset;cursor:pointer;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap}
-.pal button:hover{background:#f0f0f0}
-.pal button[aria-pressed="true"]{background:#111;color:#fff}
-.pal button:focus-visible{outline:2px solid #111;outline-offset:2px}
+/* 背景のアクセント：「特徴」をグレーの帯にして区切り、見出しの上に短い黄色の線 */
+#feature{background:var(--gray)}
+.feat{padding-block:clamp(88px,9vw,136px)}
+.flow{padding-top:clamp(88px,9vw,136px)}
+.ai{background:var(--paper);border:1px solid var(--line)}
+.h2::before,.stmt-body::before,.ai h3::before{content:"";display:block;width:56px;height:6px;background:var(--yellow);margin-bottom:28px}
+.trait+.trait{border-left-color:#DADAD6}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
-
-<div class="guides" aria-hidden="true"><div class="wrap" style="height:100%"><div class="in"><i></i><i></i><i></i><i></i></div></div></div>
 
 <section class="hero" aria-label="ファーストビュー">
   <img src="img/hero_escalator.jpg" alt="オフィスビルのエスカレーターを行き交う人々" style="object-position:50% 50%;filter:brightness(.85)">
@@ -297,7 +280,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   </div></div>
 </div>
 
-<section class="mesh stmt-sec has-word" aria-label="JILのやり方"><span class="bgword" aria-hidden="true">Approach</span>
+<section class="mesh stmt-sec" aria-label="JILのやり方">
   <div class="wrap"><div class="in stmt grid12">
     <p class="lbl"><span class="jl">JILのやり方</span></p>
     <div class="stmt-body">
@@ -306,7 +289,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   </div></div>
 </section>
 
-<section id="feature" class="has-word" aria-label="JILの事業開発の特徴"><span class="bgword" aria-hidden="true">Features</span>
+<section id="feature" aria-label="JILの事業開発の特徴">
   <div class="wrap"><div class="in feat">
     <div class="feat-head grid12">
       <p class="lbl"><span class="jl">JILの事業開発の特徴</span></p>
@@ -321,7 +304,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   </div></div>
 </section>
 
-<section class="mesh soft has-word" id="flow" aria-label="事業づくりの流れ"><span class="bgword" aria-hidden="true">Process</span>
+<section class="mesh soft" id="flow" aria-label="事業づくりの流れ">
   <div class="wrap"><div class="in flow">
     <div class="flow-head grid12">
       <p class="lbl"><span class="jl">事業づくりの流れ</span></p>
@@ -421,29 +404,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   </div>
 </section>
 
-<div class="pal" role="group" aria-label="背景のアクセントの切り替え（比較用）">
-  <button data-bgset="none">なし（今のまま）</button>
-  <button data-bgset="a">A 縦の罫線</button>
-  <button data-bgset="b">B 大きな英字</button>
-  <button data-bgset="c">C グレーの帯＋黄色の線</button>
-</div>
-
 <script>
-(function(){
-  // 背景のアクセントの切り替え（比較用）。#bg=a のようにURLでも指定できる
-  const names=['none','a','b','c'];
-  function setBg(n){
-    if(!names.includes(n)) n='a';
-    document.documentElement.dataset.bg=n;
-    document.querySelectorAll('.pal button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.bgset===n));
-    try{localStorage.setItem('jil-bg',n)}catch(e){}
-  }
-  let saved=null; try{saved=localStorage.getItem('jil-bg')}catch(e){}
-  setBg((location.hash.match(/bg=(\w+)/)||[])[1]||saved||'a');
-  document.querySelectorAll('.pal button').forEach(b=>b.addEventListener('click',()=>setBg(b.dataset.bgset)));
-  document.addEventListener('keydown',e=>{const k=+e.key;if(k>=1&&k<=names.length)setBg(names[k-1])});
-})();
-
 (function(){
   function setStep(k){document.querySelectorAll('[data-k]').forEach(el=>el.classList.toggle('on',el.dataset.k===String(k)))}
   document.querySelectorAll('.card[data-k],.base[data-k]').forEach(r=>{
