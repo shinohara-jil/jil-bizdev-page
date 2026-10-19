@@ -1,4 +1,4 @@
-<title>JIL 事業開発 v15</title>
+<title>JIL 事業開発 v16 図の比較</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -239,6 +239,32 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .flow{padding-top:clamp(88px,9vw,136px)}
 .h2::before,.stmt-body::before{content:"";display:block;width:56px;height:6px;background:var(--yellow);margin-bottom:28px}
 .trait+.trait{border-left-color:#DADAD6}
+/* JILのやり方の図（比較用）。html の data-v で切り替える
+   none=今の文字だけ／a=3つの円が重なる真ん中がJIL／b=3つを1つの枠で包む／c=工程ごとの守備範囲の帯 */
+.vfig{display:none;margin:0}
+.vfig svg{display:block;width:100%;height:auto}
+.stmt-v{display:none}
+[data-v="a"] .vfig.v-a,[data-v="b"] .vfig.v-b,[data-v="c"] .vfig.v-c{display:block}
+[data-v="a"] .stmt-orig,[data-v="b"] .stmt-orig,[data-v="c"] .stmt-orig{display:none}
+[data-v="a"] .stmt-v,[data-v="b"] .stmt-v,[data-v="c"] .stmt-v{display:block}
+[data-v="a"] .stmt-body,[data-v="b"] .stmt-body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:0 48px;align-items:center}
+.stmt-body::before{grid-column:1 / -1}
+.stmt-v .stmt-text{font-size:clamp(26px,3vw,44px);line-height:1.45}
+.stmt-sub{font-size:clamp(16px,1.3vw,19px);margin-top:24px;line-height:1.9}
+.stmt-sub em{font-style:normal;font-weight:700;background:var(--em-bg)}
+.vfig.v-a svg,.vfig.v-b svg{max-width:540px;margin-inline:auto}
+.vfig.v-c{margin-top:56px}
+.vfig.v-c svg{max-width:760px}
+@media (max-width:900px){
+  [data-v="a"] .stmt-body,[data-v="b"] .stmt-body{grid-template-columns:minmax(0,1fr)}
+  .vfig.v-a,.vfig.v-b{margin-top:32px}
+  .vfig.v-c{margin-top:40px}
+}
+.pal{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;display:flex;gap:4px;background:#fff;color:#111;border-radius:999px;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.18);max-width:calc(100vw - 32px);overflow-x:auto;font-family:var(--jp)}
+.pal button{all:unset;cursor:pointer;padding:8px 14px;border-radius:999px;font-size:13px;font-weight:500;white-space:nowrap}
+.pal button:hover{background:#f0f0f0}
+.pal button[aria-pressed="true"]{background:#111;color:#fff}
+.pal button:focus-visible{outline:2px solid #111;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -283,7 +309,38 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   <div class="wrap"><div class="in stmt grid12">
     <p class="lbl"><span class="jl">JILのやり方</span></p>
     <div class="stmt-body">
-      <p class="stmt-text"><span class="ph">戦略を描くだけの</span><span class="ph">コンサルでも、</span><span class="ph">作るだけの</span><span class="ph">開発会社でもなく。</span><span class="g"><span class="ph"><em>構想から、</em></span><span class="ph"><em>売る人・</em></span><span class="ph"><em>回す人まで。</em></span><span class="ph">必要な職種の</span><span class="ph">メンバーが、</span><span class="ph">貴社のチームの</span><span class="ph">一員として</span><span class="ph">入ります。</span></span></p>
+      <div class="stmt-txt">
+      <p class="stmt-text stmt-orig"><span class="ph">戦略を描くだけの</span><span class="ph">コンサルでも、</span><span class="ph">作るだけの</span><span class="ph">開発会社でもなく。</span><span class="g"><span class="ph"><em>構想から、</em></span><span class="ph"><em>売る人・</em></span><span class="ph"><em>回す人まで。</em></span><span class="ph">必要な職種の</span><span class="ph">メンバーが、</span><span class="ph">貴社のチームの</span><span class="ph">一員として</span><span class="ph">入ります。</span></span></p>
+      <div class="stmt-v"><p class="stmt-text"><span class="ph">コンサルでも、</span><span class="ph">開発会社でも、</span><span class="ph">代行会社でもなく。</span></p>
+      <p class="stmt-sub"><em>構想から、売る人・回す人まで。</em>必要な職種のメンバーが、貴社のチームの一員として入ります。</p></div>
+      </div>
+      <figure class="vfig v-a"><svg viewBox="0 0 520 420" role="img" aria-label="コンサル、開発会社、代行会社の3つの円が重なる図。3つが重なる真ん中がJIL">
+        <defs><clipPath id="vcB"><circle cx="330" cy="140" r="130"/></clipPath><clipPath id="vcC"><circle cx="260" cy="261" r="130"/></clipPath></defs>
+        <g clip-path="url(#vcB)"><circle cx="190" cy="140" r="130" fill="#FFF000" clip-path="url(#vcC)"/></g>
+        <g fill="none" stroke="#111" stroke-width="1.5"><circle cx="190" cy="140" r="130"/><circle cx="330" cy="140" r="130"/><circle cx="260" cy="261" r="130"/></g>
+        <g font-family="Noto Sans JP, sans-serif" text-anchor="middle" fill="#111" font-weight="700" font-size="21"><text x="138" y="116">コンサル</text><text x="382" y="116">開発会社</text><text x="260" y="340">代行会社</text></g>
+        <g font-family="Noto Sans JP, sans-serif" text-anchor="middle" fill="#555" font-size="16"><text x="138" y="144">戦略を描く</text><text x="382" y="144">つくる</text><text x="260" y="368">売る・回す</text></g>
+        <text x="260" y="190" text-anchor="middle" font-family="Satoshi, sans-serif" font-weight="900" font-size="28" fill="#111">JIL</text>
+      </svg></figure>
+      <figure class="vfig v-b"><svg viewBox="0 0 520 280" role="img" aria-label="コンサル、開発会社、代行会社の3つの円を、ひとつの黄色い枠がまとめて包む図。枠がJIL">
+        <text x="12" y="36" font-family="Satoshi, sans-serif" font-weight="900" font-size="30" fill="#111">JIL</text>
+        <text x="72" y="34" font-family="Noto Sans JP, sans-serif" font-size="17" font-weight="700" fill="#111">＝ ひとつのチームで、ぜんぶ。</text>
+        <rect x="10" y="62" width="500" height="200" rx="100" fill="#FFF000"/>
+        <g fill="#fff" stroke="#111" stroke-width="1.5"><circle cx="110" cy="162" r="66"/><circle cx="260" cy="162" r="66"/><circle cx="410" cy="162" r="66"/></g>
+        <g font-family="Satoshi, sans-serif" font-size="24" font-weight="500" fill="#111" text-anchor="middle"><text x="185" y="170">+</text><text x="335" y="170">+</text></g>
+        <g font-family="Noto Sans JP, sans-serif" text-anchor="middle" fill="#111" font-weight="700" font-size="19"><text x="110" y="158">コンサル</text><text x="260" y="158">開発会社</text><text x="410" y="158">代行会社</text></g>
+        <g font-family="Noto Sans JP, sans-serif" text-anchor="middle" fill="#555" font-size="14"><text x="110" y="183">戦略を描く</text><text x="260" y="183">つくる</text><text x="410" y="183">売る・回す</text></g>
+      </svg></figure>
+      <figure class="vfig v-c"><svg viewBox="0 0 480 236" role="img" aria-label="構想・検証・開発・販売と運用の4つの工程に対して、コンサルは構想と検証、開発会社は開発、代行会社は販売と運用だけを受け持つ。JILは4つすべてを受け持つ">
+        <g font-family="Noto Sans JP, sans-serif" font-size="13" font-weight="700" fill="#555" text-anchor="middle"><text x="133.5" y="20">構想</text><text x="232.5" y="20">検証</text><text x="331.5" y="20">開発</text><text x="430.5" y="20">販売・運用</text></g>
+        <line x1="0" y1="32" x2="480" y2="32" stroke="#111"/>
+        <g stroke="#BDBDBD" stroke-dasharray="2 4"><line x1="183" y1="32" x2="183" y2="236"/><line x1="282" y1="32" x2="282" y2="236"/><line x1="381" y1="32" x2="381" y2="236"/></g>
+        <g font-family="Noto Sans JP, sans-serif" font-size="14" font-weight="700" fill="#111"><text x="0" y="69">コンサル</text><text x="0" y="111">開発会社</text><text x="0" y="153">代行会社</text></g>
+        <g font-family="Noto Sans JP, sans-serif" fill="#111"><rect x="88" y="51" width="190" height="26" rx="13.0" fill="#E4E4E0"/><text x="183.0" y="68.7" text-anchor="middle" font-size="13">戦略を描く</text><rect x="286" y="93" width="91" height="26" rx="13.0" fill="#E4E4E0"/><text x="331.5" y="110.7" text-anchor="middle" font-size="13">つくる</text><rect x="385" y="135" width="91" height="26" rx="13.0" fill="#E4E4E0"/><text x="430.5" y="152.7" text-anchor="middle" font-size="13">売る・回す</text></g>
+        <line x1="0" y1="178" x2="480" y2="178" stroke="#E4E4E4"/>
+        <text x="0" y="213" font-family="Satoshi, sans-serif" font-weight="900" font-size="20" fill="#111">JIL</text>
+        <g font-family="Noto Sans JP, sans-serif" fill="#111"><rect x="88" y="190" width="388" height="32" rx="16.0" fill="#FFF000"/><text x="282.0" y="211.0" text-anchor="middle" font-size="14" font-weight="700">構想から、売る・回すまで。ひとつのチームで</text></g>
+      </svg></figure>
     </div>
   </div></div>
 </section>
@@ -427,7 +484,28 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   </div>
 </section>
 
+<div class="pal" role="group" aria-label="JILのやり方の図の切り替え（比較用）">
+  <button data-vset="none">なし（今の文字だけ）</button>
+  <button data-vset="a">A 3つの円の重なり</button>
+  <button data-vset="b">B 3つを包む</button>
+  <button data-vset="c">C 守備範囲の帯</button>
+</div>
+
 <script>
+(function(){
+  // JILのやり方の図の切り替え（比較用）。#v=a のようにURLでも指定できる。数字キー1〜4でも切り替え
+  const names=['none','a','b','c'];
+  function setV(n){
+    if(!names.includes(n)) n='a';
+    document.documentElement.dataset.v=n;
+    document.querySelectorAll('.pal button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.vset===n));
+    try{localStorage.setItem('jil-v',n)}catch(e){}
+  }
+  let saved=null; try{saved=localStorage.getItem('jil-v')}catch(e){}
+  setV((location.hash.match(/v=(\w+)/)||[])[1]||saved||'a');
+  document.querySelectorAll('.pal button').forEach(b=>b.addEventListener('click',()=>setV(b.dataset.vset)));
+  document.addEventListener('keydown',e=>{const k=+e.key;if(k>=1&&k<=names.length)setV(names[k-1])});
+})();
 (function(){
   function setStep(k){document.querySelectorAll('[data-k]').forEach(el=>el.classList.toggle('on',el.dataset.k===String(k)))}
   document.querySelectorAll('.card[data-k],.base[data-k]').forEach(r=>{
