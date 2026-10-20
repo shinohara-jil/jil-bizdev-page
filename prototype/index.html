@@ -77,8 +77,8 @@ p,li{word-break:auto-phrase}
 .pill .dot{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;font-family:var(--en);font-weight:700;font-size:14px;transition:transform .2s}
 .pill.solid{background:var(--cta-bg);color:var(--cta-ink);padding:9px 9px 9px 24px;font-size:15px}
 .pill.solid .dot{background:var(--cta-dot);color:var(--cta-dot-ink)}
-.pill.line-w{border:1px solid rgba(255,255,255,.7);color:#fff;padding:8px 8px 8px 22px;font-size:15px}
-.pill.line-w .dot{border:1px solid rgba(255,255,255,.7);width:34px;height:34px}
+.pill.line-w{border:1px solid rgba(255,255,255,.7);color:#fff;padding:8px 8px 8px 23px;font-size:15px}
+.pill.line-w .dot{border:1px solid rgba(255,255,255,.7);width:36px;height:36px}
 a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);outline-offset:4px}
 
 /* hero */
@@ -99,7 +99,8 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .hero-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;margin-top:clamp(24px,3vw,40px);padding-top:20px;position:relative}
 .hero-row::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(255,255,255,.35);transform-origin:left}
 .hero-row p{grid-column:1 / span 6;font-size:16px;color:rgba(255,255,255,.9)}
-.hero-row .cta{grid-column:7 / span 6;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+.hero-row .cta{grid-column:7 / span 6;justify-self:end;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:12px}
+.hero-row .cta .pill{justify-content:space-between}
 .hero-meta{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);writing-mode:vertical-rl;white-space:nowrap;color:rgba(255,255,255,.75);z-index:1}
 
 /* clients */
@@ -240,7 +241,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .deep .card2 .btns{display:grid;grid-template-columns:max-content;gap:12px}
 .deep .card2 .btns .pill{justify-content:space-between}
 .pill.line-d{border:1px solid var(--ink);color:var(--ink);padding:8px 8px 8px 23px;font-size:15px}
-.pill.line-d .dot{border:1px solid var(--ink);width:34px;height:34px}
+.pill.line-d .dot{border:1px solid var(--ink);width:36px;height:36px}
 .pill.line-d .dot i{text-shadow:-40px 0 currentColor}
 .pill.line-d:hover{background:var(--ink);color:var(--yellow)}
 .pill.line-d:hover .dot{border-color:var(--yellow)}
@@ -264,7 +265,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 @media (max-width:900px){
   .grid12,.hero-row,.base{grid-template-columns:minmax(0,1fr)}
   .hero-row p,.hero-row .cta,.lbl,.stmt-body,.h2,.note,.deep .cta-txt,.deep .card2,.base .t,.base ul{grid-column:1 / -1}
-  .hero-row .cta{justify-content:flex-start}
+  .hero-row .cta{justify-self:start;grid-auto-flow:row}
   .hero-meta{display:none}
   .nav a:not(.pill){display:none}
   .clients{grid-template-columns:repeat(3,minmax(0,1fr))}
