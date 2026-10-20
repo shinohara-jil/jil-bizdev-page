@@ -1,4 +1,5 @@
-<title>JIL 事業開発 v17</title>
+<title>JIL 事業開発 v18</title>
+<script>document.documentElement.lang='ja'</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,6 +36,9 @@ html,body{background:var(--bg)}
 body{margin:0;color:var(--ink);font-family:var(--jp);font-size:16px;line-height:1.9;letter-spacing:.02em;font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased}
 a{color:inherit}
 h1,h2,h3,p{margin:0} h1,h2,h3{text-wrap:balance}
+/* 文章は単語の途中で折り返さない。PCでは文の切れ目で改行（br-pc）、スマホでは画面幅で折り返す */
+p,li{word-break:auto-phrase}
+@media (max-width:1199px){.br-pc{display:none}}
 .ph{display:inline-block}
 .wrap{max-width:1440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 @media (min-width:720px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
@@ -90,13 +94,13 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .hero h1{font-weight:700;font-size:clamp(36px,5.6vw,80px);line-height:1.2;letter-spacing:-.025em}
 .hero h1 .g{font-weight:500;color:rgba(255,255,255,.86)}
 .hero-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;margin-top:clamp(24px,3vw,40px);border-top:1px solid rgba(255,255,255,.35);padding-top:20px}
-.hero-row p{grid-column:1 / span 5;font-size:16px;color:rgba(255,255,255,.9);max-width:34em}
+.hero-row p{grid-column:1 / span 6;font-size:16px;color:rgba(255,255,255,.9)}
 .hero-row .cta{grid-column:7 / span 6;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
 .hero-meta{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);writing-mode:vertical-rl;white-space:nowrap;color:rgba(255,255,255,.75);z-index:1}
 
 /* clients */
 .clients-band{background:var(--paper);border-bottom:1px solid var(--line)}
-.clients{display:grid;grid-template-columns:220px repeat(5,minmax(0,1fr))}
+.clients{display:grid;grid-template-columns:200px repeat(6,minmax(0,1fr))}
 .clients>*{padding:30px 16px;display:flex;align-items:center;min-height:100px}
 .clients>*+*{border-left:1px solid var(--line);justify-content:center}
 .clients img{display:block;max-width:100%;height:auto;max-height:34px;width:auto}
@@ -105,7 +109,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .clients .fss img:last-child{max-height:11px}
 
 /* statement */
-.stmt{padding-block:clamp(112px,13vw,184px)}
+.stmt{padding-block:clamp(112px,13vw,184px) clamp(64px,7vw,104px)}
 .stmt-body{grid-column:4 / span 9}
 .stmt-text{font-weight:700;letter-spacing:-.01em}
 .stmt-sec{background:var(--stmt-bg);color:var(--stmt-ink)}
@@ -117,16 +121,25 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .feat{padding-bottom:clamp(40px,4vw,64px)}
 .feat-head{margin-bottom:clamp(48px,5vw,72px)}
 .traits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
-.trait{padding:24px 28px 32px 0}
+.trait{padding:24px 28px 32px 0;display:flex;flex-direction:column}
+.trait .num{margin-top:auto!important;padding-top:22px}
 .trait+.trait{padding-left:28px;border-left:1px solid var(--line)}
 .trait .mono{color:var(--accent-ink);display:flex;justify-content:space-between}
 .trait h3{font-size:clamp(26px,2.6vw,36px);font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
 .trait .num{font-family:var(--en);font-weight:500;font-size:clamp(30px,3vw,44px);letter-spacing:-.03em;line-height:1.1;margin:22px 0 4px;color:var(--accent-ink)}
+@media (min-width:901px){
+  .feat-head .h2,.flow-head .h2,.ai-head .h2{grid-column:4 / -1}
+  /* AI欄の説明は右に置かず、見出しの下に導入の文として置く */
+  .ai-head .note{grid-column:4 / span 7;align-self:start;font-size:16px}
+}
+/* 数字ではない言葉は、大きさを揃えて一回り小さく。下の説明の位置は数字の欄と揃える */
+.trait .num.txt{font-family:var(--jp);font-weight:700;font-size:clamp(18px,1.8vw,24px);letter-spacing:.01em;line-height:1.5;min-height:calc(1.1 * clamp(30px,3vw,44px));display:flex;align-items:flex-end}
+.trait .count{display:inline-block;font-variant-numeric:tabular-nums}
 .trait .num small{font-family:var(--jp);font-size:.36em;font-weight:500;letter-spacing:0;margin-left:4px;color:var(--ink)}
 .trait .cap{font-size:14px;color:var(--sub)}
 .trait p.d{font-size:16px;margin-top:16px}
 
-.ai-sec{padding-block:clamp(88px,9vw,136px) clamp(112px,12vw,176px)}
+.ai-sec{padding-block:clamp(88px,9vw,136px) clamp(72px,7vw,112px)}
 .ai-head{margin-bottom:clamp(40px,4vw,56px)}
 .boxes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink)}
 .box{padding:22px 22px 28px;border-right:1px solid var(--line);min-width:0}
@@ -177,34 +190,63 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .card dl{margin:16px 0 0;font-size:14px;border-top:1px solid var(--line);padding-top:12px}
 .card dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--sub)}
 .card dd{margin:2px 0 0}
-.base{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;margin-top:16px;background:var(--base-bg);border-radius:4px;padding:26px 28px;cursor:pointer;border:1px solid transparent;transition:border-color .25s}
-.base.on{border-color:var(--line-accent)}
-.base .t{grid-column:1 / span 5}
+/* ステップと土台の詳細（箇条書きとMEMBERS）は閉じておき、クリックすると開く */
+:is(.card,.base) .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+:is(.card,.base) .more>div{overflow:hidden;min-height:0}
+:is(.card,.base).open .more{grid-template-rows:1fr}
+:is(.card,.base) .tog{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13px;color:var(--sub)}
+.base .tog{padding:0 22px}
+:is(.card,.base) .tog::before{content:"+";display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:50%;font-family:var(--en);font-size:14px;line-height:1}
+:is(.card,.base).open .tog::before{content:"−"}
+:is(.card,.base) .tog .t2,:is(.card,.base).open .tog .t1{display:none}
+:is(.card,.base).open .tog .t2{display:inline}
+:is(.card,.base):hover .tog,:is(.card,.base).open .tog{color:var(--ink)}
+/* 土台：見出しを1行にまとめ、項目は上の4つのステップと同じ4列に並べて「全体を支える帯」に見せる */
+.base{padding:24px 0 26px;cursor:pointer;border-top:1px solid var(--line);border-bottom:2px solid var(--ink);transition:background .25s}
+.base:hover,.base.on{background:var(--gray)}
+.base .t{padding:0 22px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 20px}
 .base .t .mono{color:var(--accent-ink)}
-.base .t h3{font-size:clamp(20px,1.9vw,26px);font-weight:700;margin-top:8px}
-.base .t p{font-size:15px;color:var(--sub);margin-top:4px}
-.base ul{grid-column:6 / span 7;margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 28px;align-self:center;font-size:16px}
-.base li{display:flex;gap:10px;align-items:center}
-.base li::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--line-accent)}
+.base .t h3{font-size:clamp(20px,1.9vw,26px);font-weight:700}
+.base .t p{font-size:15px;color:var(--sub)}
+.base ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:20px 0 0;padding:0;list-style:none;font-size:15px}
+.base li{display:flex;gap:10px;line-height:1.7;padding:2px 22px;border-left:1px solid var(--line)}
+.base li:first-child{border-left:0}
+.base li::before{content:"";flex:0 0 5px;height:5px;border-radius:50%;background:var(--line-accent);margin-top:.68em}
+@media (max-width:1000px){
+  .base ul{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:10px}
+  .base li:nth-child(3){border-left:0}
+}
+@media (max-width:560px){
+  .base ul{grid-template-columns:minmax(0,1fr);row-gap:4px}
+  .base li{border-left:0}
+}
 
 /* deep */
 .deep{background:var(--deep-bg);color:var(--on-deep);position:relative;overflow:hidden;isolation:isolate}
 .deep::before{content:"";position:absolute;inset:0;z-index:-1;opacity:var(--mesh);background:
   radial-gradient(40% 60% at 92% 12%,color-mix(in srgb,var(--g2) 40%,transparent) 0%,transparent 70%),
   radial-gradient(36% 55% at 70% 100%,color-mix(in srgb,var(--g1) 32%,transparent) 0%,transparent 70%)}
-.deep-in{padding-block:clamp(72px,7vw,112px);align-items:end}
+.deep-in{padding-block:clamp(56px,5vw,80px);align-items:center}
 .deep .jl{color:color-mix(in srgb,var(--on-deep) 70%,transparent)}
 .deep .lbl .jl{color:var(--on-deep)}
-.deep h2{grid-column:1 / span 7;font-size:clamp(30px,4.2vw,60px);font-weight:700;line-height:1.3;letter-spacing:-.025em}
+.deep .cta-txt{grid-column:1 / span 7}
+.deep h2{font-size:clamp(26px,2.8vw,40px);font-weight:700;line-height:1.35;letter-spacing:-.02em;margin-top:14px}
+.deep .cta-txt .lead{font-size:15px;margin-top:14px;color:color-mix(in srgb,var(--on-deep) 80%,transparent)}
+.deep .card2 .pill{margin-top:24px}
 .deep .card2{grid-column:9 / span 4;border-top:1px solid color-mix(in srgb,var(--on-deep) 25%,transparent);padding-top:18px}
 .deep .card2 p{font-size:15px;color:color-mix(in srgb,var(--on-deep) 80%,transparent);margin:14px 0 28px}
 .who{display:flex;gap:28px;font-size:16px;font-weight:500;margin-top:14px}
 .who small{display:block;font-family:var(--mono);font-size:12px;color:color-mix(in srgb,var(--on-deep) 60%,transparent);font-weight:400;letter-spacing:.08em}
-.foot{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-block:22px 26px;border-top:1px solid color-mix(in srgb,var(--on-deep) 20%,transparent);color:color-mix(in srgb,var(--on-deep) 60%,transparent)}
+/* フッター：白地に小さなロゴ・ページ内リンク・会社名だけの、普通のフッター */
+.site-foot{background:var(--bg);font-size:13px;color:var(--sub)}
+.ft{display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap;padding-block:28px 22px}
+.ft .logo{font-size:22px;color:var(--ink)}
+.ft nav{display:flex;gap:8px 24px;flex-wrap:wrap}
+.ft a{text-decoration:none}
+.ft a:hover{color:var(--ink)}
+.ft-sub{display:flex;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;padding-block:16px 28px;border-top:1px solid var(--line)}
 .deep .pill.solid{background:var(--deep-cta-bg);color:var(--deep-cta-ink)}
 .deep .pill.solid .dot{background:var(--deep-cta-dot);color:var(--deep-cta-dot-ink)}
-.foot .logo{font-size:clamp(32px,3.2vw,44px);color:var(--on-deep);line-height:1}
-
 @media (max-width:1000px){
   .boxes,.cards{grid-template-columns:repeat(2,minmax(0,1fr))}
   .card:nth-child(2),.box:nth-child(2){border-right:0}
@@ -212,7 +254,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 }
 @media (max-width:900px){
   .grid12,.hero-row,.base{grid-template-columns:minmax(0,1fr)}
-  .hero-row p,.hero-row .cta,.lbl,.stmt-body,.h2,.note,.deep h2,.deep .card2,.base .t,.base ul{grid-column:1 / -1}
+  .hero-row p,.hero-row .cta,.lbl,.stmt-body,.h2,.note,.deep .cta-txt,.deep .card2,.base .t,.base ul{grid-column:1 / -1}
   .hero-row .cta{justify-content:flex-start}
   .hero-meta{display:none}
   .nav a:not(.pill){display:none}
@@ -244,6 +286,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .stmt-body{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:0 48px;align-items:center}
 .stmt-body::before{grid-column:1 / -1}
 .stmt-text{font-size:clamp(26px,3vw,44px);line-height:1.45}
+.stmt-not{font-size:clamp(18px,1.6vw,22px);font-weight:700;margin-top:28px;line-height:1.6}
 .stmt-sub{font-size:clamp(16px,1.3vw,19px);margin-top:24px;line-height:1.9}
 .stmt-sub em{font-style:normal;font-weight:700;background:var(--em-bg)}
 .vfig{margin:0}
@@ -310,18 +353,18 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
       <span class="logo">JIL</span>
       <nav class="nav" aria-label="ページ内">
         <a href="#feature">JILの特徴</a><a href="#flow">支援の流れ</a><a href="#flow">お客様の声</a><a href="#flow">メンバー</a>
-        <a class="pill" href="#contact">壁打ち相談<span class="dot" aria-hidden="true">→</span></a>
+        <a class="pill" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談<span class="dot" aria-hidden="true">→</span></a>
       </nav>
     </header>
   </div>
   <p class="hero-meta mono">New Business Development ／ For Enterprise</p>
   <div class="wrap hero-body">
     <div class="in">
-      <h1><span class="ph">戦略から、</span><span class="ph">現場の人まで。</span><br><span class="g"><span class="ph">新規事業を、</span><span class="ph">ひとつの</span><span class="ph">チームで。</span></span></h1>
+      <h1><span class="ph">戦略から、</span><span class="ph">実行まで。</span><br><span class="g"><span class="ph">新規事業を、</span><span class="ph">ひとつの</span><span class="ph">チームで。</span></span></h1>
       <div class="hero-row">
-        <p>事業審査の経験を持つ事業開発のプロが、戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。大企業の新規事業を、ひとつのチームで最後まで支えます。</p>
+        <p>事業審査の経験を持つ事業開発のプロが、<br class="br-pc">戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。<br class="br-pc">大企業の新規事業を、ひとつのチームで最後まで支えます。</p>
         <div class="cta">
-          <a class="pill solid" href="#contact">30分の壁打ち相談<span class="dot" aria-hidden="true">→</span></a>
+          <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">30分の無料相談<span class="dot" aria-hidden="true">→</span></a>
           <a class="pill line-w" href="#contact">サービス資料<span class="dot" aria-hidden="true">↓</span></a>
         </div>
       </div>
@@ -337,23 +380,25 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
     <div class="fss"><img src="logos/fujifilm.svg" alt="富士フイルム"><img src="logos/fss-name.svg" alt="富士フイルムシステムサービス株式会社"></div>
     <div><img src="logos/m-out.png" alt="エムアウト" style="max-height:44px"></div>
     <div><img src="logos/mitsubishi-electric.svg" alt="三菱電機" style="max-height:40px"></div>
+    <div><img src="logos/circulation.svg" alt="サーキュレーション" style="width:100%;max-width:150px;max-height:48px"></div>
   </div></div>
 </div>
 
-<section class="mesh stmt-sec" aria-label="JILのやり方">
+<section class="mesh stmt-sec" aria-label="JILのコンセプト">
   <div class="wrap"><div class="in stmt grid12">
-    <p class="lbl"><span class="jl">JILのやり方</span></p>
+    <p class="lbl"><span class="jl">JILのコンセプト</span></p>
     <div class="stmt-body">
       <div class="stmt-txt">
-      <p class="stmt-text"><span class="ph">コンサルでも、</span><span class="ph">開発会社でも、</span><span class="ph">代行会社でもなく。</span></p>
-      <p class="stmt-sub"><em>構想から、売る人・回す人まで。</em>必要な職種のメンバーが、貴社のチームの一員として入ります。</p>
+      <p class="stmt-text"><span class="ph">新規事業の</span><span class="ph">立ち上げに、</span><span class="ph">最後まで</span><span class="ph">コミットする。</span></p>
+      <p class="stmt-not"><span class="ph">コンサルでも、</span><span class="ph">開発会社でも、</span><span class="ph">営業・マーケ会社でもなく。</span></p>
+      <p class="stmt-sub"><em>描いて終わり、つくって終わりにしない。</em><br>事業が立ち上がり、伸びるまで、<br>ひとつのチームとして伴走します。</p>
       </div>
-      <figure class="vfig"><svg viewBox="0 0 520 420" role="img" aria-label="コンサル、開発会社、代行会社の3つの円が重なる図。3つが重なる真ん中がJIL">
+      <figure class="vfig"><svg viewBox="0 0 520 420" role="img" aria-label="戦略（コンサル）、開発・実装（開発会社）、実行・マーケ（営業・マーケ会社）の3つの円が重なる図。3つが重なる真ん中がJIL">
         <defs><clipPath id="vcB"><circle cx="330" cy="140" r="130"/></clipPath><clipPath id="vcC"><circle cx="260" cy="261" r="130"/></clipPath></defs>
         <g class="m-show" style="--d:1.2s" clip-path="url(#vcB)"><circle cx="190" cy="140" r="130" fill="#FFF000" clip-path="url(#vcC)"/></g>
         <g fill="none" stroke="#A3A3A3" stroke-width="1.2"><circle class="m-draw" pathLength="1" cx="190" cy="140" r="130"/><circle class="m-draw" style="--d:.2s" pathLength="1" cx="330" cy="140" r="130"/><circle class="m-draw" style="--d:.4s" pathLength="1" cx="260" cy="261" r="130"/></g>
-        <g font-family="Noto Sans JP, sans-serif" class="m-fade" style="--d:.7s" text-anchor="middle" fill="#111" font-weight="700" font-size="21"><text x="138" y="116">コンサル</text><text x="382" y="116">開発会社</text><text x="260" y="340">代行会社</text></g>
-        <g font-family="Noto Sans JP, sans-serif" class="m-fade" style="--d:.8s" text-anchor="middle" fill="#555" font-size="16"><text x="138" y="144">戦略を描く</text><text x="382" y="144">つくる</text><text x="260" y="368">売る・回す</text></g>
+        <g font-family="Noto Sans JP, sans-serif" class="m-fade" style="--d:.7s" text-anchor="middle" fill="#111" font-weight="700" font-size="21"><text x="138" y="116">戦略</text><text x="382" y="116">開発・実装</text><text x="260" y="318">実行・マーケ</text></g>
+        <g font-family="Noto Sans JP, sans-serif" class="m-fade" style="--d:.8s" text-anchor="middle" fill="#555" font-size="16"><text x="138" y="144">コンサル</text><text x="382" y="144">開発会社</text><text x="260" y="346">営業・マーケ会社</text></g>
         <g class="m-pop" style="--d:1.4s"><text x="260" y="184" text-anchor="middle" font-family="Satoshi, sans-serif" font-weight="700" font-size="21" letter-spacing="2" fill="#111">JIL</text><text x="260" y="202" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.6" fill="#111">ONE TEAM</text></g>
       </svg></figure>
     </div>
@@ -364,13 +409,12 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   <div class="wrap"><div class="in feat">
     <div class="feat-head grid12">
       <p class="lbl"><span class="jl">JILの事業開発の特徴</span></p>
-      <h2 class="h2"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>で。</span></h2>
-      <p class="note">事業開発の経験を持つメンバーが、考える・つくる・売る・回すを、ひとつのチームで引き受けます。</p>
+      <h2 class="h2"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>を。</span></h2>
     </div>
     <div class="traits">
-      <div class="trait"><p class="mono"><span>Judgement</span><span>01</span></p><h3>見極める</h3><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p><div class="num">1,500<small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p></div>
-      <div class="trait"><p class="mono"><span>Execution</span><span>02</span></p><h3>動かす</h3><p class="d">設計して終わりにせず、マーケティング・営業・CS・業務まで、常駐や業務委託で人が入り、事業を実際に動かします。</p><div class="num">常駐<small>・業務委託</small></div><p class="cap">売る人・回す人まで、チームの一員として</p></div>
-      <div class="trait"><p class="mono"><span>Organization</span><span>03</span></p><h3>残す</h3><p class="d">起案制度・カルチャー・研修まで設計し、一度きりで終わらず、事業が生まれ続ける組織を社内に残します。</p><div class="num">300<small>社超</small></div><p class="cap">役員による人事・組織コンサルティングの実績</p></div>
+      <div class="trait"><p class="mono"><span>Strategy</span><span>01</span></p><h3>見極める</h3><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p><div class="num"><span class="count" data-to="1500">1,500</span><small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p></div>
+      <div class="trait"><p class="mono"><span>Development</span><span>02</span></p><h3>つくる</h3><p class="d">設計して渡すだけでなく、試作から本番のプロダクト・ソリューションまで、開発・実装を自分たちの手で引き受けます。</p><div class="num"><span class="count" data-to="10">10</span><small>件以上／年</small></div><p class="cap">立ち上げてきた新規サービスの数</p></div>
+      <div class="trait"><p class="mono"><span>Execution</span><span>03</span></p><h3>動かす</h3><p class="d">つくって終わりにせず、マーケティング・営業・CS・業務設計まで、事業が回る仕組みを実際に動かします。</p><div class="num txt">マーケ・営業・CS・業務設計</div><p class="cap">事業を立ち上げ、伸ばすところまで</p></div>
     </div>
   </div></div>
 </section>
@@ -379,8 +423,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   <div class="wrap"><div class="in flow">
     <div class="flow-head grid12">
       <p class="lbl"><span class="jl">事業づくりの流れ</span></p>
-      <h2 class="h2"><span class="ph">0→1から、</span><span class="ph"><em>1→10へ。</em></span><br><span class="ph">事業を育てる</span><span class="ph">4つのステップ。</span></h2>
-      <p class="note">どのステップからでもご依頼いただけます。必要な職種のメンバーが、ステップごとに入れ替わりながら伴走します。</p>
+      <h2 class="h2"><span class="ph">0→1から、</span><span class="ph"><em>1→10へ。</em></span><br><span class="ph">事業を育てる</span><span class="ph">ステップ。</span></h2>
     </div>
 
     <div class="chart" id="chart">
@@ -446,14 +489,15 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
         </svg>
       </div>
       <div class="cards" role="list">
-        <div tabindex="0" class="card on" data-k="0" role="listitem"><img class="shot" src="img/step1_roadmap.jpg" alt="ホワイトボードのロードマップを指さしながら話すメンバー" loading="lazy"><p class="mono"><span>Step 01</span><span>0→1</span></p><h3>構想する</h3><p class="what">戦略・ビジネスモデル設計／伴走</p><ul><li>事業領域の選定</li><li>ビジネスモデルと収益の設計</li><li>事業計画と社内審査の伴走</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ</dd></dl></div>
-        <div tabindex="0" class="card" data-k="1" role="listitem"><img class="shot" src="img/step2_interview.jpg" alt="向かい合って顧客の話を聞くインタビューの様子" loading="lazy"><p class="mono"><span>Step 02</span><span>0→1</span></p><h3>確かめる</h3><p class="what">事業化検証の伴走／インキュベート</p><ul><li>顧客の課題の検証</li><li>解決策と価格の検証</li><li>テスト販売と継続の判断</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ、デザイナー</dd></dl></div>
-        <div tabindex="0" class="card" data-k="2" role="listitem"><img class="shot" src="img/step3_prototype.jpg" alt="付箋と画面の下書きを囲んで試作を考えるチーム" loading="lazy"><p class="mono"><span>Step 03</span><span>1→10</span></p><h3>つくる</h3><p class="what">プロダクト・ソリューションスキームの開発</p><ul><li>最初の製品・サービスの開発</li><li>提携や提供の座組の設計</li><li>試作と改善の繰り返し</li></ul><dl><dt>MEMBERS</dt><dd>PM、デザイナー、エンジニア</dd></dl></div>
-        <div tabindex="0" class="card" data-k="3" role="listitem"><img class="shot" src="img/step4_present.jpg" alt="売上のグラフを映した画面の前で発表する人" loading="lazy"><p class="mono"><span>Step 04</span><span>1→10</span></p><h3>立ち上げ・伸ばす</h3><p class="what">リリース後の設計と人材のアサイン</p><ul><li>売る仕組み（マーケ・営業・CS）</li><li>回す仕組み（オペレーション）</li><li>常駐・業務委託での人材のアサイン</li></ul><dl><dt>MEMBERS</dt><dd>マーケティング、IS／FS、業務設計</dd></dl></div>
+        <div tabindex="0" class="card on" data-k="0" role="listitem"><img class="shot" src="img/step1_roadmap.jpg" alt="ホワイトボードのロードマップを指さしながら話すメンバー" loading="lazy"><p class="mono"><span>Step 01</span><span>0→1</span></p><h3>構想する</h3><p class="what">戦略・ビジネスモデル設計／伴走</p><div class="more"><div><ul><li>事業領域の選定</li><li>ビジネスモデルと収益の設計</li><li>事業計画と社内審査の伴走</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
+        <div tabindex="0" class="card" data-k="1" role="listitem"><img class="shot" src="img/step2_interview_japan.jpg" alt="机をはさんで向かい合い、顧客の話を聞くインタビューの様子" loading="lazy"><p class="mono"><span>Step 02</span><span>0→1</span></p><h3>確かめる</h3><p class="what">事業化検証の伴走／インキュベート</p><div class="more"><div><ul><li>顧客の課題の検証</li><li>解決策と価格の検証</li><li>テスト販売と継続の判断</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ、デザイナー</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
+        <div tabindex="0" class="card" data-k="2" role="listitem"><img class="shot" src="img/step3_prototype.jpg" alt="付箋と画面の下書きを囲んで試作を考えるチーム" loading="lazy"><p class="mono"><span>Step 03</span><span>1→10</span></p><h3>つくる</h3><p class="what">プロダクト・ソリューションスキームの開発</p><div class="more"><div><ul><li>最初の製品・サービスの開発</li><li>提携や提供の座組の設計</li><li>試作と改善の繰り返し</li></ul><dl><dt>MEMBERS</dt><dd>PM、デザイナー、エンジニア</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
+        <div tabindex="0" class="card" data-k="3" role="listitem"><img class="shot" src="img/step4_present_japan.jpg" alt="売上のグラフを映した大きな画面の前で、チームに説明する人" loading="lazy"><p class="mono"><span>Step 04</span><span>1→10</span></p><h3>立ち上げ・伸ばす</h3><p class="what">リリース後の設計と人材のアサイン</p><div class="more"><div><ul><li>売る仕組み（マーケ・営業・CS）</li><li>回す仕組み（オペレーション）</li><li>常駐・業務委託での人材のアサイン</li></ul><dl><dt>MEMBERS</dt><dd>マーケティング、IS／FS、業務設計</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
       </div>
       <div tabindex="0" class="base" data-k="4">
-        <div class="t"><p class="mono">Foundation ／ 10→100</p><h3>土台｜組織をつくる</h3><p>4つのステップ全体を支え、事業が生まれ続ける組織へ広げます。</p></div>
-        <ul><li>起案制度の設計</li><li>カルチャーの設計</li><li>事業開発人材の研修</li><li>組織・人事、事業開発のメンバー</li></ul>
+        <div class="t"><p class="mono">Foundation ／ All Steps</p><h3>土台｜組織をつくる</h3><p>4つのステップ全体を支え、事業が生まれ続ける組織へ広げます。</p></div>
+        <div class="more"><div><ul><li>起案制度の設計</li><li>カルチャーの設計</li><li>事業開発人材の研修</li><li>組織・人事、事業開発のメンバー</li></ul></div></div>
+        <p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p>
       </div>
     </div>
   </div></div>
@@ -464,7 +508,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
     <div class="ai-head grid12">
       <p class="lbl"><span class="jl">事業開発×AI</span></p>
       <h2 class="h2"><span class="ph">事業開発の知見に、</span><span class="ph"><em>AIの速さと量</em>を。</span></h2>
-      <p class="note">新規事業は、どれだけ早く、多く試せるかで決まります。判断は事業開発のプロが担い、調べる・つくる・試す作業をAIで加速します。</p>
+      <p class="note">新規事業は、どれだけ早く、多く試せるかで決まります。<br class="br-pc">判断は事業開発のプロが担い、調べる・つくる・試す作業をAIで加速します。</p>
     </div>
       <div class="boxes">
         <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="打ち合わせのメモが、翌日には試作画面になる図"><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
@@ -474,10 +518,10 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 <rect class="m-grow" x="138" y="44" width="76" height="28" rx="2" fill="#FFF000"/><path class="m-grow2" d="M138 83h56M138 91h40"/>
 <rect class="m-btn" x="138" y="101" width="32" height="9" rx="4.5" fill="#111"/></g>
 <g fill="#111"><circle cx="136" cy="27" r="1.8"/><circle cx="143" cy="27" r="1.8"/><circle cx="150" cy="27" r="1.8"/></g>
-<g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="18" y="138">DAY 0</text><text x="128" y="138">DAY 1</text></g></svg></div><div class="body"><p class="mono"><span>Speed</span><span>01</span></p><h3>高速</h3><p class="to">試作画面を、翌日に。</p><p class="d">打ち合わせのアイデアを翌日には触れる形にし、すぐ顧客に当てます。</p></div></div>
-        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="50パターンのうち、反応の良い3つを選ぶ図"><rect x="17" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect class="m-cell" style="--d:0s" x="59" y="34" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="80" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect class="m-cell" style="--d:.5s" x="164" y="52" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="185" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect class="m-cell" style="--d:1s" x="101" y="88" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="122" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">50 PATTERNS</text><text x="223" y="138" text-anchor="end">BEST 3</text></g><rect x="160" y="129" width="10" height="10" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.2"/></svg></div><div class="body"><p class="mono"><span>Volume</span><span>02</span></p><h3>量産</h3><p class="to">LP・広告を50パターンで検証。</p><p class="d">訴求や見せ方を大量に用意し、反応の良いものを数字で選びます。</p></div></div>
-        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="数百社の競合・市場の分布の中から、空いている場所を見つける図"><rect class="m-scan" x="0" y="10" width="14" height="112" fill="#FFF000"/><g stroke="#111" stroke-opacity=".25" stroke-dasharray="2 4"><path d="M120 10v112M14 65h212"/></g><g fill="#111" fill-opacity=".7"><circle cx="84.1" cy="29.4" r="1.6"/><circle cx="32.8" cy="68.7" r="1.6"/><circle cx="29.8" cy="65.8" r="1.6"/><circle cx="106.5" cy="21.1" r="1.6"/><circle cx="104.6" cy="98.3" r="1.6"/><circle cx="63.5" cy="78.0" r="1.6"/><circle cx="135.7" cy="54.5" r="1.6"/><circle cx="27.5" cy="101.6" r="1.6"/><circle cx="47.4" cy="26.0" r="1.6"/><circle cx="148.3" cy="52.0" r="1.6"/><circle cx="30.8" cy="20.1" r="1.6"/><circle cx="137.5" cy="60.2" r="1.6"/><circle cx="180.1" cy="85.3" r="1.6"/><circle cx="135.2" cy="67.6" r="1.6"/><circle cx="42.1" cy="56.6" r="1.6"/><circle cx="49.0" cy="63.9" r="1.6"/><circle cx="154.3" cy="92.0" r="1.6"/><circle cx="139.3" cy="73.1" r="1.6"/><circle cx="189.4" cy="110.4" r="1.6"/><circle cx="153.5" cy="20.2" r="1.6"/><circle cx="150.0" cy="115.3" r="1.6"/><circle cx="76.1" cy="53.4" r="1.6"/><circle cx="22.6" cy="61.1" r="1.6"/><circle cx="41.9" cy="20.0" r="1.6"/><circle cx="44.4" cy="39.3" r="1.6"/><circle cx="130.1" cy="104.1" r="1.6"/><circle cx="91.2" cy="104.2" r="1.6"/><circle cx="48.8" cy="32.0" r="1.6"/><circle cx="65.6" cy="63.5" r="1.6"/><circle cx="71.6" cy="14.4" r="1.6"/><circle cx="93.3" cy="71.8" r="1.6"/><circle cx="158.9" cy="66.6" r="1.6"/><circle cx="155.9" cy="19.5" r="1.6"/><circle cx="177.1" cy="103.2" r="1.6"/><circle cx="98.0" cy="54.7" r="1.6"/><circle cx="147.4" cy="20.3" r="1.6"/><circle cx="60.6" cy="30.6" r="1.6"/><circle cx="28.7" cy="14.0" r="1.6"/><circle cx="38.7" cy="51.1" r="1.6"/><circle cx="196.4" cy="76.6" r="1.6"/><circle cx="69.5" cy="49.4" r="1.6"/><circle cx="43.1" cy="100.6" r="1.6"/><circle cx="113.1" cy="63.4" r="1.6"/><circle cx="38.8" cy="48.9" r="1.6"/><circle cx="128.8" cy="16.8" r="1.6"/><circle cx="217.6" cy="102.1" r="1.6"/><circle cx="71.3" cy="51.4" r="1.6"/><circle cx="175.5" cy="68.3" r="1.6"/><circle cx="85.3" cy="36.8" r="1.6"/><circle cx="218.9" cy="101.0" r="1.6"/><circle cx="184.9" cy="89.5" r="1.6"/><circle cx="123.6" cy="50.3" r="1.6"/><circle cx="23.7" cy="42.5" r="1.6"/><circle cx="159.3" cy="111.6" r="1.6"/><circle cx="209.2" cy="114.8" r="1.6"/><circle cx="92.4" cy="36.5" r="1.6"/><circle cx="58.1" cy="34.8" r="1.6"/><circle cx="201.7" cy="99.7" r="1.6"/><circle cx="151.2" cy="95.6" r="1.6"/><circle cx="152.8" cy="106.8" r="1.6"/><circle cx="211.1" cy="87.9" r="1.6"/><circle cx="43.9" cy="29.4" r="1.6"/><circle cx="218.0" cy="81.0" r="1.6"/><circle cx="129.9" cy="27.4" r="1.6"/><circle cx="216.1" cy="80.3" r="1.6"/><circle cx="208.5" cy="58.2" r="1.6"/><circle cx="77.8" cy="38.5" r="1.6"/><circle cx="70.9" cy="56.7" r="1.6"/><circle cx="203.6" cy="50.1" r="1.6"/><circle cx="137.0" cy="106.2" r="1.6"/><circle cx="205.2" cy="65.2" r="1.6"/><circle cx="124.8" cy="15.9" r="1.6"/><circle cx="55.4" cy="14.4" r="1.6"/><circle cx="53.2" cy="62.3" r="1.6"/><circle cx="131.5" cy="47.3" r="1.6"/><circle cx="131.3" cy="94.0" r="1.6"/><circle cx="132.3" cy="39.3" r="1.6"/><circle cx="173.0" cy="107.1" r="1.6"/><circle cx="143.0" cy="65.6" r="1.6"/><circle cx="159.3" cy="60.1" r="1.6"/><circle cx="115.5" cy="110.0" r="1.6"/><circle cx="196.8" cy="110.1" r="1.6"/><circle cx="132.1" cy="110.2" r="1.6"/><circle cx="46.0" cy="26.4" r="1.6"/><circle cx="32.8" cy="38.5" r="1.6"/><circle cx="154.6" cy="94.0" r="1.6"/><circle cx="49.5" cy="87.0" r="1.6"/><circle cx="47.2" cy="104.0" r="1.6"/><circle cx="62.8" cy="111.2" r="1.6"/><circle cx="117.4" cy="115.0" r="1.6"/><circle cx="50.9" cy="58.0" r="1.6"/><circle cx="87.2" cy="34.0" r="1.6"/><circle cx="165.3" cy="16.0" r="1.6"/><circle cx="107.9" cy="15.8" r="1.6"/><circle cx="145.3" cy="66.3" r="1.6"/><circle cx="219.0" cy="94.4" r="1.6"/><circle cx="39.4" cy="41.1" r="1.6"/><circle cx="104.1" cy="107.0" r="1.6"/><circle cx="70.8" cy="29.2" r="1.6"/><circle cx="134.4" cy="85.4" r="1.6"/><circle cx="29.7" cy="84.2" r="1.6"/><circle cx="32.8" cy="109.7" r="1.6"/><circle cx="31.6" cy="102.0" r="1.6"/><circle cx="87.2" cy="70.4" r="1.6"/><circle cx="72.6" cy="27.2" r="1.6"/><circle cx="66.6" cy="25.2" r="1.6"/><circle cx="28.3" cy="34.6" r="1.6"/><circle cx="80.2" cy="91.5" r="1.6"/><circle cx="120.0" cy="32.1" r="1.6"/><circle cx="21.7" cy="39.5" r="1.6"/><circle cx="167.5" cy="70.2" r="1.6"/><circle cx="114.9" cy="109.3" r="1.6"/><circle cx="158.3" cy="114.2" r="1.6"/><circle cx="187.8" cy="86.1" r="1.6"/><circle cx="100.6" cy="49.5" r="1.6"/><circle cx="44.5" cy="21.2" r="1.6"/><circle cx="70.1" cy="30.7" r="1.6"/><circle cx="189.6" cy="102.8" r="1.6"/><circle cx="75.5" cy="38.7" r="1.6"/><circle cx="111.7" cy="30.1" r="1.6"/><circle cx="71.7" cy="112.1" r="1.6"/><circle cx="129.6" cy="38.9" r="1.6"/><circle cx="81.1" cy="50.4" r="1.6"/><circle cx="95.9" cy="62.4" r="1.6"/><circle cx="59.0" cy="65.5" r="1.6"/><circle cx="71.9" cy="23.2" r="1.6"/><circle cx="26.5" cy="16.3" r="1.6"/><circle cx="65.5" cy="73.7" r="1.6"/><circle cx="171.1" cy="81.1" r="1.6"/><circle cx="218.9" cy="29.2" r="1.6"/><circle cx="149.2" cy="18.5" r="1.6"/><circle cx="200.0" cy="78.0" r="1.6"/><circle cx="120.9" cy="99.2" r="1.6"/><circle cx="186.6" cy="73.6" r="1.6"/><circle cx="157.3" cy="84.7" r="1.6"/><circle cx="24.4" cy="27.6" r="1.6"/><circle cx="39.4" cy="99.3" r="1.6"/><circle cx="146.1" cy="77.9" r="1.6"/><circle cx="117.8" cy="14.3" r="1.6"/><circle cx="170.6" cy="65.3" r="1.6"/><circle cx="152.5" cy="20.7" r="1.6"/><circle cx="69.4" cy="21.6" r="1.6"/><circle cx="115.7" cy="83.7" r="1.6"/><circle cx="143.9" cy="79.6" r="1.6"/><circle cx="48.1" cy="39.9" r="1.6"/><circle cx="80.1" cy="71.9" r="1.6"/><circle cx="30.4" cy="41.4" r="1.6"/><circle cx="159.2" cy="82.9" r="1.6"/><circle cx="123.4" cy="61.4" r="1.6"/><circle cx="42.2" cy="105.2" r="1.6"/><circle cx="217.5" cy="109.5" r="1.6"/><circle cx="111.6" cy="97.6" r="1.6"/><circle cx="109.7" cy="41.4" r="1.6"/><circle cx="210.9" cy="35.5" r="1.6"/><circle cx="46.9" cy="67.5" r="1.6"/><circle cx="45.1" cy="97.7" r="1.6"/><circle cx="198.9" cy="85.7" r="1.6"/><circle cx="18.7" cy="64.2" r="1.6"/><circle cx="79.6" cy="28.4" r="1.6"/><circle cx="82.5" cy="99.7" r="1.6"/><circle cx="171.1" cy="99.6" r="1.6"/><circle cx="207.0" cy="86.7" r="1.6"/><circle cx="77.1" cy="52.0" r="1.6"/><circle cx="221.8" cy="74.1" r="1.6"/><circle cx="105.3" cy="42.1" r="1.6"/><circle cx="38.7" cy="99.1" r="1.6"/><circle cx="122.2" cy="33.4" r="1.6"/><circle cx="213.1" cy="104.2" r="1.6"/><circle cx="146.7" cy="107.2" r="1.6"/><circle cx="130.0" cy="87.4" r="1.6"/><circle cx="149.5" cy="43.2" r="1.6"/><circle cx="207.1" cy="27.0" r="1.6"/><circle cx="88.1" cy="44.4" r="1.6"/><circle cx="217.2" cy="40.5" r="1.6"/><circle cx="79.4" cy="70.8" r="1.6"/><circle cx="52.1" cy="30.5" r="1.6"/><circle cx="202.9" cy="115.6" r="1.6"/><circle cx="46.5" cy="33.6" r="1.6"/><circle cx="87.8" cy="23.3" r="1.6"/><circle cx="70.7" cy="72.1" r="1.6"/><circle cx="124.9" cy="52.4" r="1.6"/><circle cx="30.7" cy="42.3" r="1.6"/><circle cx="43.7" cy="65.3" r="1.6"/><circle cx="68.7" cy="54.8" r="1.6"/><circle cx="212.6" cy="100.6" r="1.6"/><circle cx="22.4" cy="17.3" r="1.6"/><circle cx="200.7" cy="62.3" r="1.6"/><circle cx="18.0" cy="53.9" r="1.6"/><circle cx="186.4" cy="101.3" r="1.6"/><circle cx="68.7" cy="25.1" r="1.6"/><circle cx="124.6" cy="83.6" r="1.6"/><circle cx="165.2" cy="80.0" r="1.6"/><circle cx="111.3" cy="70.3" r="1.6"/><circle cx="149.7" cy="45.0" r="1.6"/><circle cx="69.4" cy="78.9" r="1.6"/><circle cx="40.9" cy="21.2" r="1.6"/><circle cx="136.9" cy="53.6" r="1.6"/><circle cx="140.6" cy="15.1" r="1.6"/><circle cx="112.0" cy="111.8" r="1.6"/><circle cx="68.4" cy="112.0" r="1.6"/><circle cx="80.7" cy="16.2" r="1.6"/><circle cx="154.1" cy="108.4" r="1.6"/><circle cx="25.0" cy="48.5" r="1.6"/><circle cx="215.9" cy="45.8" r="1.6"/><circle cx="65.1" cy="36.6" r="1.6"/><circle cx="78.2" cy="111.1" r="1.6"/><circle cx="56.2" cy="36.8" r="1.6"/><circle cx="153.7" cy="110.8" r="1.6"/><circle cx="98.3" cy="35.7" r="1.6"/><circle cx="46.9" cy="19.3" r="1.6"/><circle cx="98.2" cy="105.6" r="1.6"/><circle cx="167.5" cy="115.7" r="1.6"/><circle cx="85.2" cy="32.9" r="1.6"/><circle cx="95.2" cy="52.1" r="1.6"/><circle cx="52.5" cy="14.3" r="1.6"/><circle cx="89.7" cy="111.5" r="1.6"/><circle cx="185.6" cy="97.8" r="1.6"/><circle cx="28.0" cy="62.3" r="1.6"/><circle cx="183.6" cy="92.2" r="1.6"/><circle cx="25.1" cy="20.4" r="1.6"/><circle cx="70.4" cy="90.2" r="1.6"/><circle cx="87.2" cy="41.8" r="1.6"/><circle cx="143.9" cy="40.7" r="1.6"/><circle cx="82.6" cy="42.1" r="1.6"/><circle cx="172.2" cy="107.5" r="1.6"/><circle cx="114.9" cy="111.6" r="1.6"/><circle cx="96.8" cy="39.6" r="1.6"/><circle cx="118.7" cy="108.7" r="1.6"/><circle cx="181.7" cy="89.3" r="1.6"/><circle cx="175.7" cy="75.9" r="1.6"/></g><circle class="m-spin" cx="178" cy="40" r="19" fill="#FFF000" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M173 40h10M178 35v10" stroke="#111" stroke-width="1.5"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">N = 300+</text><text x="223" y="138" text-anchor="end">WHITE SPACE</text></g></svg></div><div class="body"><p class="mono"><span>Coverage</span><span>03</span></p><h3>網羅</h3><p class="to">競合・市場を数百社規模で調査。</p><p class="d">人手では追い切れない範囲まで調べ、見落としを減らします。</p></div></div>
-        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="大勢の候補者から、話を聞くべき3人を絞り込む図"><g fill="none" stroke="#111" stroke-opacity=".4"><circle cx="20" cy="39" r="4.2"/><circle cx="34" cy="39" r="4.2"/><circle cx="48" cy="39" r="4.2"/><circle cx="62" cy="39" r="4.2"/><circle cx="76" cy="39" r="4.2"/><circle cx="90" cy="39" r="4.2"/><circle cx="20" cy="57" r="4.2"/><circle cx="34" cy="57" r="4.2"/><circle cx="48" cy="57" r="4.2"/><circle cx="62" cy="57" r="4.2"/><circle cx="76" cy="57" r="4.2"/><circle cx="90" cy="57" r="4.2"/><circle cx="20" cy="75" r="4.2"/><circle cx="34" cy="75" r="4.2"/><circle cx="48" cy="75" r="4.2"/><circle cx="62" cy="75" r="4.2"/><circle cx="76" cy="75" r="4.2"/><circle cx="90" cy="75" r="4.2"/><circle cx="20" cy="93" r="4.2"/><circle cx="34" cy="93" r="4.2"/><circle cx="48" cy="93" r="4.2"/><circle cx="62" cy="93" r="4.2"/><circle cx="76" cy="93" r="4.2"/><circle cx="90" cy="93" r="4.2"/></g><g fill="#111"><circle class="m-flow" style="--dy:24px" cx="98" cy="42" r="2.4"/><circle class="m-flow" style="--dy:0px;--d:.8s" cx="98" cy="66" r="2.4"/><circle class="m-flow" style="--dy:-24px;--d:1.6s" cx="98" cy="90" r="2.4"/></g><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M104 24L140 52v28L104 108z"/><path d="M144 66h8"/><path d="M149 62l4 4-4 4"/><g><circle class="m-head" style="--d:1.2s" cx="164" cy="56" r="7" fill="#FFF000"/><path d="M153 82a11 11 0 0 1 22 0"/><circle class="m-head" style="--d:1.45s" cx="189" cy="56" r="7" fill="#FFF000"/><path d="M178 82a11 11 0 0 1 22 0"/><circle class="m-head" style="--d:1.7s" cx="214" cy="56" r="7" fill="#FFF000"/><path d="M203 82a11 11 0 0 1 22 0"/></g></g><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">PROFILES</text><text x="223" y="138" text-anchor="end">INTERVIEW</text></g></svg></div><div class="body"><p class="mono"><span>Reach</span><span>04</span></p><h3>接点</h3><p class="to">話を聞くべき人を抽出。</p><p class="d">公開情報から対象者を絞り込み、すぐインタビューへつなげます。</p></div></div>
+<g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="18" y="138">DAY 0</text><text x="128" y="138">DAY 1</text></g></svg></div><div class="body"><p class="mono"><span>Speed</span><span>01</span></p><h3>高速に</h3><p class="to">例：試作画面を、翌日に。</p><p class="d">打ち合わせのアイデアを翌日には触れる形にし、すぐ顧客に当てます。</p></div></div>
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="50パターンのうち、反応の良い3つを選ぶ図"><rect x="17" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="16" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect class="m-cell" style="--d:0s" x="59" y="34" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="80" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="34" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect class="m-cell" style="--d:.5s" x="164" y="52" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="185" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="52" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="122" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="70" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="17" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="38" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="59" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="80" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="101" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect class="m-cell" style="--d:1s" x="101" y="88" width="17" height="13" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.5"/><rect x="122" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="143" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="164" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="185" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><rect x="206" y="88" width="17" height="13" rx="2" fill="none" stroke="#111" stroke-opacity=".3"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">50 PATTERNS</text><text x="223" y="138" text-anchor="end">BEST 3</text></g><rect x="160" y="129" width="10" height="10" rx="2" fill="#FFF000" stroke="#111" stroke-width="1.2"/></svg></div><div class="body"><p class="mono"><span>Volume</span><span>02</span></p><h3>量産する</h3><p class="to">例：LP・広告を50パターンで検証。</p><p class="d">訴求や見せ方を大量に用意し、反応の良いものを数字で選びます。</p></div></div>
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="数百社の競合・市場の分布の中から、空いている場所を見つける図"><rect class="m-scan" x="0" y="10" width="14" height="112" fill="#FFF000"/><g stroke="#111" stroke-opacity=".25" stroke-dasharray="2 4"><path d="M120 10v112M14 65h212"/></g><g fill="#111" fill-opacity=".7"><circle cx="84.1" cy="29.4" r="1.6"/><circle cx="32.8" cy="68.7" r="1.6"/><circle cx="29.8" cy="65.8" r="1.6"/><circle cx="106.5" cy="21.1" r="1.6"/><circle cx="104.6" cy="98.3" r="1.6"/><circle cx="63.5" cy="78.0" r="1.6"/><circle cx="135.7" cy="54.5" r="1.6"/><circle cx="27.5" cy="101.6" r="1.6"/><circle cx="47.4" cy="26.0" r="1.6"/><circle cx="148.3" cy="52.0" r="1.6"/><circle cx="30.8" cy="20.1" r="1.6"/><circle cx="137.5" cy="60.2" r="1.6"/><circle cx="180.1" cy="85.3" r="1.6"/><circle cx="135.2" cy="67.6" r="1.6"/><circle cx="42.1" cy="56.6" r="1.6"/><circle cx="49.0" cy="63.9" r="1.6"/><circle cx="154.3" cy="92.0" r="1.6"/><circle cx="139.3" cy="73.1" r="1.6"/><circle cx="189.4" cy="110.4" r="1.6"/><circle cx="153.5" cy="20.2" r="1.6"/><circle cx="150.0" cy="115.3" r="1.6"/><circle cx="76.1" cy="53.4" r="1.6"/><circle cx="22.6" cy="61.1" r="1.6"/><circle cx="41.9" cy="20.0" r="1.6"/><circle cx="44.4" cy="39.3" r="1.6"/><circle cx="130.1" cy="104.1" r="1.6"/><circle cx="91.2" cy="104.2" r="1.6"/><circle cx="48.8" cy="32.0" r="1.6"/><circle cx="65.6" cy="63.5" r="1.6"/><circle cx="71.6" cy="14.4" r="1.6"/><circle cx="93.3" cy="71.8" r="1.6"/><circle cx="158.9" cy="66.6" r="1.6"/><circle cx="155.9" cy="19.5" r="1.6"/><circle cx="177.1" cy="103.2" r="1.6"/><circle cx="98.0" cy="54.7" r="1.6"/><circle cx="147.4" cy="20.3" r="1.6"/><circle cx="60.6" cy="30.6" r="1.6"/><circle cx="28.7" cy="14.0" r="1.6"/><circle cx="38.7" cy="51.1" r="1.6"/><circle cx="196.4" cy="76.6" r="1.6"/><circle cx="69.5" cy="49.4" r="1.6"/><circle cx="43.1" cy="100.6" r="1.6"/><circle cx="113.1" cy="63.4" r="1.6"/><circle cx="38.8" cy="48.9" r="1.6"/><circle cx="128.8" cy="16.8" r="1.6"/><circle cx="217.6" cy="102.1" r="1.6"/><circle cx="71.3" cy="51.4" r="1.6"/><circle cx="175.5" cy="68.3" r="1.6"/><circle cx="85.3" cy="36.8" r="1.6"/><circle cx="218.9" cy="101.0" r="1.6"/><circle cx="184.9" cy="89.5" r="1.6"/><circle cx="123.6" cy="50.3" r="1.6"/><circle cx="23.7" cy="42.5" r="1.6"/><circle cx="159.3" cy="111.6" r="1.6"/><circle cx="209.2" cy="114.8" r="1.6"/><circle cx="92.4" cy="36.5" r="1.6"/><circle cx="58.1" cy="34.8" r="1.6"/><circle cx="201.7" cy="99.7" r="1.6"/><circle cx="151.2" cy="95.6" r="1.6"/><circle cx="152.8" cy="106.8" r="1.6"/><circle cx="211.1" cy="87.9" r="1.6"/><circle cx="43.9" cy="29.4" r="1.6"/><circle cx="218.0" cy="81.0" r="1.6"/><circle cx="129.9" cy="27.4" r="1.6"/><circle cx="216.1" cy="80.3" r="1.6"/><circle cx="208.5" cy="58.2" r="1.6"/><circle cx="77.8" cy="38.5" r="1.6"/><circle cx="70.9" cy="56.7" r="1.6"/><circle cx="203.6" cy="50.1" r="1.6"/><circle cx="137.0" cy="106.2" r="1.6"/><circle cx="205.2" cy="65.2" r="1.6"/><circle cx="124.8" cy="15.9" r="1.6"/><circle cx="55.4" cy="14.4" r="1.6"/><circle cx="53.2" cy="62.3" r="1.6"/><circle cx="131.5" cy="47.3" r="1.6"/><circle cx="131.3" cy="94.0" r="1.6"/><circle cx="132.3" cy="39.3" r="1.6"/><circle cx="173.0" cy="107.1" r="1.6"/><circle cx="143.0" cy="65.6" r="1.6"/><circle cx="159.3" cy="60.1" r="1.6"/><circle cx="115.5" cy="110.0" r="1.6"/><circle cx="196.8" cy="110.1" r="1.6"/><circle cx="132.1" cy="110.2" r="1.6"/><circle cx="46.0" cy="26.4" r="1.6"/><circle cx="32.8" cy="38.5" r="1.6"/><circle cx="154.6" cy="94.0" r="1.6"/><circle cx="49.5" cy="87.0" r="1.6"/><circle cx="47.2" cy="104.0" r="1.6"/><circle cx="62.8" cy="111.2" r="1.6"/><circle cx="117.4" cy="115.0" r="1.6"/><circle cx="50.9" cy="58.0" r="1.6"/><circle cx="87.2" cy="34.0" r="1.6"/><circle cx="165.3" cy="16.0" r="1.6"/><circle cx="107.9" cy="15.8" r="1.6"/><circle cx="145.3" cy="66.3" r="1.6"/><circle cx="219.0" cy="94.4" r="1.6"/><circle cx="39.4" cy="41.1" r="1.6"/><circle cx="104.1" cy="107.0" r="1.6"/><circle cx="70.8" cy="29.2" r="1.6"/><circle cx="134.4" cy="85.4" r="1.6"/><circle cx="29.7" cy="84.2" r="1.6"/><circle cx="32.8" cy="109.7" r="1.6"/><circle cx="31.6" cy="102.0" r="1.6"/><circle cx="87.2" cy="70.4" r="1.6"/><circle cx="72.6" cy="27.2" r="1.6"/><circle cx="66.6" cy="25.2" r="1.6"/><circle cx="28.3" cy="34.6" r="1.6"/><circle cx="80.2" cy="91.5" r="1.6"/><circle cx="120.0" cy="32.1" r="1.6"/><circle cx="21.7" cy="39.5" r="1.6"/><circle cx="167.5" cy="70.2" r="1.6"/><circle cx="114.9" cy="109.3" r="1.6"/><circle cx="158.3" cy="114.2" r="1.6"/><circle cx="187.8" cy="86.1" r="1.6"/><circle cx="100.6" cy="49.5" r="1.6"/><circle cx="44.5" cy="21.2" r="1.6"/><circle cx="70.1" cy="30.7" r="1.6"/><circle cx="189.6" cy="102.8" r="1.6"/><circle cx="75.5" cy="38.7" r="1.6"/><circle cx="111.7" cy="30.1" r="1.6"/><circle cx="71.7" cy="112.1" r="1.6"/><circle cx="129.6" cy="38.9" r="1.6"/><circle cx="81.1" cy="50.4" r="1.6"/><circle cx="95.9" cy="62.4" r="1.6"/><circle cx="59.0" cy="65.5" r="1.6"/><circle cx="71.9" cy="23.2" r="1.6"/><circle cx="26.5" cy="16.3" r="1.6"/><circle cx="65.5" cy="73.7" r="1.6"/><circle cx="171.1" cy="81.1" r="1.6"/><circle cx="218.9" cy="29.2" r="1.6"/><circle cx="149.2" cy="18.5" r="1.6"/><circle cx="200.0" cy="78.0" r="1.6"/><circle cx="120.9" cy="99.2" r="1.6"/><circle cx="186.6" cy="73.6" r="1.6"/><circle cx="157.3" cy="84.7" r="1.6"/><circle cx="24.4" cy="27.6" r="1.6"/><circle cx="39.4" cy="99.3" r="1.6"/><circle cx="146.1" cy="77.9" r="1.6"/><circle cx="117.8" cy="14.3" r="1.6"/><circle cx="170.6" cy="65.3" r="1.6"/><circle cx="152.5" cy="20.7" r="1.6"/><circle cx="69.4" cy="21.6" r="1.6"/><circle cx="115.7" cy="83.7" r="1.6"/><circle cx="143.9" cy="79.6" r="1.6"/><circle cx="48.1" cy="39.9" r="1.6"/><circle cx="80.1" cy="71.9" r="1.6"/><circle cx="30.4" cy="41.4" r="1.6"/><circle cx="159.2" cy="82.9" r="1.6"/><circle cx="123.4" cy="61.4" r="1.6"/><circle cx="42.2" cy="105.2" r="1.6"/><circle cx="217.5" cy="109.5" r="1.6"/><circle cx="111.6" cy="97.6" r="1.6"/><circle cx="109.7" cy="41.4" r="1.6"/><circle cx="210.9" cy="35.5" r="1.6"/><circle cx="46.9" cy="67.5" r="1.6"/><circle cx="45.1" cy="97.7" r="1.6"/><circle cx="198.9" cy="85.7" r="1.6"/><circle cx="18.7" cy="64.2" r="1.6"/><circle cx="79.6" cy="28.4" r="1.6"/><circle cx="82.5" cy="99.7" r="1.6"/><circle cx="171.1" cy="99.6" r="1.6"/><circle cx="207.0" cy="86.7" r="1.6"/><circle cx="77.1" cy="52.0" r="1.6"/><circle cx="221.8" cy="74.1" r="1.6"/><circle cx="105.3" cy="42.1" r="1.6"/><circle cx="38.7" cy="99.1" r="1.6"/><circle cx="122.2" cy="33.4" r="1.6"/><circle cx="213.1" cy="104.2" r="1.6"/><circle cx="146.7" cy="107.2" r="1.6"/><circle cx="130.0" cy="87.4" r="1.6"/><circle cx="149.5" cy="43.2" r="1.6"/><circle cx="207.1" cy="27.0" r="1.6"/><circle cx="88.1" cy="44.4" r="1.6"/><circle cx="217.2" cy="40.5" r="1.6"/><circle cx="79.4" cy="70.8" r="1.6"/><circle cx="52.1" cy="30.5" r="1.6"/><circle cx="202.9" cy="115.6" r="1.6"/><circle cx="46.5" cy="33.6" r="1.6"/><circle cx="87.8" cy="23.3" r="1.6"/><circle cx="70.7" cy="72.1" r="1.6"/><circle cx="124.9" cy="52.4" r="1.6"/><circle cx="30.7" cy="42.3" r="1.6"/><circle cx="43.7" cy="65.3" r="1.6"/><circle cx="68.7" cy="54.8" r="1.6"/><circle cx="212.6" cy="100.6" r="1.6"/><circle cx="22.4" cy="17.3" r="1.6"/><circle cx="200.7" cy="62.3" r="1.6"/><circle cx="18.0" cy="53.9" r="1.6"/><circle cx="186.4" cy="101.3" r="1.6"/><circle cx="68.7" cy="25.1" r="1.6"/><circle cx="124.6" cy="83.6" r="1.6"/><circle cx="165.2" cy="80.0" r="1.6"/><circle cx="111.3" cy="70.3" r="1.6"/><circle cx="149.7" cy="45.0" r="1.6"/><circle cx="69.4" cy="78.9" r="1.6"/><circle cx="40.9" cy="21.2" r="1.6"/><circle cx="136.9" cy="53.6" r="1.6"/><circle cx="140.6" cy="15.1" r="1.6"/><circle cx="112.0" cy="111.8" r="1.6"/><circle cx="68.4" cy="112.0" r="1.6"/><circle cx="80.7" cy="16.2" r="1.6"/><circle cx="154.1" cy="108.4" r="1.6"/><circle cx="25.0" cy="48.5" r="1.6"/><circle cx="215.9" cy="45.8" r="1.6"/><circle cx="65.1" cy="36.6" r="1.6"/><circle cx="78.2" cy="111.1" r="1.6"/><circle cx="56.2" cy="36.8" r="1.6"/><circle cx="153.7" cy="110.8" r="1.6"/><circle cx="98.3" cy="35.7" r="1.6"/><circle cx="46.9" cy="19.3" r="1.6"/><circle cx="98.2" cy="105.6" r="1.6"/><circle cx="167.5" cy="115.7" r="1.6"/><circle cx="85.2" cy="32.9" r="1.6"/><circle cx="95.2" cy="52.1" r="1.6"/><circle cx="52.5" cy="14.3" r="1.6"/><circle cx="89.7" cy="111.5" r="1.6"/><circle cx="185.6" cy="97.8" r="1.6"/><circle cx="28.0" cy="62.3" r="1.6"/><circle cx="183.6" cy="92.2" r="1.6"/><circle cx="25.1" cy="20.4" r="1.6"/><circle cx="70.4" cy="90.2" r="1.6"/><circle cx="87.2" cy="41.8" r="1.6"/><circle cx="143.9" cy="40.7" r="1.6"/><circle cx="82.6" cy="42.1" r="1.6"/><circle cx="172.2" cy="107.5" r="1.6"/><circle cx="114.9" cy="111.6" r="1.6"/><circle cx="96.8" cy="39.6" r="1.6"/><circle cx="118.7" cy="108.7" r="1.6"/><circle cx="181.7" cy="89.3" r="1.6"/><circle cx="175.7" cy="75.9" r="1.6"/></g><circle class="m-spin" cx="178" cy="40" r="19" fill="#FFF000" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M173 40h10M178 35v10" stroke="#111" stroke-width="1.5"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">N = 300+</text><text x="223" y="138" text-anchor="end">WHITE SPACE</text></g></svg></div><div class="body"><p class="mono"><span>Coverage</span><span>03</span></p><h3>網羅的に</h3><p class="to">例：競合・市場を数百社規模で調査。</p><p class="d">人手では追い切れない範囲まで調べ、見落としを減らします。</p></div></div>
+        <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="問い合わせや作業がAIを通って、自動で処理済みになっていく図"><g fill="none" stroke="#111" stroke-opacity=".4" stroke-width="1.2" stroke-linecap="round"><rect x="18" y="30" width="60" height="20" rx="3"/><path d="M26 37h30M26 43h20"/><rect x="18" y="58" width="60" height="20" rx="3"/><path d="M26 65h34M26 71h18"/><rect x="18" y="86" width="60" height="20" rx="3"/><path d="M26 93h26M26 99h22"/></g><g fill="#111"><circle class="m-flow" style="--dy:28px" cx="84" cy="40" r="2.4"/><circle class="m-flow" style="--dy:0px;--d:.8s" cx="84" cy="68" r="2.4"/><circle class="m-flow" style="--dy:-28px;--d:1.6s" cx="84" cy="96" r="2.4"/></g><circle class="m-spin" cx="138" cy="68" r="19" fill="#FFF000" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3"/><text x="138" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="#111">AI</text><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M161 68h9"/><path d="M167 64l4 4-4 4"/><path d="M194 41h30M194 59h24M194 77h30M194 95h20"/><rect x="178" y="36" width="10" height="10" rx="2"/><rect x="178" y="54" width="10" height="10" rx="2"/><rect x="178" y="72" width="10" height="10" rx="2"/><rect x="178" y="90" width="10" height="10" rx="2"/><g class="m-cell" style="--d:1.2s"><rect x="178" y="36" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 41l2 2 3.5-4"/></g><g class="m-cell" style="--d:1.6s"><rect x="178" y="54" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 59l2 2 3.5-4"/></g><g class="m-cell" style="--d:2s"><rect x="178" y="72" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 77l2 2 3.5-4"/></g><g class="m-cell" style="--d:2.4s"><rect x="178" y="90" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 95l2 2 3.5-4"/></g></g><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">TASKS</text><text x="223" y="138" text-anchor="end">AUTOMATED</text></g></svg></div><div class="body"><p class="mono"><span>Automation</span><span>04</span></p><h3>自動化する</h3><p class="to">例：問い合わせ対応を、自動で。</p><p class="d">立ち上げた後の業務をAIで仕組みにし、少ない人数でも事業を回せるようにします。</p></div></div>
       </div>
       <p class="ai-foot">※ 事例は支援内容の一例です。期間や数量は案件によって異なります。</p>
   </div></div>
@@ -486,18 +530,29 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 <section class="deep" id="contact" aria-label="ご相談">
   <div class="wrap">
     <div class="in grid12 deep-in">
-      <p class="lbl" style="grid-column:1 / -1"><span class="jl">ご相談</span></p>
-      <h2><span class="ph">どこから始めるかは、</span><br><span class="ph">30分の壁打ちで</span><span class="ph">整理します。</span></h2>
+      <div class="cta-txt">
+        <p class="lbl"><span class="jl">ご相談</span></p>
+        <h2><span class="ph">まずは、</span><span class="ph">30分の無料相談から。</span></h2>
+        <p class="lead">相談内容がまとまっていなくても構いません。<br class="br-pc">いまの状況を伺い、どのステップから始めるのが良いかを一緒に整理します。</p>
+      </div>
       <div class="card2">
         <p class="jl" style="margin:0">対応する役員</p>
         <div class="who"><span><small>代表取締役</small>武井 遼太郎</span><span><small>取締役</small>篠原 孝弘</span></div>
-        <p>相談内容がまとまっていなくても構いません。いまの状況を伺い、どのステップから始めるのが良いかを一緒に整理します。</p>
-        <a class="pill solid" href="#contact">30分の壁打ちを申し込む<span class="dot" aria-hidden="true">→</span></a>
+        <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談を予約する<span class="dot" aria-hidden="true">→</span></a>
       </div>
     </div>
-    <div class="in foot"><span class="logo">JIL</span><span class="mono">© JIL Inc.</span></div>
   </div>
 </section>
+
+<footer class="site-foot">
+  <div class="wrap"><div class="in">
+    <div class="ft">
+      <span class="logo">JIL</span>
+      <nav aria-label="フッター"><a href="#feature">JILの特徴</a><a href="#flow">事業づくりの流れ</a><a href="#ai">事業開発×AI</a><a href="#contact">ご相談</a><a href="https://jilinc.co.jp/">会社サイト ↗</a></nav>
+    </div>
+    <div class="ft-sub"><span>株式会社JIL</span><span class="mono">© JIL Inc.</span></div>
+  </div></div>
+</footer>
 
 <script>
 (function(){
@@ -509,6 +564,13 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
     r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStep(r.dataset.k)}});
   });
   setStep(0);
+  // カードや土台をクリック（またはEnter）すると、その詳細を開け閉めする
+  document.querySelectorAll('.card[data-k],.base[data-k]').forEach(c=>{
+    c.setAttribute('aria-expanded','false');
+    const toggle=()=>c.setAttribute('aria-expanded',c.classList.toggle('open'));
+    c.addEventListener('click',toggle);
+    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')toggle()});
+  });
   // 曲線が画面に入ったときに、左から右へ描く（動きを減らす設定では描かない）
   const chart=document.getElementById('chart');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -559,5 +621,13 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
     io.unobserve(e.target);
   }),{threshold:.35});
   document.querySelectorAll('.vfig,.chart-scroll,.box .art').forEach(t=>io.observe(t));
+  // 特徴の数字：画面に入ったら0から今の数字まで素早く数え上げる。横の「件超／年」が動かないよう幅を固定する
+  const cio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el=e.target,to=+el.dataset.to,t0=performance.now(),dur=1400;
+    (function tick(t){const k=Math.min(1,(t-t0)/dur);el.textContent=Math.round(to*(1-Math.pow(1-k,3))).toLocaleString('en-US');if(k<1)requestAnimationFrame(tick)})(t0);
+    cio.unobserve(el);
+  }),{threshold:.6});
+  document.fonts.ready.then(()=>document.querySelectorAll('.count').forEach(el=>{el.style.minWidth=el.offsetWidth+'px';el.textContent='0';cio.observe(el)}));
 })();
 </script>
