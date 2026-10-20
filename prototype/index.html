@@ -1,4 +1,4 @@
-<title>JIL 事業開発 v19 UIUX</title>
+<title>JIL 事業開発 v20 UIUX</title>
 <script>document.documentElement.lang='ja'</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -467,7 +467,53 @@ p,li{text-wrap:pretty}
   .base{border-top:2px solid var(--ink)}
   .hero-body{padding-bottom:28px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}.cue::after{animation:none}}
+/* ===== v20 UIUXの磨き込み（2回目） =====
+   考え方は 04_UIUX改善設計.md。文言・構成・配色は変えず、v19の動きのルールに揃える */
+
+/* 最初の画面：パソコンでは写真＋ご支援企業の帯がちょうど1画面に収まる。スマホでは写真だけで1画面 */
+@media (min-width:901px){.hero{min-height:max(560px,calc(100svh - 101px))}}
+@media (max-width:900px){
+  .hero{min-height:max(560px,100svh)}
+  .hero::after{background:linear-gradient(180deg,rgba(0,0,0,.32) 0%,rgba(0,0,0,0) 18%,rgba(0,0,0,.08) 34%,rgba(0,0,0,.55) 58%,rgba(0,0,0,.72) 100%)}
+  .hero h1 .g{color:#fff}
+}
+
+/* 成長曲線：カーソルを乗せた（押した）区間の、曲線の下の面が黄色に染まる。下のカードの選択も同時に切り替わる */
+.chart svg{cursor:pointer}
+.zone.on{fill:rgba(0,0,0,.025)}
+.zfill{opacity:0;transition:opacity .5s var(--ease)}
+.zfill.on{opacity:1}
+.chart .tag,.chart .stem,.chart .pt{transition:opacity .3s}
+
+/* ボタン：パソコンでは、カーソルに少し吸い寄せられる */
+.pill{transform:translate(var(--mx,0px),var(--my,0px)) scale(var(--ms,1))}
+.pill:active{transform:translate(var(--mx,0px),var(--my,0px)) scale(.97)}
+.pill.mag{transition:background-color .3s,color .3s,border-color .3s,transform .9s var(--ease)}
+.pill.mag.near{transition:background-color .3s,color .3s,border-color .3s,transform .35s var(--ease)}
+
+/* 「詳しく見る」：指で押しやすい大きさに（見た目は同じ、押せる範囲を広げる） */
+:is(.card,.base) .tog{min-height:44px;margin-top:6px}
+@media (min-width:721px){.base .tog{top:18px}}
+
+/* 余白のリズム：欄と欄の間の空きすぎを詰める */
+.feat{padding-bottom:clamp(56px,5vw,80px)}
+.flow{padding-bottom:clamp(40px,4vw,64px)}
+.ai-sec{padding-block:clamp(72px,7vw,104px) clamp(48px,5vw,72px)}
+
+/* ご相談：画面に入ってくるにつれ、角の丸い黄色の面が左右に広がって画面いっぱいになる */
+.deep{clip-path:inset(0 var(--cx,0px) 0 var(--cx,0px) round var(--cr,0px))}
+
+@media (max-width:900px){
+  .stmt{padding-top:clamp(64px,10vw,96px)}
+}
+@media (max-width:560px){
+  .clients>*{min-height:76px;padding:18px 10px}
+  .clients>:first-child{min-height:0;padding:14px 0}
+  .feat{padding-top:72px}
+  .flow{padding-top:72px}
+  .ai-sec{padding-top:64px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.cue::after{animation:none}.pill{--mx:0px!important;--my:0px!important}}
 </style>
 
 <a class="skip" href="#concept">本文へ移動</a>
@@ -492,7 +538,7 @@ p,li{text-wrap:pretty}
     <div class="in">
       <h1 class="rv-h" style="--d0:.35s"><span class="ph">戦略から、</span><span class="ph">実行まで。</span><br><span class="g"><span class="ph">新規事業を、</span><span class="ph">ひとつの</span><span class="ph">チームで。</span></span></h1>
       <div class="hero-row rv">
-        <p class="rv-up" style="--d:1.05s">事業審査の経験を持つ事業開発のプロが、<br class="br-pc">戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。<br class="br-pc">大企業の新規事業を、ひとつのチームで最後まで支えます。</p>
+        <p class="rv-up" style="--d:1.05s">事業審査の経験を持つ事業開発のプロが、<br class="br-pc">戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。<br class="br-pc">新規事業を、ひとつのチームで最後まで支えます。</p>
         <div class="cta rv-up" style="--d:1.2s">
           <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">30分の無料相談<span class="dot" aria-hidden="true"><i>→</i></span></a>
           <a class="pill line-w" href="#contact">サービス資料<span class="dot" aria-hidden="true"><i>↓</i></span></a>
@@ -563,6 +609,12 @@ p,li{text-wrap:pretty}
             <linearGradient id="gStroke" x1="0" x2="1" y1="0" y2="0"><stop offset="0" style="stop-color:var(--curve-a)"/><stop offset=".55" style="stop-color:var(--curve-b)"/><stop offset="1" style="stop-color:var(--curve-c)"/></linearGradient>
             <linearGradient id="gFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--area);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--area);stop-opacity:0"/></linearGradient>
             <path id="curvePath" d="M0,392 C240,388 380,372 480,342 C600,306 700,282 800,246 C930,200 1040,150 1120,96 C1170,62 1230,40 1280,28"/>
+            <linearGradient id="gYel" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFF000" stop-opacity=".95"/><stop offset="1" stop-color="#FFF000" stop-opacity=".35"/></linearGradient>
+            <path id="areaPath" d="M0,392 C240,388 380,372 480,342 C600,306 700,282 800,246 C930,200 1040,150 1120,96 C1170,62 1230,40 1280,28 L1280,410 L0,410 Z"/>
+            <clipPath id="zc0"><rect x="0" y="0" width="320" height="410"/></clipPath>
+            <clipPath id="zc1"><rect x="320" y="0" width="320" height="410"/></clipPath>
+            <clipPath id="zc2"><rect x="640" y="0" width="320" height="410"/></clipPath>
+            <clipPath id="zc3"><rect x="960" y="0" width="320" height="410"/></clipPath>
           </defs>
           <rect class="zone" data-k="0" x="0" y="0" width="320" height="410"/>
           <rect class="zone" data-k="1" x="320" y="0" width="320" height="410"/>
@@ -570,6 +622,7 @@ p,li{text-wrap:pretty}
           <rect class="zone" data-k="3" x="960" y="0" width="320" height="410"/>
           <g style="stroke:var(--line-2)" stroke-dasharray="2 5"><line x1="320" y1="0" x2="320" y2="410"/><line x1="640" y1="0" x2="640" y2="410"/><line x1="960" y1="0" x2="960" y2="410"/></g>
           <path d="M0,392 C240,388 380,372 480,342 C600,306 700,282 800,246 C930,200 1040,150 1120,96 C1170,62 1230,40 1280,28 L1280,410 L0,410 Z" fill="url(#gFill)"/>
+          <g fill="url(#gYel)"><use href="#areaPath" class="zfill" data-k="0" clip-path="url(#zc0)"/><use href="#areaPath" class="zfill" data-k="1" clip-path="url(#zc1)"/><use href="#areaPath" class="zfill" data-k="2" clip-path="url(#zc2)"/><use href="#areaPath" class="zfill" data-k="3" clip-path="url(#zc3)"/></g>
           <use href="#curvePath" transform="translate(0,16)" fill="none" style="stroke:var(--curve-b)" stroke-opacity=".28" stroke-width="1.2" class="curve"/>
           <use href="#curvePath" transform="translate(0,32)" fill="none" style="stroke:var(--curve-b)" stroke-opacity=".14" stroke-width="1.2" class="curve"/>
           <use href="#curvePath" fill="none" stroke="url(#gStroke)" stroke-width="3.2" stroke-linecap="round" class="curve"/>
@@ -589,16 +642,22 @@ p,li{text-wrap:pretty}
           <g style="stroke:var(--ink)"><line x1="1" y1="404" x2="1" y2="416"/><line x1="640" y1="404" x2="640" y2="416"/><line x1="1279" y1="404" x2="1279" y2="416"/></g>
           <g font-family="Satoshi, sans-serif" font-size="16" font-weight="500" style="fill:var(--ink)"><text x="4" y="440">0</text><text x="640" y="440" text-anchor="middle">1</text><text x="1276" y="440" text-anchor="end">10</text></g>
           <g font-family="IBM Plex Mono, monospace" font-size="14" letter-spacing="1" style="fill:var(--accent-ink)" text-anchor="middle"><text x="320" y="440">0 → 1</text><text x="960" y="440">1 → 10</text></g>
-          <text x="10" y="22" font-family="Noto Sans JP, sans-serif" font-size="14" style="fill:var(--sub)">事業の大きさ ↑</text>
         </svg>
         <svg class="chart-sp" data-curve="M0,220 C68,218 106,210 135,200 C170,188 196,174 225,160 C262,140 292,108 315,80 C332,58 346,46 360,40" viewBox="0 0 360 262" role="img" aria-label="左下から右上へ立ち上がる成長曲線。曲線上に4つのステップが並び、下に0→1と1→10の目盛りがある">
-          <defs><linearGradient id="gFillSp" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--area);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--area);stop-opacity:0"/></linearGradient></defs>
+          <defs><linearGradient id="gFillSp" x1="0" x2="0" y1="0" y2="1"><stop offset="0" style="stop-color:var(--area);stop-opacity:.3"/><stop offset="1" style="stop-color:var(--area);stop-opacity:0"/></linearGradient>
+            <linearGradient id="gYelSp" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFF000" stop-opacity=".95"/><stop offset="1" stop-color="#FFF000" stop-opacity=".35"/></linearGradient>
+            <path id="areaPathSp" d="M0,220 C68,218 106,210 135,200 C170,188 196,174 225,160 C262,140 292,108 315,80 C332,58 346,46 360,40 L360,230 L0,230 Z"/>
+            <clipPath id="zs0"><rect x="0" y="0" width="90" height="230"/></clipPath>
+            <clipPath id="zs1"><rect x="90" y="0" width="90" height="230"/></clipPath>
+            <clipPath id="zs2"><rect x="180" y="0" width="90" height="230"/></clipPath>
+            <clipPath id="zs3"><rect x="270" y="0" width="90" height="230"/></clipPath></defs>
           <rect class="zone" data-k="0" x="0" y="0" width="90" height="230"/>
           <rect class="zone" data-k="1" x="90" y="0" width="90" height="230"/>
           <rect class="zone" data-k="2" x="180" y="0" width="90" height="230"/>
           <rect class="zone" data-k="3" x="270" y="0" width="90" height="230"/>
           <g style="stroke:var(--line-2)" stroke-dasharray="2 4"><line x1="90" y1="0" x2="90" y2="230"/><line x1="180" y1="0" x2="180" y2="230"/><line x1="270" y1="0" x2="270" y2="230"/></g>
           <path d="M0,220 C68,218 106,210 135,200 C170,188 196,174 225,160 C262,140 292,108 315,80 C332,58 346,46 360,40 L360,230 L0,230 Z" fill="url(#gFillSp)"/>
+          <g fill="url(#gYelSp)"><use href="#areaPathSp" class="zfill" data-k="0" clip-path="url(#zs0)"/><use href="#areaPathSp" class="zfill" data-k="1" clip-path="url(#zs1)"/><use href="#areaPathSp" class="zfill" data-k="2" clip-path="url(#zs2)"/><use href="#areaPathSp" class="zfill" data-k="3" clip-path="url(#zs3)"/></g>
           <path d="M0,220 C68,218 106,210 135,200 C170,188 196,174 225,160 C262,140 292,108 315,80 C332,58 346,46 360,40" fill="none" style="stroke:var(--ink)" stroke-width="2.4" stroke-linecap="round" class="curve"/>
           <line class="stem" data-k="0" x1="45" y1="217" x2="45" y2="186"/>
           <line class="stem" data-k="1" x1="135" y1="200" x2="135" y2="142"/>
@@ -700,12 +759,16 @@ p,li{text-wrap:pretty}
     m.id='more-'+i; b.setAttribute('aria-controls',m.id);
     c.addEventListener('click',()=>b.setAttribute('aria-expanded',c.classList.toggle('open')));
   });
-  // 図の吹き出しを押すと、そのステップを選ぶ（スマホでは横にめくるカードもそこへ送る）
+  // 図の区間（4等分）にカーソルを乗せる・押すと、そのステップを選ぶ（スマホでは横にめくるカードもそこへ送る）
   const cards=document.querySelector('.cards'),sp=matchMedia('(max-width:560px)');
-  document.querySelectorAll('.chart .tag').forEach(t=>t.addEventListener('click',()=>{
-    setStep(t.dataset.k);
-    if(sp.matches){const c=cards.querySelector(`.card[data-k="${t.dataset.k}"]`);cards.scrollTo({left:c.offsetLeft-16,behavior:'smooth'})}
-  }));
+  const zoneAt=(svg,e)=>{const r=svg.getBoundingClientRect();return String(Math.max(0,Math.min(3,Math.floor((e.clientX-r.left)/r.width*4))))};
+  document.querySelectorAll('.chart svg').forEach(svg=>{
+    svg.addEventListener('mousemove',e=>{if(matchMedia('(hover:hover)').matches){const k=zoneAt(svg,e);if(!document.querySelector(`.card.on[data-k="${k}"]`))setStep(k)}});
+    svg.addEventListener('click',e=>{
+      const k=zoneAt(svg,e);setStep(k);
+      if(sp.matches){const c=cards.querySelector(`.card[data-k="${k}"]`);cards.scrollTo({left:c.offsetLeft-16,behavior:'smooth'})}
+    });
+  });
   // スマホ：カードをめくったら、図の選択も追従させる
   if('IntersectionObserver' in window){
     const cio=new IntersectionObserver(es=>es.forEach(e=>{if(sp.matches&&e.isIntersecting)setStep(e.target.dataset.k)}),{root:cards,threshold:.6});
@@ -735,12 +798,13 @@ p,li{text-wrap:pretty}
     el('animate',Object.assign({attributeName:'opacity',dur:o.dur,begin:o.begin,repeatCount:'indefinite'},o.fade),c);
     if(o.under) svg.insertBefore(c,o.under);
   }
-  // ベン図：描き終わったら、小さな点が3つの円の上をゆっくり回る
+  // ベン図：描き終わったら、小さな点が3つの円の上をゆっくり回る。
+  // 3つの点は真ん中（JIL）の3つの角から同時に出発し、同じ速さで回るので、円の交わる点には3つ同時に着く
   const venn=document.querySelector('.vfig svg');
-  [[190,140,200],[330,140,320],[260,261,80]].forEach(([cx,cy,deg],i)=>{
+  [[190,140,57.42],[330,140,177.42],[260,261,297.42]].forEach(([cx,cy,deg])=>{
     const r=130,a=deg*Math.PI/180,x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);
     traveler(venn,`M${x},${y} a${r},${r} 0 1,1 ${-2*r*Math.cos(a)},${-2*r*Math.sin(a)} a${r},${r} 0 1,1 ${2*r*Math.cos(a)},${2*r*Math.sin(a)}`,
-      {r:4,dur:'18s',begin:(1.6+i*.2)+'s',fade:{values:'0;1;1',keyTimes:'0;.03;1'}});
+      {r:4,dur:'16s',begin:'1.9s',fade:{values:'0;1;1',keyTimes:'0;.03;1'}});
   });
   // 成長曲線：黄色い点が0から10へ繰り返し進む。各ステップの点に波紋を付ける
   document.querySelectorAll('.chart svg').forEach(svg=>{
@@ -790,6 +854,27 @@ p,li{text-wrap:pretty}
     const links=[...gh.querySelectorAll('.nav a[href^="#"]')];
     const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('cur',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
     document.querySelectorAll('#concept,#feature,#flow,#ai,#contact').forEach(s=>sio.observe(s));
+  }
+
+  // ご相談：画面に入ってくるにつれ、黄色の面が左右に広がる（左右の余白と角の丸みが0になる）
+  const deep=document.querySelector('.deep');
+  function deepFrame(){
+    const r=deep.getBoundingClientRect(),p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight*.6)));
+    const max=Math.min(48,innerWidth*.04);
+    deep.style.setProperty('--cx',((1-p)*max).toFixed(1)+'px');deep.style.setProperty('--cr',((1-p)*28).toFixed(1)+'px');
+  }
+  if(!still){addEventListener('scroll',()=>requestAnimationFrame(deepFrame),{passive:true});addEventListener('resize',deepFrame);deepFrame()}
+
+  // ボタン：パソコンでは、カーソルが近づくと少し吸い寄せられる（最大でも数px）
+  if(!still&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.pill').forEach(b=>{
+      b.classList.add('mag');
+      b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();
+        b.classList.add('near');
+        b.style.setProperty('--mx',((e.clientX-r.left-r.width/2)*.14).toFixed(1)+'px');
+        b.style.setProperty('--my',((e.clientY-r.top-r.height/2)*.28).toFixed(1)+'px')});
+      b.addEventListener('mouseleave',()=>{b.classList.remove('near');b.style.setProperty('--mx','0px');b.style.setProperty('--my','0px')});
+    });
   }
 
   // 画面に入ったものを順に出す（動きを減らす設定では、最初からすべて表示）
