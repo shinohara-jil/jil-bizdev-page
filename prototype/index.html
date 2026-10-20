@@ -518,34 +518,15 @@ p,li{text-wrap:pretty}
   .ai-sec{padding-top:64px}
 }
 
-/* 特徴の手書きイラスト：黒の線＋少しずらした黄色の面（蛍光ペンの塗り）。画面に入ると線が描かれ、カーソルを乗せると少し動く */
-.trait .ill{width:150px;height:112px;margin:20px 0 -6px 2px}
+/* 特徴の手書きイラスト：黒の線＋少しずらした黄色の面（蛍光ペンの塗り）。見出しの右横に置き、動きは付けない */
+.trait{position:relative}
+.trait .ill{position:absolute;right:28px;top:46px;width:128px;height:96px}
 .ill svg{display:block;width:100%;height:100%;overflow:visible}
 .ill .rough{filter:url(#ill-rough)}
-.ill .s{fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ill .s{fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .ill .f{fill:var(--ink)}
 .ill .blob{fill:var(--yellow)}
-.ill .t{transform-box:fill-box;transform-origin:center;transition:transform 1.2s var(--ease)}
-.trait:hover .ill .lens{transform:translate(-5px,-3px) rotate(-4deg)}
-.trait:hover .ill .pen{transform:translate(-3px,3px)}
-.trait:hover .ill .ga{transform:rotate(36deg)}
-.trait:hover .ill .gb{transform:rotate(-51.4deg)}
-.rv-on .ill .s{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.3s var(--ease-io) calc(var(--d,0s) + var(--i,0) * 90ms + .3s + var(--o,0) * 120ms)}
-.rv-on .ill :is(.f,.blob){opacity:0;transition:opacity .6s ease-out calc(var(--d,0s) + var(--i,0) * 90ms + 1.1s)}
-.rv-on .ill .blob{transform:scale(.6);transform-box:fill-box;transform-origin:center;transition:opacity .5s ease-out calc(var(--d,0s) + var(--i,0) * 90ms + 1.1s),transform 1s var(--ease) calc(var(--d,0s) + var(--i,0) * 90ms + 1.1s)}
-.rv-on .ill .ga{transform:rotate(-72deg)}
-.rv-on .ill .gb{transform:rotate(102.8deg)}
-.rv-on .ill .t{transition:transform 1.9s var(--ease) calc(var(--d,0s) + var(--i,0) * 90ms + .3s)}
-.rv-on .traits.is-in .ill .s{stroke-dashoffset:0}
-.rv-on .traits.is-in .ill :is(.f,.blob){opacity:1}
-.rv-on .traits.is-in .ill .blob{transform:none}
-.rv-on .traits.is-in .ill .t{transform:none}
-.rv-on .traits.is-in .trait:hover .ill .lens{transform:translate(-5px,-3px) rotate(-4deg)}
-.rv-on .traits.is-in .trait:hover .ill .pen{transform:translate(-3px,3px)}
-.rv-on .traits.is-in .trait:hover .ill .ga{transform:rotate(36deg);transition-delay:0s}
-.rv-on .traits.is-in .trait:hover .ill .gb{transform:rotate(-51.4deg);transition-delay:0s}
-.rv-on .traits.is-in .trait:hover .ill .t{transition-delay:0s}
-@media (max-width:720px){.trait .ill{width:120px;height:90px;margin-top:16px}}
+@media (max-width:720px){.trait .ill{top:48px;width:96px;height:72px}}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.cue::after{animation:none}.pill{--mx:0px!important;--my:0px!important}}
 </style>
@@ -621,35 +602,35 @@ p,li{text-wrap:pretty}
       <p class="lbl rv-up"><span class="jl">JILの事業開発の特徴</span></p>
       <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>を。</span></h2>
     </div>
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="ill-rough"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="2.6"/></filter></svg>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="ill-rough"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="1"/></filter></svg>
     <div class="traits rv-g" style="--d:.1s">
       <div class="trait"><p class="mono"><span>Strategy</span><span>01</span></p>
         <div class="ill" aria-hidden="true"><svg viewBox="0 0 160 120">
           <path class="blob" d="M46,42 C58,26 88,24 102,36 C116,48 112,74 98,84 C82,96 54,92 44,78 C36,66 38,52 46,42Z"/>
-          <g class="t lens"><g class="rough">
-            <path class="s" pathLength="1" d="M101,50 C100,30 86,19 67,20 C47,21 33,36 34,55 C35,74 50,88 69,88 C88,88 102,74 102,55 C102,51 101,47 99,43"/>
-            <path class="s" pathLength="1" style="--o:2" d="M50,36 C54,31 59,28 65,27"/>
-            <path class="s" pathLength="1" style="--o:1" d="M92,80 L116,106 C118.5,108.5 122.5,108.5 125,106 C127.5,103.5 127.5,99.5 125,97 L100,72"/>
-            <path class="s" pathLength="1" style="--o:2" d="M46,58 C56,44 80,44 90,58 C80,72 56,72 46,58"/>
-            <circle class="s" pathLength="1" style="--o:3" cx="68" cy="58" r="8.5"/>
+          <g><g class="rough">
+            <path class="s" d="M101,50 C100,30 86,19 67,20 C47,21 33,36 34,55 C35,74 50,88 69,88 C88,88 102,74 102,55 C102,51 101,47 99,43"/>
+            <path class="s" d="M50,36 C54,31 59,28 65,27"/>
+            <path class="s" d="M92,80 L116,106 C118.5,108.5 122.5,108.5 125,106 C127.5,103.5 127.5,99.5 125,97 L100,72"/>
+            <path class="s" d="M46,58 C56,44 80,44 90,58 C80,72 56,72 46,58"/>
+            <circle class="s" cx="68" cy="58" r="8.5"/>
             <circle class="f" cx="68" cy="58" r="3.6"/>
           </g></g>
-          <g class="rough"><path class="s" pathLength="1" style="--o:4" d="M113,27 L120,19 M117,38 L127,36 M106,17 L108,8"/></g>
+          <g class="rough"><path class="s" d="M113,27 L120,19 M117,38 L127,36 M106,17 L108,8"/></g>
         </svg></div>
         <h3>見極める</h3><div class="num"><span class="count" data-to="1500">1,500</span><small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p></div>
       <div class="trait"><p class="mono"><span>Development</span><span>02</span></p>
         <div class="ill" aria-hidden="true"><svg viewBox="0 0 160 120">
           <path class="blob" d="M36,55 C46,46 54,42 63,43 C73,45 85,50 93,58 C84,66 72,73 62,73 C52,72 42,65 36,59Z"/>
           <g class="rough">
-            <path class="s" pathLength="1" d="M57,40 L89,54.5 L58,68 L27,54 L59,39.5"/>
-            <path class="s" pathLength="1" style="--o:1" d="M28,54 L28,90 L58,104 L88,90 L88,54"/>
-            <path class="s" pathLength="1" style="--o:2" d="M58,68 L58,104"/>
-            <path class="s" pathLength="1" style="--o:4" d="M18,110 C40,113 82,113 104,108"/>
+            <path class="s" d="M57,40 L89,54.5 L58,68 L27,54 L59,39.5"/>
+            <path class="s" d="M28,54 L28,90 L58,104 L88,90 L88,54"/>
+            <path class="s" d="M58,68 L58,104"/>
+            <path class="s" d="M18,110 C40,113 82,113 104,108"/>
           </g>
-          <g class="t pen"><g class="rough">
-            <path class="s" pathLength="1" style="--o:2" d="M95.7,37.9 L122.6,11 L131,19.4 L104.1,46.3 Z"/>
-            <path class="s" pathLength="1" style="--o:3" d="M95.7,37.9 L90,52 L104.1,46.3"/>
-            <path class="s" pathLength="1" style="--o:3" d="M118.4,15.2 L126.8,23.6 M122.6,11 L126.8,6.8 L135.2,15.2 L131,19.4"/>
+          <g><g class="rough">
+            <path class="s" d="M95.7,37.9 L122.6,11 L131,19.4 L104.1,46.3 Z"/>
+            <path class="s" d="M95.7,37.9 L90,52 L104.1,46.3"/>
+            <path class="s" d="M118.4,15.2 L126.8,23.6 M122.6,11 L126.8,6.8 L135.2,15.2 L131,19.4"/>
             <path class="f" d="M90,52 L91.8,47.5 L94.5,50.2Z"/>
           </g></g>
         </svg></div>
@@ -657,18 +638,18 @@ p,li{text-wrap:pretty}
       <div class="trait"><p class="mono"><span>Execution</span><span>03</span></p>
         <div class="ill" aria-hidden="true"><svg viewBox="0 0 160 120">
           <path class="blob" d="M42,62 C46,46 64,40 78,46 C92,52 94,72 86,84 C78,96 56,96 46,86 C38,78 39,70 42,62Z"/>
-          <g transform="translate(60 64) rotate(-16)"><g class="t ga"><g class="rough">
-            <path class="s" pathLength="1" d="M24.0,0.0 L30.8,3.5 L29.5,9.6 L21.8,9.9 L19.4,14.1 L22.9,20.9 L18.2,25.1 L11.8,20.9 L7.4,22.8 L6.2,30.4 L0.0,31.0 L-2.7,23.8 L-7.4,22.8 L-12.8,28.2 L-18.2,25.1 L-16.2,17.7 L-19.4,14.1 L-27.0,15.3 L-29.5,9.6 L-23.5,4.8 L-24.0,0.0 L-30.8,-3.5 L-29.5,-9.6 L-21.8,-9.9 L-19.4,-14.1 L-22.9,-20.9 L-18.2,-25.1 L-11.8,-20.9 L-7.4,-22.8 L-6.2,-30.4 L-0.0,-31.0 L2.7,-23.8 L7.4,-22.8 L12.8,-28.2 L18.2,-25.1 L16.2,-17.7 L19.4,-14.1 L27.0,-15.3 L29.5,-9.6 L23.5,-4.8 L24.0,0.0"/>
-            <circle class="s" pathLength="1" style="--o:2" r="8"/>
+          <g transform="translate(60 64) rotate(-16)"><g><g class="rough">
+            <path class="s" d="M24.0,0.0 L30.8,3.5 L29.5,9.6 L21.8,9.9 L19.4,14.1 L22.9,20.9 L18.2,25.1 L11.8,20.9 L7.4,22.8 L6.2,30.4 L0.0,31.0 L-2.7,23.8 L-7.4,22.8 L-12.8,28.2 L-18.2,25.1 L-16.2,17.7 L-19.4,14.1 L-27.0,15.3 L-29.5,9.6 L-23.5,4.8 L-24.0,0.0 L-30.8,-3.5 L-29.5,-9.6 L-21.8,-9.9 L-19.4,-14.1 L-22.9,-20.9 L-18.2,-25.1 L-11.8,-20.9 L-7.4,-22.8 L-6.2,-30.4 L-0.0,-31.0 L2.7,-23.8 L7.4,-22.8 L12.8,-28.2 L18.2,-25.1 L16.2,-17.7 L19.4,-14.1 L27.0,-15.3 L29.5,-9.6 L23.5,-4.8 L24.0,0.0"/>
+            <circle class="s" r="8"/>
           </g></g></g>
-          <g transform="translate(94 36) rotate(-6)"><g class="t gb"><g class="rough">
-            <path class="s" pathLength="1" style="--o:1" d="M14.5,0.0 L19.7,3.2 L18.0,8.7 L11.9,8.3 L9.0,11.3 L9.8,17.4 L4.5,19.5 L0.9,14.5 L-3.2,14.1 L-7.5,18.5 L-12.5,15.6 L-10.7,9.7 L-13.1,6.3 L-19.2,5.7 L-20.0,0.0 L-14.3,-2.3 L-13.1,-6.3 L-16.4,-11.5 L-12.5,-15.6 L-7.1,-12.6 L-3.2,-14.1 L-1.3,-20.0 L4.5,-19.5 L5.5,-13.4 L9.0,-11.3 L14.8,-13.4 L18.0,-8.7 L13.9,-4.1 L14.5,0.0"/>
-            <circle class="s" pathLength="1" style="--o:3" r="5"/>
+          <g transform="translate(94 36) rotate(-6)"><g><g class="rough">
+            <path class="s" d="M14.5,0.0 L19.7,3.2 L18.0,8.7 L11.9,8.3 L9.0,11.3 L9.8,17.4 L4.5,19.5 L0.9,14.5 L-3.2,14.1 L-7.5,18.5 L-12.5,15.6 L-10.7,9.7 L-13.1,6.3 L-19.2,5.7 L-20.0,0.0 L-14.3,-2.3 L-13.1,-6.3 L-16.4,-11.5 L-12.5,-15.6 L-7.1,-12.6 L-3.2,-14.1 L-1.3,-20.0 L4.5,-19.5 L5.5,-13.4 L9.0,-11.3 L14.8,-13.4 L18.0,-8.7 L13.9,-4.1 L14.5,0.0"/>
+            <circle class="s" r="5"/>
           </g></g></g>
           <g class="rough">
-            <path class="s" pathLength="1" style="--o:3" d="M46.3,101.6 A40,40 0 0 1 20.6,57.1 M16.1,62.5 L20.6,57.1 L23,63.7"/>
-            <path class="s" pathLength="1" style="--o:4" d="M121.6,31.1 A28,28 0 0 0 89.1,8.4 M95.7,10.8 L89.1,8.4 L94.5,3.9"/>
-            <path class="s" pathLength="1" style="--o:5" d="M106,104 L118,92 L126,98 L144,80 M136,80 L144,80 L144,88"/>
+            <path class="s" d="M46.3,101.6 A40,40 0 0 1 20.6,57.1 M16.1,62.5 L20.6,57.1 L23,63.7"/>
+            <path class="s" d="M121.6,31.1 A28,28 0 0 0 89.1,8.4 M95.7,10.8 L89.1,8.4 L94.5,3.9"/>
+            <path class="s" d="M106,104 L118,92 L126,98 L144,80 M136,80 L144,80 L144,88"/>
           </g>
         </svg></div>
         <h3>動かす</h3><div class="num txt">マーケ・営業・CS・業務設計</div><p class="cap">事業を立ち上げ、伸ばすところまで</p><p class="d">つくって終わりにせず、マーケティング・営業・CS・業務設計まで、事業が回る仕組みを実際に動かします。</p></div>
