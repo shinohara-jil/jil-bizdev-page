@@ -491,6 +491,10 @@ p,li{text-wrap:pretty}
 .pill.mag{transition:background-color .3s,color .3s,border-color .3s,transform .9s var(--ease)}
 .pill.mag.near{transition:background-color .3s,color .3s,border-color .3s,transform .35s var(--ease)}
 
+/* 特徴：見出しのすぐ下に根拠の数字、その下に説明。数字と説明の間は細い線で区切る */
+.trait .num{margin-top:10px!important;padding-top:0}
+.trait p.d{margin-top:22px;padding-top:20px;border-top:1px solid #DADAD6}
+
 /* 「詳しく見る」：指で押しやすい大きさに（見た目は同じ、押せる範囲を広げる） */
 :is(.card,.base) .tog{min-height:44px;margin-top:6px}
 @media (min-width:721px){.base .tog{top:18px}}
@@ -588,9 +592,9 @@ p,li{text-wrap:pretty}
       <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>を。</span></h2>
     </div>
     <div class="traits rv-g" style="--d:.1s">
-      <div class="trait"><p class="mono"><span>Strategy</span><span>01</span></p><h3>見極める</h3><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p><div class="num"><span class="count" data-to="1500">1,500</span><small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p></div>
-      <div class="trait"><p class="mono"><span>Development</span><span>02</span></p><h3>つくる</h3><p class="d">設計して渡すだけでなく、試作から本番のプロダクト・ソリューションまで、開発・実装を自分たちの手で引き受けます。</p><div class="num"><span class="count" data-to="10">10</span><small>件以上／年</small></div><p class="cap">立ち上げてきた新規サービスの数</p></div>
-      <div class="trait"><p class="mono"><span>Execution</span><span>03</span></p><h3>動かす</h3><p class="d">つくって終わりにせず、マーケティング・営業・CS・業務設計まで、事業が回る仕組みを実際に動かします。</p><div class="num txt">マーケ・営業・CS・業務設計</div><p class="cap">事業を立ち上げ、伸ばすところまで</p></div>
+      <div class="trait"><p class="mono"><span>Strategy</span><span>01</span></p><h3>見極める</h3><div class="num"><span class="count" data-to="1500">1,500</span><small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p></div>
+      <div class="trait"><p class="mono"><span>Development</span><span>02</span></p><h3>つくる</h3><div class="num"><span class="count" data-to="10">10</span><small>件以上／年</small></div><p class="cap">立ち上げてきた新規サービスの数</p><p class="d">設計して渡すだけでなく、試作から本番のプロダクト・ソリューションまで、開発・実装を自分たちの手で引き受けます。</p></div>
+      <div class="trait"><p class="mono"><span>Execution</span><span>03</span></p><h3>動かす</h3><div class="num txt">マーケ・営業・CS・業務設計</div><p class="cap">事業を立ち上げ、伸ばすところまで</p><p class="d">つくって終わりにせず、マーケティング・営業・CS・業務設計まで、事業が回る仕組みを実際に動かします。</p></div>
     </div>
   </div></div>
 </section>
@@ -697,8 +701,8 @@ p,li{text-wrap:pretty}
   <div class="wrap"><div class="in ai-sec">
     <div class="ai-head grid12">
       <p class="lbl rv-up"><span class="jl">事業開発×AI</span></p>
-      <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業開発の知見に、</span><span class="ph"><em>AIの速さと量</em>を。</span></h2>
-      <p class="note rv-up" style="--d:.45s">新規事業は、どれだけ早く、多く試せるかで決まります。<br class="br-pc">判断は事業開発のプロが担い、調べる・つくる・試す作業をAIで加速します。</p>
+      <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業開発と</span><span class="ph">生成AIの</span><span class="ph"><em>コラボレーション</em>。</span></h2>
+      <p class="note rv-up" style="--d:.45s">新規事業は、どれだけ早く、多く試せるかが重要です。<br class="br-pc">JILの人員は、事業開発のプロセスに生成AIを活用することで、<br class="br-pc">他社に無い価値提供を実現します。</p>
     </div>
       <div class="boxes rv-g" style="--d:.1s">
         <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="打ち合わせのメモが、翌日には試作画面になる図"><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
