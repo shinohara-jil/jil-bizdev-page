@@ -1,6 +1,8 @@
-<title>JIL 事業開発 v18</title>
+<title>JIL 事業開発 v19 UIUX</title>
 <script>document.documentElement.lang='ja'</script>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -73,7 +75,6 @@ p,li{word-break:auto-phrase}
 
 .pill{display:inline-flex;align-items:center;gap:14px;text-decoration:none;border-radius:999px;font-weight:500;line-height:1;white-space:nowrap}
 .pill .dot{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;font-family:var(--en);font-weight:700;font-size:14px;transition:transform .2s}
-.pill:hover .dot{transform:translateX(3px)}
 .pill.solid{background:var(--cta-bg);color:var(--cta-ink);padding:9px 9px 9px 24px;font-size:15px}
 .pill.solid .dot{background:var(--cta-dot);color:var(--cta-dot-ink)}
 .pill.line-w{border:1px solid rgba(255,255,255,.7);color:#fff;padding:8px 8px 8px 22px;font-size:15px}
@@ -82,7 +83,9 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 
 /* hero */
 .hero{position:relative;min-height:clamp(600px,92vh,880px);color:#fff;display:flex;flex-direction:column;background:#222}
-.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+.hero{overflow:hidden}
+.hero-media{position:absolute;inset:-2px;will-change:transform}
+.hero-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 50%;filter:brightness(.85)}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,0) 16%,rgba(0,0,0,0) 46%,rgba(0,0,0,.42) 74%,rgba(0,0,0,.6) 100%);pointer-events:none}
 .hero .wrap{position:relative;z-index:1;width:100%}
 .hd{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:24px}
@@ -93,7 +96,8 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .hero-body{margin-top:auto;padding-bottom:clamp(32px,4vw,56px)}
 .hero h1{font-weight:700;font-size:clamp(36px,5.6vw,80px);line-height:1.2;letter-spacing:-.025em}
 .hero h1 .g{font-weight:500;color:rgba(255,255,255,.86)}
-.hero-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;margin-top:clamp(24px,3vw,40px);border-top:1px solid rgba(255,255,255,.35);padding-top:20px}
+.hero-row{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:end;margin-top:clamp(24px,3vw,40px);padding-top:20px;position:relative}
+.hero-row::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:rgba(255,255,255,.35);transform-origin:left}
 .hero-row p{grid-column:1 / span 6;font-size:16px;color:rgba(255,255,255,.9)}
 .hero-row .cta{grid-column:7 / span 6;display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
 .hero-meta{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);writing-mode:vertical-rl;white-space:nowrap;color:rgba(255,255,255,.75);z-index:1}
@@ -109,7 +113,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .clients .fss img:last-child{max-height:11px}
 
 /* statement */
-.stmt{padding-block:clamp(112px,13vw,184px) clamp(64px,7vw,104px)}
+.stmt{padding-block:clamp(96px,11vw,160px) clamp(80px,8vw,120px)}
 .stmt-body{grid-column:4 / span 9}
 .stmt-text{font-weight:700;letter-spacing:-.01em}
 .stmt-sec{background:var(--stmt-bg);color:var(--stmt-ink)}
@@ -139,7 +143,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .trait .cap{font-size:14px;color:var(--sub)}
 .trait p.d{font-size:16px;margin-top:16px}
 
-.ai-sec{padding-block:clamp(88px,9vw,136px) clamp(72px,7vw,112px)}
+.ai-sec{padding-block:clamp(80px,8vw,120px) clamp(72px,7vw,112px)}
 .ai-head{margin-bottom:clamp(40px,4vw,56px)}
 .boxes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink)}
 .box{padding:22px 22px 28px;border-right:1px solid var(--line);min-width:0}
@@ -179,7 +183,8 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .card{padding:22px 22px 28px;border-right:1px solid var(--line);cursor:pointer;transition:background .25s;min-width:0}
 .card:last-child{border-right:0}
 .card:hover,.card.on{background:var(--gray)}
-.card .shot{display:block;width:100%;max-width:100%;aspect-ratio:3 / 2;object-fit:cover;margin-bottom:18px;border-radius:2px}
+.card .shotw{display:block;overflow:hidden;border-radius:2px;margin-bottom:18px}
+.card .shot{display:block;width:100%;max-width:100%;aspect-ratio:3 / 2;object-fit:cover}
 .card .mono{color:var(--sub);display:flex;justify-content:space-between}
 .card.on .mono{color:var(--accent-ink)}
 .card h3{font-size:clamp(20px,1.9vw,26px);font-weight:700;letter-spacing:-.02em;line-height:1.35;margin-top:10px}
@@ -197,7 +202,6 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 :is(.card,.base) .tog{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13px;color:var(--sub)}
 .base .tog{padding:0 22px}
 :is(.card,.base) .tog::before{content:"+";display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:50%;font-family:var(--en);font-size:14px;line-height:1}
-:is(.card,.base).open .tog::before{content:"−"}
 :is(.card,.base) .tog .t2,:is(.card,.base).open .tog .t1{display:none}
 :is(.card,.base).open .tog .t2{display:inline}
 :is(.card,.base):hover .tog,:is(.card,.base).open .tog{color:var(--ink)}
@@ -230,7 +234,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .deep .jl{color:color-mix(in srgb,var(--on-deep) 70%,transparent)}
 .deep .lbl .jl{color:var(--on-deep)}
 .deep .cta-txt{grid-column:1 / span 7}
-.deep h2{font-size:clamp(26px,2.8vw,40px);font-weight:700;line-height:1.35;letter-spacing:-.02em;margin-top:14px}
+.deep h2{font-size:clamp(28px,3.4vw,48px);font-weight:700;line-height:1.35;letter-spacing:-.02em;margin-top:14px}
 .deep .cta-txt .lead{font-size:15px;margin-top:14px;color:color-mix(in srgb,var(--on-deep) 80%,transparent)}
 .deep .card2 .pill{margin-top:24px}
 .deep .card2{grid-column:9 / span 4;border-top:1px solid color-mix(in srgb,var(--on-deep) 25%,transparent);padding-top:18px}
@@ -343,29 +347,155 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .mo svg .m-flow{opacity:0}
 .mo .play .m-flow{animation:mo-flow 2.4s ease-in var(--d,0s) infinite}
 .mo .play .m-head{animation:mo-head 2.4s ease-out var(--d,0s) infinite}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ===== v19 UIUXの磨き込み =====
+   動きのルール：速く出て、ゆっくり止まる（--ease）。距離は小さく（28px）、時間は約1秒、順番は0.06〜0.09秒ずつずらす。一度出たら繰り返さない */
+:root{--ease:cubic-bezier(.16,1,.3,1);--ease-io:cubic-bezier(.65,0,.35,1);--hd-h:64px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+section[id]{scroll-margin-top:var(--hd-h)}
+p,li{text-wrap:pretty}
+.skip{position:fixed;left:12px;top:-64px;z-index:100;background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;text-decoration:none;transition:top .2s}
+.skip:focus{top:12px}
+.logo{text-decoration:none}
+
+/* ヘッダー：写真の上では透明、写真を過ぎると白いすりガラスの帯に。今いる欄に黄色の下線、下端に読んだ量の線 */
+.gh{position:fixed;inset:0 0 auto;z-index:50;color:#fff;transition:background-color .5s var(--ease),color .5s var(--ease),box-shadow .5s var(--ease)}
+.gh .hd{padding-block:22px;transition:padding .5s var(--ease)}
+.gh.solid{background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.gh.solid .hd{padding-block:12px}
+.gh .logo{font-size:24px;transition:font-size .5s var(--ease)}
+.gh .nav a:not(.pill){position:relative;padding-block:6px;opacity:.82;transition:opacity .25s}
+.gh .nav a:not(.pill):hover,.gh .nav a.cur{opacity:1}
+.gh .nav a:not(.pill)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.gh .nav a:not(.pill):hover::after{transform:scaleX(1);transform-origin:left}
+.gh.solid .nav a.cur::after{transform:scaleX(1);height:5px;bottom:2px;z-index:-1;background:var(--yellow)}
+.gh.solid .nav .pill{background:var(--yellow)}
+.gh.solid .nav .pill .dot{background:var(--ink);color:var(--yellow)}
+.gh .prog{position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--ink);transform-origin:left;transform:scaleX(var(--p,0));opacity:0;transition:opacity .3s}
+.gh.solid .prog{opacity:1}
+
+/* ボタン：矢印が右へ抜け、左から次の矢印が入る。押すと少し沈む */
+.pill{transition:background-color .3s,color .3s,border-color .3s,transform .25s var(--ease)}
+.pill:active{transform:scale(.97)}
+.pill .dot{overflow:hidden}
+.pill .dot i{display:block;font-style:normal;transition:transform .55s var(--ease);text-shadow:-40px 0 currentColor}
+.pill:hover .dot i{transform:translateX(40px)}
+.pill.line-w .dot i{text-shadow:0 -40px currentColor}
+.pill.line-w:hover .dot i{transform:translateY(40px)}
+.pill.line-w:hover{background:#fff;color:var(--ink)}
+.pill.line-w:hover .dot{border-color:var(--ink)}
+.pill.solid:hover{background:color-mix(in srgb,var(--cta-bg) 88%,#000)}
+.deep .pill.solid:hover{background:#000}
+.pill:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.hero .pill:focus-visible{outline-color:#fff}
+
+/* 最初の画面：写真がゆっくり引いて明るくなり、見出しが言葉ごとに下から上がる。右端の縦書きの下に「下へ」の合図 */
+@media (min-width:901px){.hero-meta{display:flex;align-items:center;gap:18px}}
+.cue{position:relative;display:block;width:1px;height:64px;background:rgba(255,255,255,.28);overflow:hidden}
+.cue::after{content:"";position:absolute;left:0;top:0;width:1px;height:40%;background:#fff;animation:cue 2.2s var(--ease-io) infinite}
+@keyframes cue{0%{transform:translateY(-100%)}100%{transform:translateY(260%)}}
+@keyframes hero-zoom{from{transform:scale(1.14)}to{transform:none}}
+@keyframes hero-dim{from{filter:brightness(.4)}to{filter:brightness(.85)}}
+@keyframes gh-in{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+.rv-on .hero-media img{animation:hero-zoom 3s var(--ease) both,hero-dim 2s ease-out both}
+.rv-on .gh .hd{animation:gh-in 1s var(--ease) 1.25s both}
+.rv-on .hero-meta{animation:mo-show 1.2s ease-out 1.5s both}
+.rv-on .hero-row::before{transform:scaleX(0);transition:transform 1.2s var(--ease-io) .85s}
+.rv-on .hero-row.is-in::before{transform:none}
+
+/* 見出し：言葉（.ph）ごとに、下の見えない位置から上がってくる */
+.rv-on .rv-h .ph{overflow:hidden;vertical-align:top;padding:.14em .06em;margin:-.14em -.06em}
+.rv-on .rv-h .ph-i{display:inline-block;transform:translateY(115%);transition:transform 1.15s var(--ease) calc(var(--d0,0s) + var(--i,0) * 70ms)}
+.rv-on .rv-h.is-in .ph-i{transform:none}
+/* 蛍光ペン：見出しが出たあと、左から右へ引かれる */
+.h2 em,.stmt-sub em{background:linear-gradient(var(--yellow),var(--yellow)) no-repeat 0 100% / 100% 40%}
+.rv-on :is(.h2,.stmt-sub) em{background-size:0% 40%;transition:background-size .9s var(--ease-io) var(--md,.75s)}
+.rv-on :is(.h2,.stmt-sub).is-in em{background-size:100% 40%}
+/* 見出しの上の黄色い線：左から伸びる */
+.rv-on .h2::before,.rv-on .stmt-body::before{transform:scaleX(0);transform-origin:left;transition:transform .8s var(--ease-io)}
+.rv-on .h2.is-in::before,.rv-on .stmt-body.is-in::before{transform:none}
+/* 文章や図：少し下から、ふわっと */
+.rv-on .rv-up{opacity:0;transform:translateY(28px)}
+.rv-on .rv-up.is-in{opacity:1;transform:none;transition:opacity 1s var(--ease) var(--d,0s),transform 1.2s var(--ease) var(--d,0s),background-color .25s}
+/* 並んでいるもの：左から順に */
+.rv-on .rv-g>*{opacity:0;transform:translateY(28px)}
+.rv-on .rv-g.is-in>*{opacity:1;transform:none;transition:opacity 1s var(--ease) calc(var(--d,0s) + var(--i,0) * 90ms),transform 1.2s var(--ease) calc(var(--d,0s) + var(--i,0) * 90ms),background-color .25s}
+.rv-on .clients.rv-g>*{transform:none}
+
+/* 事業づくりの流れ：選んでいるステップの上端に黄色の印。写真はホバーで少し寄る。図の吹き出しも押せる */
+.card{position:relative}
+.card::before{content:"";position:absolute;left:0;right:0;top:-2px;height:4px;background:var(--yellow);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.card.on::before{transform:none}
+.card .shot{transition:transform 1.1s var(--ease)}
+.card:hover .shot{transform:scale(1.05)}
+.chart .tag{cursor:pointer}
+.chart .tag rect{transition:fill .35s var(--ease),stroke .35s var(--ease)}
+.chart .tag:not(.on):hover rect{stroke:var(--ink)}
+/* 「詳しく見る」：本物のボタン。開くと＋が×に回る */
+:is(.card,.base) .tog{background:none;border:0;padding:0;font:inherit;font-size:13px;cursor:pointer;transition:color .25s}
+:is(.card,.base) .tog::before{transition:transform .5s var(--ease),background-color .3s,color .3s}
+:is(.card,.base).open .tog::before{transform:rotate(135deg);background:var(--ink);color:#fff;border-color:var(--ink)}
+:is(.card,.base) .more>div{opacity:0;transition:opacity .35s ease}
+:is(.card,.base).open .more>div{opacity:1;transition-delay:.1s}
+:is(.card,.base) .more{transition:grid-template-rows .55s var(--ease)}
+.base{position:relative}
+@media (min-width:721px){
+  .base .t{padding-right:150px}
+  .base .tog{position:absolute;right:22px;top:28px;margin:0;padding:0}
+}
+.cards-pg{display:none}
+
+/* 事業開発×AI・特徴：数字の欄 */
+.trait .count{font-feature-settings:"tnum" 1}
+
+/* ご相談：締めの見出しを大きく */
+.deep-in{padding-block:clamp(72px,7vw,112px)}
+
+@media (max-width:900px){
+  .gh .hd{padding-block:14px}
+  .gh.solid .hd{padding-block:10px}
+}
+/* スマホ：ステップは横にめくるカードに（縦に長くならない）。めくると図の選択も追従し、下の4本の線で位置がわかる */
+@media (max-width:560px){
+  .cards{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:0 16px 2px;scroll-padding-inline:16px;border-top:0;align-items:flex-start;scrollbar-width:none;overscroll-behavior-x:contain}
+  .cards::-webkit-scrollbar{display:none}
+  .cards .card{flex:0 0 84%;scroll-snap-align:start;border:1px solid var(--line);border-top:2px solid var(--ink);padding:14px 14px 18px}
+  .cards .card:last-child{border-right:1px solid var(--line)}
+  .card .shotw{margin-bottom:14px}
+  .cards-pg{display:flex;gap:6px;margin:16px 0 20px}
+  .cards-pg i{flex:1;height:2px;background:var(--line);transition:background-color .4s}
+  .cards-pg i.on{background:var(--ink)}
+  .base{border-top:2px solid var(--ink)}
+  .hero-body{padding-bottom:28px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.cue::after{animation:none}}
 </style>
 
-<section class="hero" aria-label="ファーストビュー">
-  <img src="img/hero_escalator.jpg" alt="オフィスビルのエスカレーターを行き交う人々" style="object-position:50% 50%;filter:brightness(.85)">
+<a class="skip" href="#concept">本文へ移動</a>
+<!-- ヘッダー：最初は写真の上に白文字で重なり、写真を過ぎると白い帯になって画面上に残る。下端の細い線は読んだ量 -->
+<div class="gh" id="gh">
   <div class="wrap">
     <header class="in hd">
-      <span class="logo">JIL</span>
+      <a class="logo" href="#top" aria-label="JIL ページの先頭へ">JIL</a>
       <nav class="nav" aria-label="ページ内">
-        <a href="#feature">JILの特徴</a><a href="#flow">支援の流れ</a><a href="#flow">お客様の声</a><a href="#flow">メンバー</a>
-        <a class="pill" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談<span class="dot" aria-hidden="true">→</span></a>
+        <a href="#concept">コンセプト</a><a href="#feature">JILの特徴</a><a href="#flow">事業づくりの流れ</a><a href="#ai">事業開発×AI</a>
+        <a class="pill" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談<span class="dot" aria-hidden="true"><i>→</i></span></a>
       </nav>
     </header>
   </div>
-  <p class="hero-meta mono">New Business Development ／ For Enterprise</p>
+  <span class="prog" aria-hidden="true"></span>
+</div>
+
+<section class="hero" id="top" aria-label="ファーストビュー">
+  <div class="hero-media"><img src="img/hero_escalator.jpg" alt="オフィスビルのエスカレーターを行き交う人々" fetchpriority="high"></div>
+  <p class="hero-meta mono">New Business Development ／ For Enterprise<span class="cue" aria-hidden="true"></span></p>
   <div class="wrap hero-body">
     <div class="in">
-      <h1><span class="ph">戦略から、</span><span class="ph">実行まで。</span><br><span class="g"><span class="ph">新規事業を、</span><span class="ph">ひとつの</span><span class="ph">チームで。</span></span></h1>
-      <div class="hero-row">
-        <p>事業審査の経験を持つ事業開発のプロが、<br class="br-pc">戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。<br class="br-pc">大企業の新規事業を、ひとつのチームで最後まで支えます。</p>
-        <div class="cta">
-          <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">30分の無料相談<span class="dot" aria-hidden="true">→</span></a>
-          <a class="pill line-w" href="#contact">サービス資料<span class="dot" aria-hidden="true">↓</span></a>
+      <h1 class="rv-h" style="--d0:.35s"><span class="ph">戦略から、</span><span class="ph">実行まで。</span><br><span class="g"><span class="ph">新規事業を、</span><span class="ph">ひとつの</span><span class="ph">チームで。</span></span></h1>
+      <div class="hero-row rv">
+        <p class="rv-up" style="--d:1.05s">事業審査の経験を持つ事業開発のプロが、<br class="br-pc">戦略・検証・開発から、リリース後の営業やオペレーションを担う人材まで。<br class="br-pc">大企業の新規事業を、ひとつのチームで最後まで支えます。</p>
+        <div class="cta rv-up" style="--d:1.2s">
+          <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">30分の無料相談<span class="dot" aria-hidden="true"><i>→</i></span></a>
+          <a class="pill line-w" href="#contact">サービス資料<span class="dot" aria-hidden="true"><i>↓</i></span></a>
         </div>
       </div>
     </div>
@@ -373,7 +503,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 </section>
 
 <div class="clients-band">
-  <div class="wrap"><div class="in clients" aria-label="ご支援企業">
+  <div class="wrap"><div class="in clients rv-g" style="--d:1.3s" aria-label="ご支援企業">
     <div class="jl">ご支援企業（一部）</div>
     <div><img src="logos/nikkei-research.svg" alt="日経リサーチ"></div>
     <div><img src="logos/knowbe.svg" alt="ノウビー"></div>
@@ -384,16 +514,16 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   </div></div>
 </div>
 
-<section class="mesh stmt-sec" aria-label="JILのコンセプト">
+<section class="mesh stmt-sec" id="concept" aria-label="JILのコンセプト">
   <div class="wrap"><div class="in stmt grid12">
-    <p class="lbl"><span class="jl">JILのコンセプト</span></p>
-    <div class="stmt-body">
+    <p class="lbl rv-up"><span class="jl">JILのコンセプト</span></p>
+    <div class="stmt-body rv">
       <div class="stmt-txt">
-      <p class="stmt-text"><span class="ph">新規事業の</span><span class="ph">立ち上げに、</span><span class="ph">最後まで</span><span class="ph">コミットする。</span></p>
-      <p class="stmt-not"><span class="ph">コンサルでも、</span><span class="ph">開発会社でも、</span><span class="ph">営業・マーケ会社でもなく。</span></p>
-      <p class="stmt-sub"><em>描いて終わり、つくって終わりにしない。</em><br>事業が立ち上がり、伸びるまで、<br>ひとつのチームとして伴走します。</p>
+      <p class="stmt-text rv-h" style="--d0:.15s"><span class="ph">新規事業の</span><span class="ph">立ち上げに、</span><span class="ph">最後まで</span><span class="ph">コミットする。</span></p>
+      <p class="stmt-not rv-up" style="--d:.55s"><span class="ph">コンサルでも、</span><span class="ph">開発会社でも、</span><span class="ph">営業・マーケ会社でもなく。</span></p>
+      <p class="stmt-sub rv-up" style="--d:.7s;--md:1.3s"><em>描いて終わり、つくって終わりにしない。</em><br>事業が立ち上がり、伸びるまで、<br>ひとつのチームとして伴走します。</p>
       </div>
-      <figure class="vfig"><svg viewBox="0 0 520 420" role="img" aria-label="戦略（コンサル）、開発・実装（開発会社）、実行・マーケ（営業・マーケ会社）の3つの円が重なる図。3つが重なる真ん中がJIL">
+      <figure class="vfig rv-up" style="--d:.3s"><svg viewBox="0 0 520 420" role="img" aria-label="戦略（コンサル）、開発・実装（開発会社）、実行・マーケ（営業・マーケ会社）の3つの円が重なる図。3つが重なる真ん中がJIL">
         <defs><clipPath id="vcB"><circle cx="330" cy="140" r="130"/></clipPath><clipPath id="vcC"><circle cx="260" cy="261" r="130"/></clipPath></defs>
         <g class="m-show" style="--d:1.2s" clip-path="url(#vcB)"><circle cx="190" cy="140" r="130" fill="#FFF000" clip-path="url(#vcC)"/></g>
         <g fill="none" stroke="#A3A3A3" stroke-width="1.2"><circle class="m-draw" pathLength="1" cx="190" cy="140" r="130"/><circle class="m-draw" style="--d:.2s" pathLength="1" cx="330" cy="140" r="130"/><circle class="m-draw" style="--d:.4s" pathLength="1" cx="260" cy="261" r="130"/></g>
@@ -408,10 +538,10 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 <section id="feature" aria-label="JILの事業開発の特徴">
   <div class="wrap"><div class="in feat">
     <div class="feat-head grid12">
-      <p class="lbl"><span class="jl">JILの事業開発の特徴</span></p>
-      <h2 class="h2"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>を。</span></h2>
+      <p class="lbl rv-up"><span class="jl">JILの事業開発の特徴</span></p>
+      <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業を見極める目と、</span><span class="ph"><em>動かす手</em>を。</span></h2>
     </div>
-    <div class="traits">
+    <div class="traits rv-g" style="--d:.1s">
       <div class="trait"><p class="mono"><span>Strategy</span><span>01</span></p><h3>見極める</h3><p class="d">審査する側の目線で、筋の良い事業と、やめるべき事業を見極めます。社内の審査を通す計画づくりまで伴走します。</p><div class="num"><span class="count" data-to="1500">1,500</span><small>件超／年</small></div><p class="cap">役員が携わってきた事業審査の数</p></div>
       <div class="trait"><p class="mono"><span>Development</span><span>02</span></p><h3>つくる</h3><p class="d">設計して渡すだけでなく、試作から本番のプロダクト・ソリューションまで、開発・実装を自分たちの手で引き受けます。</p><div class="num"><span class="count" data-to="10">10</span><small>件以上／年</small></div><p class="cap">立ち上げてきた新規サービスの数</p></div>
       <div class="trait"><p class="mono"><span>Execution</span><span>03</span></p><h3>動かす</h3><p class="d">つくって終わりにせず、マーケティング・営業・CS・業務設計まで、事業が回る仕組みを実際に動かします。</p><div class="num txt">マーケ・営業・CS・業務設計</div><p class="cap">事業を立ち上げ、伸ばすところまで</p></div>
@@ -422,11 +552,11 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 <section class="mesh soft" id="flow" aria-label="事業づくりの流れ">
   <div class="wrap"><div class="in flow">
     <div class="flow-head grid12">
-      <p class="lbl"><span class="jl">事業づくりの流れ</span></p>
-      <h2 class="h2"><span class="ph">0→1から、</span><span class="ph"><em>1→10へ。</em></span><br><span class="ph">事業を育てる</span><span class="ph">ステップ。</span></h2>
+      <p class="lbl rv-up"><span class="jl">事業づくりの流れ</span></p>
+      <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">0→1から、</span><span class="ph"><em>1→10へ。</em></span><br><span class="ph">事業を育てる</span><span class="ph">ステップ。</span></h2>
     </div>
 
-    <div class="chart" id="chart">
+    <div class="chart rv-up" id="chart">
       <div class="chart-scroll">
         <svg class="chart-pc" data-curve="M0,392 C240,388 380,372 480,342 C600,306 700,282 800,246 C930,200 1040,150 1120,96 C1170,62 1230,40 1280,28" viewBox="0 0 1280 470" role="img" aria-label="左下から右上へ立ち上がる成長曲線。曲線上に構想する、確かめる、つくる、立ち上げ・伸ばすの4つのステップが並び、下に0→1と1→10の目盛りがある">
           <defs>
@@ -488,16 +618,17 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
           <g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".5" style="fill:var(--sub)" text-anchor="middle"><text x="90" y="254">0 → 1</text><text x="270" y="254">1 → 10</text></g>
         </svg>
       </div>
-      <div class="cards" role="list">
-        <div tabindex="0" class="card on" data-k="0" role="listitem"><img class="shot" src="img/step1_roadmap.jpg" alt="ホワイトボードのロードマップを指さしながら話すメンバー" loading="lazy"><p class="mono"><span>Step 01</span><span>0→1</span></p><h3>構想する</h3><p class="what">戦略・ビジネスモデル設計／伴走</p><div class="more"><div><ul><li>事業領域の選定</li><li>ビジネスモデルと収益の設計</li><li>事業計画と社内審査の伴走</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
-        <div tabindex="0" class="card" data-k="1" role="listitem"><img class="shot" src="img/step2_interview_japan.jpg" alt="机をはさんで向かい合い、顧客の話を聞くインタビューの様子" loading="lazy"><p class="mono"><span>Step 02</span><span>0→1</span></p><h3>確かめる</h3><p class="what">事業化検証の伴走／インキュベート</p><div class="more"><div><ul><li>顧客の課題の検証</li><li>解決策と価格の検証</li><li>テスト販売と継続の判断</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ、デザイナー</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
-        <div tabindex="0" class="card" data-k="2" role="listitem"><img class="shot" src="img/step3_prototype.jpg" alt="付箋と画面の下書きを囲んで試作を考えるチーム" loading="lazy"><p class="mono"><span>Step 03</span><span>1→10</span></p><h3>つくる</h3><p class="what">プロダクト・ソリューションスキームの開発</p><div class="more"><div><ul><li>最初の製品・サービスの開発</li><li>提携や提供の座組の設計</li><li>試作と改善の繰り返し</li></ul><dl><dt>MEMBERS</dt><dd>PM、デザイナー、エンジニア</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
-        <div tabindex="0" class="card" data-k="3" role="listitem"><img class="shot" src="img/step4_present_japan.jpg" alt="売上のグラフを映した大きな画面の前で、チームに説明する人" loading="lazy"><p class="mono"><span>Step 04</span><span>1→10</span></p><h3>立ち上げ・伸ばす</h3><p class="what">リリース後の設計と人材のアサイン</p><div class="more"><div><ul><li>売る仕組み（マーケ・営業・CS）</li><li>回す仕組み（オペレーション）</li><li>常駐・業務委託での人材のアサイン</li></ul><dl><dt>MEMBERS</dt><dd>マーケティング、IS／FS、業務設計</dd></dl></div></div><p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p></div>
+      <div class="cards rv-g" role="list">
+        <div class="card on" data-k="0" role="listitem"><span class="shotw"><img class="shot" src="img/step1_roadmap.jpg" alt="ホワイトボードのロードマップを指さしながら話すメンバー" loading="lazy"></span><p class="mono"><span>Step 01</span><span>0→1</span></p><h3>構想する</h3><p class="what">戦略・ビジネスモデル設計／伴走</p><div class="more"><div><ul><li>事業領域の選定</li><li>ビジネスモデルと収益の設計</li><li>事業計画と社内審査の伴走</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ</dd></dl></div></div><button class="tog" type="button" aria-expanded="false"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></button></div>
+        <div class="card" data-k="1" role="listitem"><span class="shotw"><img class="shot" src="img/step2_interview_japan.jpg" alt="机をはさんで向かい合い、顧客の話を聞くインタビューの様子" loading="lazy"></span><p class="mono"><span>Step 02</span><span>0→1</span></p><h3>確かめる</h3><p class="what">事業化検証の伴走／インキュベート</p><div class="more"><div><ul><li>顧客の課題の検証</li><li>解決策と価格の検証</li><li>テスト販売と継続の判断</li></ul><dl><dt>MEMBERS</dt><dd>事業開発、リサーチ、デザイナー</dd></dl></div></div><button class="tog" type="button" aria-expanded="false"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></button></div>
+        <div class="card" data-k="2" role="listitem"><span class="shotw"><img class="shot" src="img/step3_prototype.jpg" alt="付箋と画面の下書きを囲んで試作を考えるチーム" loading="lazy"></span><p class="mono"><span>Step 03</span><span>1→10</span></p><h3>つくる</h3><p class="what">プロダクト・ソリューションスキームの開発</p><div class="more"><div><ul><li>最初の製品・サービスの開発</li><li>提携や提供の座組の設計</li><li>試作と改善の繰り返し</li></ul><dl><dt>MEMBERS</dt><dd>PM、デザイナー、エンジニア</dd></dl></div></div><button class="tog" type="button" aria-expanded="false"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></button></div>
+        <div class="card" data-k="3" role="listitem"><span class="shotw"><img class="shot" src="img/step4_present_japan.jpg" alt="売上のグラフを映した大きな画面の前で、チームに説明する人" loading="lazy"></span><p class="mono"><span>Step 04</span><span>1→10</span></p><h3>立ち上げ・伸ばす</h3><p class="what">リリース後の設計と人材のアサイン</p><div class="more"><div><ul><li>売る仕組み（マーケ・営業・CS）</li><li>回す仕組み（オペレーション）</li><li>常駐・業務委託での人材のアサイン</li></ul><dl><dt>MEMBERS</dt><dd>マーケティング、IS／FS、業務設計</dd></dl></div></div><button class="tog" type="button" aria-expanded="false"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></button></div>
       </div>
-      <div tabindex="0" class="base" data-k="4">
+      <div class="cards-pg" aria-hidden="true"><i data-k="0"></i><i data-k="1"></i><i data-k="2"></i><i data-k="3"></i></div>
+      <div class="base rv-up" data-k="4">
         <div class="t"><p class="mono">Foundation ／ All Steps</p><h3>土台｜組織をつくる</h3><p>4つのステップ全体を支え、事業が生まれ続ける組織へ広げます。</p></div>
         <div class="more"><div><ul><li>起案制度の設計</li><li>カルチャーの設計</li><li>事業開発人材の研修</li><li>組織・人事、事業開発のメンバー</li></ul></div></div>
-        <p class="tog" aria-hidden="true"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></p>
+        <button class="tog" type="button" aria-expanded="false"><span class="t1">詳しく見る</span><span class="t2">閉じる</span></button>
       </div>
     </div>
   </div></div>
@@ -506,11 +637,11 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 <section id="ai" aria-label="事業開発×AI">
   <div class="wrap"><div class="in ai-sec">
     <div class="ai-head grid12">
-      <p class="lbl"><span class="jl">事業開発×AI</span></p>
-      <h2 class="h2"><span class="ph">事業開発の知見に、</span><span class="ph"><em>AIの速さと量</em>を。</span></h2>
-      <p class="note">新規事業は、どれだけ早く、多く試せるかで決まります。<br class="br-pc">判断は事業開発のプロが担い、調べる・つくる・試す作業をAIで加速します。</p>
+      <p class="lbl rv-up"><span class="jl">事業開発×AI</span></p>
+      <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業開発の知見に、</span><span class="ph"><em>AIの速さと量</em>を。</span></h2>
+      <p class="note rv-up" style="--d:.45s">新規事業は、どれだけ早く、多く試せるかで決まります。<br class="br-pc">判断は事業開発のプロが担い、調べる・つくる・試す作業をAIで加速します。</p>
     </div>
-      <div class="boxes">
+      <div class="boxes rv-g" style="--d:.1s">
         <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="打ち合わせのメモが、翌日には試作画面になる図"><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
 <path d="M18 30h60v58l-12 12H18z"/><path d="M66 100V88h12"/><path d="M29 46h38M29 57h28M29 68h34"/>
 <path class="m-dash" d="M90 65h22" stroke-dasharray="3 4"/><path d="M110 60l6 5-6 5"/>
@@ -523,7 +654,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
         <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="数百社の競合・市場の分布の中から、空いている場所を見つける図"><rect class="m-scan" x="0" y="10" width="14" height="112" fill="#FFF000"/><g stroke="#111" stroke-opacity=".25" stroke-dasharray="2 4"><path d="M120 10v112M14 65h212"/></g><g fill="#111" fill-opacity=".7"><circle cx="84.1" cy="29.4" r="1.6"/><circle cx="32.8" cy="68.7" r="1.6"/><circle cx="29.8" cy="65.8" r="1.6"/><circle cx="106.5" cy="21.1" r="1.6"/><circle cx="104.6" cy="98.3" r="1.6"/><circle cx="63.5" cy="78.0" r="1.6"/><circle cx="135.7" cy="54.5" r="1.6"/><circle cx="27.5" cy="101.6" r="1.6"/><circle cx="47.4" cy="26.0" r="1.6"/><circle cx="148.3" cy="52.0" r="1.6"/><circle cx="30.8" cy="20.1" r="1.6"/><circle cx="137.5" cy="60.2" r="1.6"/><circle cx="180.1" cy="85.3" r="1.6"/><circle cx="135.2" cy="67.6" r="1.6"/><circle cx="42.1" cy="56.6" r="1.6"/><circle cx="49.0" cy="63.9" r="1.6"/><circle cx="154.3" cy="92.0" r="1.6"/><circle cx="139.3" cy="73.1" r="1.6"/><circle cx="189.4" cy="110.4" r="1.6"/><circle cx="153.5" cy="20.2" r="1.6"/><circle cx="150.0" cy="115.3" r="1.6"/><circle cx="76.1" cy="53.4" r="1.6"/><circle cx="22.6" cy="61.1" r="1.6"/><circle cx="41.9" cy="20.0" r="1.6"/><circle cx="44.4" cy="39.3" r="1.6"/><circle cx="130.1" cy="104.1" r="1.6"/><circle cx="91.2" cy="104.2" r="1.6"/><circle cx="48.8" cy="32.0" r="1.6"/><circle cx="65.6" cy="63.5" r="1.6"/><circle cx="71.6" cy="14.4" r="1.6"/><circle cx="93.3" cy="71.8" r="1.6"/><circle cx="158.9" cy="66.6" r="1.6"/><circle cx="155.9" cy="19.5" r="1.6"/><circle cx="177.1" cy="103.2" r="1.6"/><circle cx="98.0" cy="54.7" r="1.6"/><circle cx="147.4" cy="20.3" r="1.6"/><circle cx="60.6" cy="30.6" r="1.6"/><circle cx="28.7" cy="14.0" r="1.6"/><circle cx="38.7" cy="51.1" r="1.6"/><circle cx="196.4" cy="76.6" r="1.6"/><circle cx="69.5" cy="49.4" r="1.6"/><circle cx="43.1" cy="100.6" r="1.6"/><circle cx="113.1" cy="63.4" r="1.6"/><circle cx="38.8" cy="48.9" r="1.6"/><circle cx="128.8" cy="16.8" r="1.6"/><circle cx="217.6" cy="102.1" r="1.6"/><circle cx="71.3" cy="51.4" r="1.6"/><circle cx="175.5" cy="68.3" r="1.6"/><circle cx="85.3" cy="36.8" r="1.6"/><circle cx="218.9" cy="101.0" r="1.6"/><circle cx="184.9" cy="89.5" r="1.6"/><circle cx="123.6" cy="50.3" r="1.6"/><circle cx="23.7" cy="42.5" r="1.6"/><circle cx="159.3" cy="111.6" r="1.6"/><circle cx="209.2" cy="114.8" r="1.6"/><circle cx="92.4" cy="36.5" r="1.6"/><circle cx="58.1" cy="34.8" r="1.6"/><circle cx="201.7" cy="99.7" r="1.6"/><circle cx="151.2" cy="95.6" r="1.6"/><circle cx="152.8" cy="106.8" r="1.6"/><circle cx="211.1" cy="87.9" r="1.6"/><circle cx="43.9" cy="29.4" r="1.6"/><circle cx="218.0" cy="81.0" r="1.6"/><circle cx="129.9" cy="27.4" r="1.6"/><circle cx="216.1" cy="80.3" r="1.6"/><circle cx="208.5" cy="58.2" r="1.6"/><circle cx="77.8" cy="38.5" r="1.6"/><circle cx="70.9" cy="56.7" r="1.6"/><circle cx="203.6" cy="50.1" r="1.6"/><circle cx="137.0" cy="106.2" r="1.6"/><circle cx="205.2" cy="65.2" r="1.6"/><circle cx="124.8" cy="15.9" r="1.6"/><circle cx="55.4" cy="14.4" r="1.6"/><circle cx="53.2" cy="62.3" r="1.6"/><circle cx="131.5" cy="47.3" r="1.6"/><circle cx="131.3" cy="94.0" r="1.6"/><circle cx="132.3" cy="39.3" r="1.6"/><circle cx="173.0" cy="107.1" r="1.6"/><circle cx="143.0" cy="65.6" r="1.6"/><circle cx="159.3" cy="60.1" r="1.6"/><circle cx="115.5" cy="110.0" r="1.6"/><circle cx="196.8" cy="110.1" r="1.6"/><circle cx="132.1" cy="110.2" r="1.6"/><circle cx="46.0" cy="26.4" r="1.6"/><circle cx="32.8" cy="38.5" r="1.6"/><circle cx="154.6" cy="94.0" r="1.6"/><circle cx="49.5" cy="87.0" r="1.6"/><circle cx="47.2" cy="104.0" r="1.6"/><circle cx="62.8" cy="111.2" r="1.6"/><circle cx="117.4" cy="115.0" r="1.6"/><circle cx="50.9" cy="58.0" r="1.6"/><circle cx="87.2" cy="34.0" r="1.6"/><circle cx="165.3" cy="16.0" r="1.6"/><circle cx="107.9" cy="15.8" r="1.6"/><circle cx="145.3" cy="66.3" r="1.6"/><circle cx="219.0" cy="94.4" r="1.6"/><circle cx="39.4" cy="41.1" r="1.6"/><circle cx="104.1" cy="107.0" r="1.6"/><circle cx="70.8" cy="29.2" r="1.6"/><circle cx="134.4" cy="85.4" r="1.6"/><circle cx="29.7" cy="84.2" r="1.6"/><circle cx="32.8" cy="109.7" r="1.6"/><circle cx="31.6" cy="102.0" r="1.6"/><circle cx="87.2" cy="70.4" r="1.6"/><circle cx="72.6" cy="27.2" r="1.6"/><circle cx="66.6" cy="25.2" r="1.6"/><circle cx="28.3" cy="34.6" r="1.6"/><circle cx="80.2" cy="91.5" r="1.6"/><circle cx="120.0" cy="32.1" r="1.6"/><circle cx="21.7" cy="39.5" r="1.6"/><circle cx="167.5" cy="70.2" r="1.6"/><circle cx="114.9" cy="109.3" r="1.6"/><circle cx="158.3" cy="114.2" r="1.6"/><circle cx="187.8" cy="86.1" r="1.6"/><circle cx="100.6" cy="49.5" r="1.6"/><circle cx="44.5" cy="21.2" r="1.6"/><circle cx="70.1" cy="30.7" r="1.6"/><circle cx="189.6" cy="102.8" r="1.6"/><circle cx="75.5" cy="38.7" r="1.6"/><circle cx="111.7" cy="30.1" r="1.6"/><circle cx="71.7" cy="112.1" r="1.6"/><circle cx="129.6" cy="38.9" r="1.6"/><circle cx="81.1" cy="50.4" r="1.6"/><circle cx="95.9" cy="62.4" r="1.6"/><circle cx="59.0" cy="65.5" r="1.6"/><circle cx="71.9" cy="23.2" r="1.6"/><circle cx="26.5" cy="16.3" r="1.6"/><circle cx="65.5" cy="73.7" r="1.6"/><circle cx="171.1" cy="81.1" r="1.6"/><circle cx="218.9" cy="29.2" r="1.6"/><circle cx="149.2" cy="18.5" r="1.6"/><circle cx="200.0" cy="78.0" r="1.6"/><circle cx="120.9" cy="99.2" r="1.6"/><circle cx="186.6" cy="73.6" r="1.6"/><circle cx="157.3" cy="84.7" r="1.6"/><circle cx="24.4" cy="27.6" r="1.6"/><circle cx="39.4" cy="99.3" r="1.6"/><circle cx="146.1" cy="77.9" r="1.6"/><circle cx="117.8" cy="14.3" r="1.6"/><circle cx="170.6" cy="65.3" r="1.6"/><circle cx="152.5" cy="20.7" r="1.6"/><circle cx="69.4" cy="21.6" r="1.6"/><circle cx="115.7" cy="83.7" r="1.6"/><circle cx="143.9" cy="79.6" r="1.6"/><circle cx="48.1" cy="39.9" r="1.6"/><circle cx="80.1" cy="71.9" r="1.6"/><circle cx="30.4" cy="41.4" r="1.6"/><circle cx="159.2" cy="82.9" r="1.6"/><circle cx="123.4" cy="61.4" r="1.6"/><circle cx="42.2" cy="105.2" r="1.6"/><circle cx="217.5" cy="109.5" r="1.6"/><circle cx="111.6" cy="97.6" r="1.6"/><circle cx="109.7" cy="41.4" r="1.6"/><circle cx="210.9" cy="35.5" r="1.6"/><circle cx="46.9" cy="67.5" r="1.6"/><circle cx="45.1" cy="97.7" r="1.6"/><circle cx="198.9" cy="85.7" r="1.6"/><circle cx="18.7" cy="64.2" r="1.6"/><circle cx="79.6" cy="28.4" r="1.6"/><circle cx="82.5" cy="99.7" r="1.6"/><circle cx="171.1" cy="99.6" r="1.6"/><circle cx="207.0" cy="86.7" r="1.6"/><circle cx="77.1" cy="52.0" r="1.6"/><circle cx="221.8" cy="74.1" r="1.6"/><circle cx="105.3" cy="42.1" r="1.6"/><circle cx="38.7" cy="99.1" r="1.6"/><circle cx="122.2" cy="33.4" r="1.6"/><circle cx="213.1" cy="104.2" r="1.6"/><circle cx="146.7" cy="107.2" r="1.6"/><circle cx="130.0" cy="87.4" r="1.6"/><circle cx="149.5" cy="43.2" r="1.6"/><circle cx="207.1" cy="27.0" r="1.6"/><circle cx="88.1" cy="44.4" r="1.6"/><circle cx="217.2" cy="40.5" r="1.6"/><circle cx="79.4" cy="70.8" r="1.6"/><circle cx="52.1" cy="30.5" r="1.6"/><circle cx="202.9" cy="115.6" r="1.6"/><circle cx="46.5" cy="33.6" r="1.6"/><circle cx="87.8" cy="23.3" r="1.6"/><circle cx="70.7" cy="72.1" r="1.6"/><circle cx="124.9" cy="52.4" r="1.6"/><circle cx="30.7" cy="42.3" r="1.6"/><circle cx="43.7" cy="65.3" r="1.6"/><circle cx="68.7" cy="54.8" r="1.6"/><circle cx="212.6" cy="100.6" r="1.6"/><circle cx="22.4" cy="17.3" r="1.6"/><circle cx="200.7" cy="62.3" r="1.6"/><circle cx="18.0" cy="53.9" r="1.6"/><circle cx="186.4" cy="101.3" r="1.6"/><circle cx="68.7" cy="25.1" r="1.6"/><circle cx="124.6" cy="83.6" r="1.6"/><circle cx="165.2" cy="80.0" r="1.6"/><circle cx="111.3" cy="70.3" r="1.6"/><circle cx="149.7" cy="45.0" r="1.6"/><circle cx="69.4" cy="78.9" r="1.6"/><circle cx="40.9" cy="21.2" r="1.6"/><circle cx="136.9" cy="53.6" r="1.6"/><circle cx="140.6" cy="15.1" r="1.6"/><circle cx="112.0" cy="111.8" r="1.6"/><circle cx="68.4" cy="112.0" r="1.6"/><circle cx="80.7" cy="16.2" r="1.6"/><circle cx="154.1" cy="108.4" r="1.6"/><circle cx="25.0" cy="48.5" r="1.6"/><circle cx="215.9" cy="45.8" r="1.6"/><circle cx="65.1" cy="36.6" r="1.6"/><circle cx="78.2" cy="111.1" r="1.6"/><circle cx="56.2" cy="36.8" r="1.6"/><circle cx="153.7" cy="110.8" r="1.6"/><circle cx="98.3" cy="35.7" r="1.6"/><circle cx="46.9" cy="19.3" r="1.6"/><circle cx="98.2" cy="105.6" r="1.6"/><circle cx="167.5" cy="115.7" r="1.6"/><circle cx="85.2" cy="32.9" r="1.6"/><circle cx="95.2" cy="52.1" r="1.6"/><circle cx="52.5" cy="14.3" r="1.6"/><circle cx="89.7" cy="111.5" r="1.6"/><circle cx="185.6" cy="97.8" r="1.6"/><circle cx="28.0" cy="62.3" r="1.6"/><circle cx="183.6" cy="92.2" r="1.6"/><circle cx="25.1" cy="20.4" r="1.6"/><circle cx="70.4" cy="90.2" r="1.6"/><circle cx="87.2" cy="41.8" r="1.6"/><circle cx="143.9" cy="40.7" r="1.6"/><circle cx="82.6" cy="42.1" r="1.6"/><circle cx="172.2" cy="107.5" r="1.6"/><circle cx="114.9" cy="111.6" r="1.6"/><circle cx="96.8" cy="39.6" r="1.6"/><circle cx="118.7" cy="108.7" r="1.6"/><circle cx="181.7" cy="89.3" r="1.6"/><circle cx="175.7" cy="75.9" r="1.6"/></g><circle class="m-spin" cx="178" cy="40" r="19" fill="#FFF000" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M173 40h10M178 35v10" stroke="#111" stroke-width="1.5"/><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">N = 300+</text><text x="223" y="138" text-anchor="end">WHITE SPACE</text></g></svg></div><div class="body"><p class="mono"><span>Coverage</span><span>03</span></p><h3>網羅的に</h3><p class="to">例：競合・市場を数百社規模で調査。</p><p class="d">人手では追い切れない範囲まで調べ、見落としを減らします。</p></div></div>
         <div class="box"><div class="art"><svg viewBox="0 0 240 150" role="img" aria-label="問い合わせや作業がAIを通って、自動で処理済みになっていく図"><g fill="none" stroke="#111" stroke-opacity=".4" stroke-width="1.2" stroke-linecap="round"><rect x="18" y="30" width="60" height="20" rx="3"/><path d="M26 37h30M26 43h20"/><rect x="18" y="58" width="60" height="20" rx="3"/><path d="M26 65h34M26 71h18"/><rect x="18" y="86" width="60" height="20" rx="3"/><path d="M26 93h26M26 99h22"/></g><g fill="#111"><circle class="m-flow" style="--dy:28px" cx="84" cy="40" r="2.4"/><circle class="m-flow" style="--dy:0px;--d:.8s" cx="84" cy="68" r="2.4"/><circle class="m-flow" style="--dy:-28px;--d:1.6s" cx="84" cy="96" r="2.4"/></g><circle class="m-spin" cx="138" cy="68" r="19" fill="#FFF000" stroke="#111" stroke-width="1.5" stroke-dasharray="4 3"/><text x="138" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="500" fill="#111">AI</text><g fill="none" stroke="#111" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M161 68h9"/><path d="M167 64l4 4-4 4"/><path d="M194 41h30M194 59h24M194 77h30M194 95h20"/><rect x="178" y="36" width="10" height="10" rx="2"/><rect x="178" y="54" width="10" height="10" rx="2"/><rect x="178" y="72" width="10" height="10" rx="2"/><rect x="178" y="90" width="10" height="10" rx="2"/><g class="m-cell" style="--d:1.2s"><rect x="178" y="36" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 41l2 2 3.5-4"/></g><g class="m-cell" style="--d:1.6s"><rect x="178" y="54" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 59l2 2 3.5-4"/></g><g class="m-cell" style="--d:2s"><rect x="178" y="72" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 77l2 2 3.5-4"/></g><g class="m-cell" style="--d:2.4s"><rect x="178" y="90" width="10" height="10" rx="2" fill="#FFF000"/><path d="M180.5 95l2 2 3.5-4"/></g></g><g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing=".6" fill="#555"><text x="17" y="138">TASKS</text><text x="223" y="138" text-anchor="end">AUTOMATED</text></g></svg></div><div class="body"><p class="mono"><span>Automation</span><span>04</span></p><h3>自動化する</h3><p class="to">例：問い合わせ対応を、自動で。</p><p class="d">立ち上げた後の業務をAIで仕組みにし、少ない人数でも事業を回せるようにします。</p></div></div>
       </div>
-      <p class="ai-foot">※ 事例は支援内容の一例です。期間や数量は案件によって異なります。</p>
+      <p class="ai-foot rv-up">※ 事例は支援内容の一例です。期間や数量は案件によって異なります。</p>
   </div></div>
 </section>
 
@@ -531,14 +662,14 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
   <div class="wrap">
     <div class="in grid12 deep-in">
       <div class="cta-txt">
-        <p class="lbl"><span class="jl">ご相談</span></p>
-        <h2><span class="ph">まずは、</span><span class="ph">30分の無料相談から。</span></h2>
-        <p class="lead">相談内容がまとまっていなくても構いません。<br class="br-pc">いまの状況を伺い、どのステップから始めるのが良いかを一緒に整理します。</p>
+        <p class="lbl rv-up"><span class="jl">ご相談</span></p>
+        <h2 class="rv-h" style="--d0:.1s"><span class="ph">まずは、</span><span class="ph">30分の無料相談から。</span></h2>
+        <p class="lead rv-up" style="--d:.45s">相談内容がまとまっていなくても構いません。<br class="br-pc">いまの状況を伺い、どのステップから始めるのが良いかを一緒に整理します。</p>
       </div>
-      <div class="card2">
+      <div class="card2 rv-up" style="--d:.3s">
         <p class="jl" style="margin:0">対応する役員</p>
         <div class="who"><span><small>代表取締役</small>武井 遼太郎</span><span><small>取締役</small>篠原 孝弘</span></div>
-        <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談を予約する<span class="dot" aria-hidden="true">→</span></a>
+        <a class="pill solid" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談を予約する<span class="dot" aria-hidden="true"><i>→</i></span></a>
       </div>
     </div>
   </div>
@@ -557,20 +688,29 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 <script>
 (function(){
   function setStep(k){document.querySelectorAll('[data-k]').forEach(el=>el.classList.toggle('on',el.dataset.k===String(k)))}
-  document.querySelectorAll('.card[data-k],.base[data-k]').forEach(r=>{
+  document.querySelectorAll('.card[data-k],.base[data-k]').forEach((r,i)=>{
     r.addEventListener('click',()=>setStep(r.dataset.k));
-    r.addEventListener('mouseenter',()=>setStep(r.dataset.k));
-    r.addEventListener('focus',()=>setStep(r.dataset.k));
-    r.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setStep(r.dataset.k)}});
+    r.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover)').matches)setStep(r.dataset.k)});
+    r.addEventListener('focusin',()=>setStep(r.dataset.k));
   });
   setStep(0);
-  // カードや土台をクリック（またはEnter）すると、その詳細を開け閉めする
-  document.querySelectorAll('.card[data-k],.base[data-k]').forEach(c=>{
-    c.setAttribute('aria-expanded','false');
-    const toggle=()=>c.setAttribute('aria-expanded',c.classList.toggle('open'));
-    c.addEventListener('click',toggle);
-    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')toggle()});
+  // カードや土台のどこを押しても詳細を開け閉めする（「詳しく見る」はボタンなので、キーボードのEnterでも同じ）
+  document.querySelectorAll('.card[data-k],.base[data-k]').forEach((c,i)=>{
+    const b=c.querySelector('.tog'),m=c.querySelector('.more');
+    m.id='more-'+i; b.setAttribute('aria-controls',m.id);
+    c.addEventListener('click',()=>b.setAttribute('aria-expanded',c.classList.toggle('open')));
   });
+  // 図の吹き出しを押すと、そのステップを選ぶ（スマホでは横にめくるカードもそこへ送る）
+  const cards=document.querySelector('.cards'),sp=matchMedia('(max-width:560px)');
+  document.querySelectorAll('.chart .tag').forEach(t=>t.addEventListener('click',()=>{
+    setStep(t.dataset.k);
+    if(sp.matches){const c=cards.querySelector(`.card[data-k="${t.dataset.k}"]`);cards.scrollTo({left:c.offsetLeft-16,behavior:'smooth'})}
+  }));
+  // スマホ：カードをめくったら、図の選択も追従させる
+  if('IntersectionObserver' in window){
+    const cio=new IntersectionObserver(es=>es.forEach(e=>{if(sp.matches&&e.isIntersecting)setStep(e.target.dataset.k)}),{root:cards,threshold:.6});
+    cards.querySelectorAll('.card').forEach(c=>cio.observe(c));
+  }
   // 曲線が画面に入ったときに、左から右へ描く（動きを減らす設定では描かない）
   const chart=document.getElementById('chart');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -629,5 +769,45 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
     cio.unobserve(el);
   }),{threshold:.6});
   document.fonts.ready.then(()=>document.querySelectorAll('.count').forEach(el=>{el.style.minWidth=el.offsetWidth+'px';el.textContent='0';cio.observe(el)}));
+})();
+(function(){
+  // ヘッダー：写真を過ぎたら白い帯に。読んだ量の線と、今いる欄の印を更新する
+  const gh=document.getElementById('gh'),hero=document.querySelector('.hero');
+  const media=hero.querySelector('.hero-media'),body=hero.querySelector('.hero-body');
+  const still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let busy=false;
+  function frame(){
+    busy=false;
+    const y=scrollY,h=hero.offsetHeight;
+    gh.classList.toggle('solid',y>h-gh.offsetHeight);
+    gh.style.setProperty('--p',Math.min(1,y/Math.max(1,document.documentElement.scrollHeight-innerHeight)).toFixed(4));
+    // 写真は文字より遅く動かして奥行きを出す（写真が見えている間だけ）
+    if(!still&&y<h){media.style.transform=`translate3d(0,${(y*.32).toFixed(1)}px,0)`;body.style.transform=`translate3d(0,${(y*.1).toFixed(1)}px,0)`;body.style.opacity=(1-Math.min(1,y/h)*.7).toFixed(3)}
+  }
+  addEventListener('scroll',()=>{if(!busy){busy=true;requestAnimationFrame(frame)}},{passive:true});
+  addEventListener('resize',frame); frame();
+  if('IntersectionObserver' in window){
+    const links=[...gh.querySelectorAll('.nav a[href^="#"]')];
+    const sio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('cur',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('#concept,#feature,#flow,#ai,#contact').forEach(s=>sio.observe(s));
+  }
+
+  // 画面に入ったものを順に出す（動きを減らす設定では、最初からすべて表示）
+  if(still||!('IntersectionObserver' in window)) return;
+  document.documentElement.classList.add('rv-on');
+  document.querySelectorAll('.rv-h').forEach(h=>h.querySelectorAll('.ph').forEach((p,i)=>{
+    const s=document.createElement('span');s.className='ph-i';s.style.setProperty('--i',i);
+    while(p.firstChild)s.appendChild(p.firstChild);p.appendChild(s);
+  }));
+  document.querySelectorAll('.rv-g').forEach(g=>[...g.children].forEach((c,i)=>c.style.setProperty('--i',i)));
+  const show=t=>{t.classList.add('is-in');io.unobserve(t);rest.delete(t)};
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)show(e.target)}),{rootMargin:'0px 0px -10% 0px'});
+  const first=[...document.querySelectorAll('.hero :is(.rv,.rv-h,.rv-up),.clients.rv-g')];
+  const rest=new Set([...document.querySelectorAll('.rv,.rv-h,.rv-up,.rv-g')].filter(t=>!first.includes(t)));
+  rest.forEach(t=>io.observe(t));
+  // メニューで一気に下へ飛んだとき、通り過ぎた欄も出しておく
+  addEventListener('scroll',()=>rest.forEach(t=>{if(t.getBoundingClientRect().bottom<0)show(t)}),{passive:true});
+  // 最初の画面は、文字の読み込みを待ってから一斉に動かし始める（待つのは最大0.8秒）
+  Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,800))]).then(()=>requestAnimationFrame(()=>first.forEach(t=>t.classList.add('is-in'))));
 })();
 </script>
