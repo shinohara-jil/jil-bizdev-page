@@ -1,0 +1,733 @@
+<title>JIL コーポレートサイト試作</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Manrope:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap">
+<style>
+/* JIL コーポレートサイト トップ試作（3案切替）
+   A 波紋：明るいグレー＋墨＋コバルト。細い線の輪が中心の「人」から広がる
+   B 点の集まり：白＋墨＋黄色。1点＝1人の点の集まりが広がって組織と事業になる
+   C 人と写真：白＋墨＋赤。働く人の写真を大きな輪の上に並べる
+   明るい一つの世界観で作るため、ダーク表示用の配色は持たない */
+:root {
+  --bg: #EEF0F2; --surface: #FFFFFF; --band: #E5E8EC;
+  --ink: #111317; --muted: #5C636D; --line: #CCD1D8;
+  --accent: #2440D8; --accent-text: #2440D8; --on-accent: #FFFFFF;
+  --jp: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --latin: "Manrope", "Noto Sans JP", sans-serif;
+  --h-weight: 500; --h-track: .03em; --radius: 2px;
+  --gutter: max(24px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(24px, env(safe-area-inset-right, 0px));
+  color-scheme: light;
+}
+html[data-dir="b"] {
+  --bg: #FFFFFF; --surface: #F3F4F5; --band: #F3F4F5;
+  --ink: #0D0E10; --muted: #54595F; --line: #DCDFE3;
+  --accent: #FFE400; --accent-text: #0D0E10; --on-accent: #0D0E10;
+  --latin: "Archivo", "Noto Sans JP", sans-serif;
+  --h-weight: 900; --h-track: 0em; --radius: 0px;
+}
+html[data-dir="c"] {
+  --bg: #FFFFFF; --surface: #F5F6F7; --band: #F5F6F7;
+  --ink: #16181B; --muted: #5D636B; --line: #DADDE2;
+  --accent: #E5402B; --accent-text: #D0361F; --on-accent: #FFFFFF;
+  --latin: "Plus Jakarta Sans", "Noto Sans JP", sans-serif;
+  --h-weight: 700; --h-track: .02em; --radius: 18px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--jp); font-size: 16px; line-height: 1.9; letter-spacing: .02em; -webkit-font-smoothing: antialiased; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: var(--bg); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+.in { max-width: 1280px; margin: 0 auto; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+html:not([data-dir="a"]) .only.a, html:not([data-dir="b"]) .only.b, html:not([data-dir="c"]) .only.c { display: none !important; }
+.latin { font-family: var(--latin); }
+h1, h2, h3 { font-weight: var(--h-weight); letter-spacing: var(--h-track); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+/* ヘッダー */
+.hd { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid transparent; }
+.hd.scrolled { border-bottom-color: var(--line); }
+.hd .in { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 24px; }
+.logo { font-family: var(--latin); font-weight: 800; font-size: 24px; letter-spacing: .04em; text-decoration: none; }
+html[data-dir="b"] .logo { font-weight: 900; font-size: 26px; letter-spacing: 0; }
+.nav { display: flex; align-items: center; gap: 28px; font-size: 14px; }
+.nav a { text-decoration: none; }
+.nav a:hover { color: var(--accent-text); }
+.btn { display: inline-flex; align-items: center; gap: 12px; font: inherit; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 22px; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg); cursor: pointer; white-space: nowrap; transition: transform .2s ease; }
+.btn:hover { transform: translateY(-2px); }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.acc { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+html[data-dir="b"] .btn { border-radius: 0; }
+.btn .ar { font-family: var(--latin); }
+.menu-btn { display: none; }
+
+/* 最初の画面 共通 */
+.hero { position: relative; overflow: hidden; }
+.hero .copy { position: relative; z-index: 2; }
+.hero .sub { color: var(--muted); max-width: 30em; font-size: 15px; line-height: 2; }
+.hero .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.scroll-cue { position: absolute; left: var(--gutter); bottom: 28px; z-index: 2; font-family: var(--latin); font-size: 11px; letter-spacing: .2em; color: var(--muted); display: flex; align-items: center; gap: 12px; }
+.scroll-cue::after { content: ""; width: 56px; height: 1px; background: var(--muted); transform-origin: left; animation: cue 2.4s ease-in-out infinite; }
+@keyframes cue { 0%, 100% { transform: scaleX(.3); } 50% { transform: scaleX(1); } }
+
+/* A 波紋 */
+.hero-a { min-height: clamp(600px, 92vh, 900px); display: flex; align-items: flex-end; }
+.hero-a canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-a .in { width: 100%; padding-bottom: 104px; }
+.hero-a h1 { font-size: clamp(36px, 5.2vw, 76px); line-height: 1.45; }
+.hero-a .sub { margin-top: 28px; }
+
+/* B 点の集まり */
+.hero-b { min-height: clamp(620px, 94vh, 920px); display: flex; align-items: center; }
+.hero-b canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero-b .in { width: 100%; }
+.hero-b h1 { font-size: clamp(44px, 7.6vw, 124px); line-height: 1.18; letter-spacing: -.01em; }
+.hero-b h1 .mk { background: linear-gradient(transparent 62%, var(--accent) 62%, var(--accent) 92%, transparent 92%); }
+.hero-b .sub { margin-top: 32px; color: var(--ink); }
+.hero-b .copy { max-width: 760px; }
+
+/* C 人と写真 */
+.hero-c { min-height: clamp(680px, 96vh, 940px); display: grid; place-items: center; text-align: center; }
+.hero-c .ring { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-c .ring ellipse { fill: none; stroke: var(--line); stroke-width: 1.2; }
+.hero-c .ring .dot { fill: var(--accent); }
+.hero-c h1 { font-size: clamp(34px, 4.8vw, 68px); line-height: 1.45; }
+.hero-c .sub { margin: 24px auto 0; }
+.hero-c .ctas { justify-content: center; }
+.ph { position: absolute; z-index: 1; overflow: hidden; border-radius: 50%; box-shadow: 0 0 0 6px var(--bg); }
+.ph img { width: 100%; height: 100%; object-fit: cover; }
+.ph.sq { border-radius: 28px; }
+.ph1 { width: 180px; height: 180px; left: 7%; top: 16%; }
+.ph2 { width: 128px; height: 128px; left: 21%; top: 66%; }
+.ph3 { width: 210px; height: 150px; left: 70%; top: 10%; }
+.ph4 { width: 150px; height: 150px; left: 84%; top: 42%; }
+.ph5 { width: 190px; height: 190px; left: 66%; top: 68%; }
+.ph6 { width: 110px; height: 110px; left: 4%; top: 48%; }
+
+/* セクション共通 */
+.sec { padding-block: clamp(88px, 11vw, 160px); }
+.sec.band { background: var(--band); }
+.sec-h { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: clamp(40px, 5vw, 72px); }
+.sec-h .lb { font-family: var(--latin); font-size: 12px; letter-spacing: .18em; color: var(--muted); display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+.sec-h .lb::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+html[data-dir="b"] .sec-h .lb::before { border-radius: 0; width: 10px; height: 10px; }
+.sec-h h2 { font-size: clamp(26px, 3.2vw, 44px); line-height: 1.5; }
+html[data-dir="b"] .sec-h h2 { font-size: clamp(30px, 4vw, 58px); line-height: 1.3; }
+.more { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--ink); padding-bottom: 4px; }
+.more:hover { color: var(--accent-text); border-color: var(--accent-text); }
+
+/* 私たちについて */
+.about { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: end; }
+.about .stmt { font-size: clamp(26px, 3.4vw, 50px); line-height: 1.6; font-weight: var(--h-weight); letter-spacing: var(--h-track); }
+html[data-dir="b"] .about .stmt { line-height: 1.4; }
+.about .stmt em { font-style: normal; color: var(--accent-text); }
+html[data-dir="b"] .about .stmt em { background: linear-gradient(transparent 64%, var(--accent) 64%); }
+.about .body { display: grid; gap: 24px; color: var(--muted); font-size: 15px; }
+.origin { display: flex; align-items: baseline; gap: 14px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink); font-size: 13px; }
+.origin b { font-family: var(--latin); font-size: 15px; letter-spacing: .08em; }
+
+/* JILのかたち（構造） */
+.shape { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.diagram { width: 100%; max-width: 560px; justify-self: center; }
+.diagram text { font-family: var(--jp); }
+.dg-ring { fill: none; stroke: var(--line); stroke-width: 1.4; }
+.dg-ai { fill: none; stroke: var(--accent); stroke-width: 2; }
+.dg-core { fill: var(--ink); }
+.dg-node { fill: var(--surface); stroke: var(--ink); stroke-width: 1.4; }
+.dg-ray { stroke: var(--line); stroke-width: 1.4; stroke-dasharray: 3 5; }
+.dg-t { fill: var(--ink); font-size: 17px; font-weight: 700; }
+.dg-s { fill: var(--muted); font-size: 13px; }
+.dg-inv { fill: var(--bg); font-size: 26px; font-weight: 700; }
+.dg-ai-t { fill: var(--accent-text); font-size: 15px; font-weight: 700; }
+html[data-dir="a"] .dg-node { fill: var(--bg); }
+html[data-dir="b"] .dg-ring { stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; stroke-dasharray: 0 11; }
+html[data-dir="b"] .dg-ai { stroke: var(--accent); stroke-width: 9; stroke-linecap: round; stroke-dasharray: 0 15; }
+html[data-dir="b"] .dg-ai-t { fill: var(--ink); }
+html[data-dir="b"] .dg-node { fill: var(--ink); stroke: none; }
+html[data-dir="b"] .dg-node-t { fill: #FFFFFF; }
+html[data-dir="c"] .dg-node { fill: color-mix(in srgb, var(--accent) 10%, #FFFFFF); stroke: var(--accent); }
+html[data-dir="c"] .dg-ring { stroke: var(--line); }
+.layers { display: grid; gap: 0; border-top: 1px solid var(--ink); }
+.layer { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--line); }
+.layer .k { font-size: 13px; color: var(--muted); display: grid; gap: 2px; align-content: start; }
+.layer .k b { font-size: 20px; color: var(--ink); font-weight: 700; letter-spacing: .04em; }
+.layer h3 { font-size: 19px; line-height: 1.6; margin-bottom: 8px; font-weight: 700; }
+.layer p { color: var(--muted); font-size: 15px; }
+
+/* 事業 */
+.biz { border-top: 1px solid var(--ink); }
+.biz-row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr); gap: clamp(20px, 3vw, 48px); padding: clamp(32px, 4vw, 52px) 0; border-bottom: 1px solid var(--line); align-items: start; }
+.biz-row .nm { display: grid; gap: 6px; }
+.biz-row .nm .en { font-family: var(--latin); font-size: 12px; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; }
+.biz-row .nm h3 { font-size: clamp(22px, 2.4vw, 32px); line-height: 1.45; }
+.biz-row .ds { display: grid; gap: 16px; }
+.biz-row .ds .lead { font-size: 18px; font-weight: 700; line-height: 1.7; }
+.biz-row .ds p { color: var(--muted); font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 13px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+html[data-dir="b"] .chip { border-radius: 0; }
+.biz-row .go { justify-self: end; align-self: center; }
+.tag-kari { font-size: 11px; color: var(--muted); border: 1px dashed var(--muted); padding: 0 6px; margin-left: 8px; vertical-align: middle; font-weight: 400; letter-spacing: 0; }
+.biz-ph { display: none; }
+html[data-dir="c"] .biz-row { grid-template-columns: 220px minmax(0, 4fr) minmax(0, 5fr) auto; }
+html[data-dir="c"] .biz-ph { display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; }
+html[data-dir="c"] .biz-ph img { width: 100%; height: 100%; object-fit: cover; }
+.biz-mark { display: none; }
+html[data-dir="a"] .biz-mark, html[data-dir="b"] .biz-mark { display: block; width: 56px; height: 56px; margin-bottom: 14px; }
+
+/* AIドリブン */
+.ai-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
+.ai-item { padding: 28px 24px 8px 0; display: grid; gap: 10px; align-content: start; }
+.ai-item + .ai-item { padding-left: 24px; border-left: 1px solid var(--line); }
+.ai-item .w { font-size: clamp(26px, 2.6vw, 36px); font-weight: var(--h-weight); line-height: 1.3; }
+html[data-dir="b"] .ai-item .w { font-weight: 900; }
+.ai-item .ex { font-size: 14px; font-weight: 700; color: var(--accent-text); }
+html[data-dir="b"] .ai-item .ex { background: var(--accent); justify-self: start; padding: 0 6px; }
+.ai-item p { font-size: 14px; color: var(--muted); }
+
+/* 行動指針 */
+.values { display: grid; border-bottom: 1px solid var(--line); }
+.value { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 8px 40px; align-items: center; padding: clamp(24px, 3vw, 40px) 0; border-top: 1px solid var(--line); }
+.value .en { grid-row: span 2; font-family: var(--latin); font-size: clamp(34px, 5.4vw, 84px); font-weight: 600; letter-spacing: -.02em; line-height: 1.05; transition: color .3s ease; }
+html[data-dir="b"] .value .en { font-weight: 900; letter-spacing: -.03em; }
+html[data-dir="c"] .value .en { font-weight: 700; }
+.value:hover .en { color: var(--accent-text); }
+html[data-dir="b"] .value:hover .en { color: var(--ink); background: linear-gradient(transparent 70%, var(--accent) 70%); }
+.value .jp { font-weight: 700; font-size: 17px; align-self: end; }
+.value p { color: var(--muted); font-size: 14px; align-self: start; }
+
+/* メンバー */
+.members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+.mem { display: grid; gap: 14px; align-content: start; }
+.mem .pic { aspect-ratio: 3 / 4; overflow: hidden; border-radius: var(--radius); background: var(--surface); }
+.mem .pic img { width: 100%; height: 100%; object-fit: cover; }
+html[data-dir="a"] .mem .pic img { filter: saturate(.85); }
+.mem .role { font-size: 12px; color: var(--muted); }
+.mem h3 { font-size: 22px; font-weight: 700; line-height: 1.4; }
+.mem h3 small { display: block; font-family: var(--latin); font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .06em; }
+.mem ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13.5px; color: var(--muted); }
+.mem li { padding-left: 14px; position: relative; }
+.mem li::before { content: ""; position: absolute; left: 0; top: .85em; width: 6px; height: 1px; background: var(--muted); }
+.team { margin-top: clamp(48px, 6vw, 80px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); padding-top: 32px; border-top: 1px solid var(--ink); }
+.team h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+.team p { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+/* ニュース */
+.news { border-top: 1px solid var(--ink); }
+.news a { display: grid; grid-template-columns: 120px 110px minmax(0, 1fr) 24px; gap: 16px; align-items: baseline; padding: 22px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.news a:hover .t { color: var(--accent-text); }
+.news .d { font-family: var(--latin); font-size: 13px; color: var(--muted); }
+.news .c { font-size: 12px; border: 1px solid var(--line); padding: 0 8px; justify-self: start; }
+.news .ar { font-family: var(--latin); }
+
+/* 採用 */
+.recruit { position: relative; overflow: hidden; background: var(--ink); color: var(--bg); }
+html[data-dir="a"] .recruit { background: var(--accent); color: #FFFFFF; }
+html[data-dir="b"] .recruit { background: var(--accent); color: var(--ink); }
+.recruit .in { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: end; padding-block: clamp(80px, 10vw, 140px); position: relative; z-index: 1; }
+.recruit .lb { font-family: var(--latin); font-size: 12px; letter-spacing: .18em; opacity: .8; }
+.recruit h2 { font-size: clamp(30px, 3.6vw, 54px); line-height: 1.45; margin-top: 12px; }
+.recruit p { opacity: .85; font-size: 15px; margin-bottom: 28px; }
+.recruit .btn { background: #FFFFFF; color: #111317; border-color: #FFFFFF; }
+html[data-dir="b"] .recruit .btn { background: var(--ink); color: #FFFFFF; border-color: var(--ink); }
+.recruit svg.rings { position: absolute; right: -120px; top: 50%; transform: translateY(-50%); width: 620px; height: 620px; opacity: .25; }
+.recruit svg.rings circle { fill: none; stroke: currentColor; stroke-width: 1.2; }
+html[data-dir="b"] .recruit svg.rings circle { stroke-width: 4; stroke-linecap: round; stroke-dasharray: 0 14; }
+.recruit .rc-photos { display: none; }
+html[data-dir="c"] .recruit { background: var(--surface); color: var(--ink); }
+html[data-dir="c"] .recruit .btn { background: var(--accent); color: #FFFFFF; border-color: var(--accent); }
+html[data-dir="c"] .recruit svg.rings { display: none; }
+html[data-dir="c"] .recruit .rc-photos { display: flex; gap: 14px; justify-content: flex-end; }
+.rc-photos div { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; }
+.rc-photos div:nth-child(2) { width: 190px; height: 190px; border-radius: 28px; margin-top: -40px; }
+.rc-photos img { width: 100%; height: 100%; object-fit: cover; }
+
+/* お問い合わせ・フッター */
+.contact .in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.contact h2 { font-size: clamp(26px, 3vw, 40px); line-height: 1.5; }
+.contact .acts { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-end; }
+.ft { border-top: 1px solid var(--line); padding-block: 56px 120px; font-size: 13px; }
+.ft .in { display: grid; grid-template-columns: minmax(0, 1.2fr) repeat(3, minmax(0, 1fr)); gap: 32px; }
+.ft .logo { font-size: 40px; }
+.ft dl { margin: 16px 0 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 12px; color: var(--muted); }
+.ft dt { color: var(--ink); }
+.ft dd { margin: 0; }
+.ft h4 { font-size: 13px; margin: 0 0 10px; }
+.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; color: var(--muted); }
+.ft .cp { grid-column: 1 / -1; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--muted); font-family: var(--latin); font-size: 12px; padding-top: 24px; border-top: 1px solid var(--line); }
+
+/* 案の切替 */
+.switch { position: fixed; z-index: 70; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 4px; padding: 5px; background: #111317; border-radius: 999px; box-shadow: 0 8px 28px rgba(0,0,0,.22); font-family: "Noto Sans JP", sans-serif; }
+.switch span { color: #9AA1AB; font-size: 11px; padding: 0 8px 0 12px; white-space: nowrap; }
+.switch button { font: inherit; font-size: 13px; color: #FFFFFF; background: transparent; border: 0; border-radius: 999px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+.switch button[aria-pressed="true"] { background: #FFFFFF; color: #111317; font-weight: 700; }
+.switch button:focus-visible, .btn:focus-visible, .nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* タブレット・スマホ */
+@media (max-width: 1080px) {
+  .nav .hide-md { display: none; }
+  .biz-row, html[data-dir="c"] .biz-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+  .biz-row .go { grid-column: 2; justify-self: start; }
+  html[data-dir="c"] .biz-ph { grid-column: 1 / -1; max-width: 420px; }
+  .ai-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ai-item:nth-child(3) { padding-left: 0; border-left: 0; }
+  .ai-item { padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .ph3 { left: 64%; } .ph4 { left: 80%; }
+}
+@media (max-width: 760px) {
+  body { font-size: 15px; }
+  .nav { display: none; }
+  .menu-btn { display: inline-flex; padding: 10px 18px; }
+  .hd.open .nav { display: grid; position: absolute; top: 72px; left: 0; right: 0; background: var(--bg); padding: 16px var(--gutter-r) 24px var(--gutter); gap: 14px; border-bottom: 1px solid var(--line); font-size: 16px; }
+  .hd.open .nav .hide-md { display: block; }
+  .hero-a .in { padding-bottom: 96px; }
+  .hero-a h1 { font-size: clamp(30px, 8.4vw, 40px); }
+  .hero-b { align-items: flex-start; min-height: 980px; }
+  .hero-b .in { padding-top: 48px; }
+  .hero-b h1 { font-size: clamp(40px, 12vw, 56px); }
+  .hero-c { min-height: auto; padding-block: 300px 96px; }
+  .hero-c h1 { font-size: clamp(28px, 7.8vw, 36px); }
+  .ph1 { width: 120px; height: 120px; left: 4%; top: 30px; }
+  .ph3 { width: 130px; height: 96px; left: auto; right: 6%; top: 20px; }
+  .ph5 { width: 110px; height: 110px; left: 36%; top: 150px; }
+  .ph2, .ph4, .ph6 { display: none; }
+  .about, .shape, .team, .contact .in, .recruit .in { grid-template-columns: minmax(0, 1fr); }
+  .layer { grid-template-columns: 72px minmax(0, 1fr); gap: 14px; }
+  .biz-row, html[data-dir="c"] .biz-row { grid-template-columns: minmax(0, 1fr); }
+  .biz-row .go { grid-column: auto; }
+  .ai-grid { grid-template-columns: minmax(0, 1fr); }
+  .ai-item, .ai-item + .ai-item { padding: 24px 0; border-left: 0; }
+  .value { grid-template-columns: minmax(0, 1fr); }
+  .value .en { grid-row: auto; font-size: clamp(32px, 10vw, 44px); }
+  .members { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .mem { grid-template-columns: 132px minmax(0, 1fr); gap: 16px; }
+  .mem .pic { grid-row: span 3; }
+  .news a { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
+  .news .t { grid-column: 1 / -1; }
+  .news .ar { display: none; }
+  .contact .acts { justify-content: flex-start; }
+  .recruit svg.rings { width: 420px; height: 420px; right: -200px; }
+  html[data-dir="c"] .recruit .rc-photos { justify-content: flex-start; }
+  .rc-photos div { width: 110px; height: 110px; }
+  .rc-photos div:nth-child(2) { width: 130px; height: 130px; margin-top: 0; }
+  .ft .in { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .ft .in > :first-child { grid-column: 1 / -1; }
+  .switch span { display: none; }
+  .switch button { padding: 8px 12px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .scroll-cue::after { animation: none; }
+  .btn { transition: none; }
+}
+</style>
+
+<header class="hd" id="hd">
+  <div class="in">
+    <a class="logo" href="#top" aria-label="JIL トップ">JIL</a>
+    <nav class="nav" id="nav" aria-label="メインメニュー">
+      <a href="#about">私たちについて</a>
+      <a href="#business">事業</a>
+      <a href="#people">組織とメンバー</a>
+      <a href="#news" class="hide-md">ニュース</a>
+      <a href="#recruit" class="hide-md">採用</a>
+      <a class="btn" href="#contact">お問い合わせ</a>
+    </nav>
+    <button class="btn ghost menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav">メニュー</button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- A 波紋 -->
+  <section class="hero hero-a only a" aria-label="JILについてひとこと">
+    <canvas id="cv-a" aria-hidden="true"></canvas>
+    <div class="in">
+      <div class="copy">
+        <h1>人から始まり、<br>AIで、広がっていく。</h1>
+        <p class="sub">JILは、人を中心に置き、AIドリブンな組織で、<br>自社事業・新規事業開発の支援・採用支援を手がける会社です。</p>
+      </div>
+    </div>
+    <div class="scroll-cue">SCROLL</div>
+  </section>
+
+  <!-- B 点の集まり -->
+  <section class="hero hero-b only b" aria-label="JILについてひとこと">
+    <canvas id="cv-b" aria-hidden="true"></canvas>
+    <div class="in">
+      <div class="copy">
+        <h1>人とAIで、<br><span class="mk">事業</span>を<br>生みつづける。</h1>
+        <p class="sub">JILは、AIを使いこなす人の集まりです。<br>自社事業・新規事業開発の支援・採用支援を、同じチームで動かしています。</p>
+        <div class="ctas"><a class="btn" href="#business">事業を見る <span class="ar">→</span></a><a class="btn ghost" href="#contact">お問い合わせ</a></div>
+      </div>
+    </div>
+    <div class="scroll-cue">SCROLL</div>
+  </section>
+
+  <!-- C 人と写真 -->
+  <section class="hero hero-c only c" aria-label="JILについてひとこと">
+    <svg class="ring" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+      <ellipse id="ring-path" cx="720" cy="450" rx="560" ry="330"/>
+      <circle class="dot" r="7"><animateMotion dur="18s" repeatCount="indefinite" path="M160,450 a560,330 0 1,0 1120,0 a560,330 0 1,0 -1120,0"/></circle>
+    </svg>
+    <div class="ph ph1"><img src="img/p_interview.jpg" alt="向かい合って話す二人"></div>
+    <div class="ph ph2"><img src="img/p_notes.jpg" alt="付箋を囲むチーム"></div>
+    <div class="ph sq ph3"><img src="img/p_present.jpg" alt="画面を前に説明する人"></div>
+    <div class="ph ph4"><img src="img/p_roadmap.jpg" alt="ホワイトボードのロードマップ"></div>
+    <div class="ph ph5"><img src="img/p_prototype.jpg" alt="試作の画面を描くチーム"></div>
+    <div class="ph ph6"><img src="img/p_escalator.jpg" alt="行き交う人"></div>
+    <div class="in">
+      <div class="copy">
+        <h1>人の可能性を、<br>AIで、事業に変える。</h1>
+        <p class="sub">JILは、人を中心に置き、AIドリブンな組織で、<br>自社事業・新規事業開発の支援・採用支援を手がける会社です。</p>
+        <div class="ctas"><a class="btn acc" href="#business">事業を見る <span class="ar">→</span></a><a class="btn ghost" href="#people">メンバーを見る</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 私たちについて -->
+  <section class="sec" id="about">
+    <div class="in">
+      <div class="sec-h"><span class="lb">About</span><h2>私たちについて</h2></div>
+      <div class="about">
+        <p class="stmt">日本の可能性を<em>解き放つ。</em><br>AI時代を生きる、<br>私たちの手と意思で。</p>
+        <div class="body">
+          <p>日本には、世界が必要とする力があります。現場の技術力も、教育も、医療も、エンタメも。けれど、その力とAIの進化のあいだには、まだ大きな隔たりがあります。</p>
+          <p>JILは、新しい技術への「わからなさ」から逃げず、小さな実験と対話を重ねます。あらゆる現場で新しい技術を使える形にし、事業として成果が出るまで実践します。</p>
+          <div class="origin"><b>JIL</b><span>社名は「JAPAN IS LOVELY.」の頭文字から。日本の真価が世界を変える未来を信じています。</span></div>
+          <a class="more" href="#about">ミッション・ビジョン・行動指針 <span class="latin">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JILのかたち -->
+  <section class="sec band" id="shape">
+    <div class="in">
+      <div class="sec-h"><span class="lb">Our Shape</span><h2>人が中心にいて、AIが組織を動かし、<br>3つの事業へと広がっていく。</h2></div>
+      <div class="shape">
+        <svg class="diagram" viewBox="-40 -40 600 600" role="img" aria-label="中心に人、その外側にDX・AIの輪、さらに外側に自社事業・新規事業開発の支援・採用支援がある図">
+          <circle class="dg-ring" cx="260" cy="260" r="236"/>
+          <circle class="dg-ai" cx="260" cy="260" r="148"/>
+          <line class="dg-ray" x1="260" y1="112" x2="260" y2="76"/>
+          <line class="dg-ray" x1="131.8" y1="334" x2="100" y2="352"/>
+          <line class="dg-ray" x1="388.2" y1="334" x2="420" y2="352"/>
+          <circle class="dg-core" cx="260" cy="260" r="62"/>
+          <text class="dg-inv" x="260" y="270" text-anchor="middle">人</text>
+          <text class="dg-ai-t" x="260" y="186" text-anchor="middle">DX・AI</text>
+          <text class="dg-s" x="260" y="206" text-anchor="middle">AIドリブンな組織</text>
+          <circle class="dg-node" cx="260" cy="24" r="54"/>
+          <text class="dg-t dg-node-t" x="260" y="30" text-anchor="middle">自社事業</text>
+          <circle class="dg-node" cx="55.6" cy="378" r="54"/>
+          <text class="dg-t dg-node-t" x="55.6" y="374" text-anchor="middle">新規事業</text>
+          <text class="dg-t dg-node-t" x="55.6" y="396" text-anchor="middle">開発の支援</text>
+          <circle class="dg-node" cx="464.4" cy="378" r="54"/>
+          <text class="dg-t dg-node-t" x="464.4" y="384" text-anchor="middle">採用支援</text>
+        </svg>
+        <div class="layers">
+          <div class="layer"><div class="k"><span>中心</span><b>人</b></div><div><h3>事業開発の現場を知るプロが、一人ひとり当事者として動く。</h3><p>コンサルタント、PM、マーケター、デザイナー、エンジニア。異なる専門を持つメンバーが、ひとつのチームで事業に向き合います。</p></div></div>
+          <div class="layer"><div class="k"><span>土台</span><b>DX・AI</b></div><div><h3>全員がAIを日常の道具として使う、AIドリブンな組織。</h3><p>調査も、試作も、運用も、AIを前提に組み立てる。少人数でも、大きな事業を速く動かせる理由です。</p></div></div>
+          <div class="layer"><div class="k"><span>波及</span><b>事業</b></div><div><h3>人とAIで培ったやり方を、3つの事業へと広げる。</h3><p>自社事業で試したことを支援に生かし、支援で得た知見を次の事業と採用に生かす。3つの事業は互いに循環しています。</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 事業 -->
+  <section class="sec" id="business">
+    <div class="in">
+      <div class="sec-h"><span class="lb">Business</span><h2>3つの事業</h2></div>
+      <div class="biz">
+        <article class="biz-row">
+          <div class="biz-ph"><img src="img/p_prototype.jpg" alt=""></div>
+          <div class="nm">
+            <svg class="biz-mark" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="28" cy="28" r="7" fill="currentColor"/></svg>
+            <span class="en">Own Products</span><h3>自社事業</h3>
+          </div>
+          <div class="ds">
+            <p class="lead">AIで、これまでにない体験をつくる。</p>
+            <p>「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。コスト・スキル・時間の制約を、テクノロジーで越えていきます。</p>
+            <div class="chips"><span class="chip">えほんにおいでよ</span><span class="chip">llabo</span><span class="chip">AIインサイトバンク</span><span class="chip">JWP</span></div>
+          </div>
+          <a class="more go" href="#business">プロダクトを見る <span class="latin">→</span></a>
+        </article>
+        <article class="biz-row">
+          <div class="biz-ph"><img src="img/p_present.jpg" alt=""></div>
+          <div class="nm">
+            <svg class="biz-mark" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="28" cy="28" r="15" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="28" cy="28" r="4" fill="currentColor"/></svg>
+            <span class="en">Business Development</span><h3>新規事業開発の支援</h3>
+          </div>
+          <div class="ds">
+            <p class="lead">戦略から、実行まで。新規事業を、ひとつのチームで。</p>
+            <p>大企業の新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目と、AIによるスピードが強みです。</p>
+          </div>
+          <a class="more go" href="#business">サービスサイトへ <span class="latin">↗</span></a>
+        </article>
+        <article class="biz-row">
+          <div class="biz-ph"><img src="img/p_interview.jpg" alt=""></div>
+          <div class="nm">
+            <svg class="biz-mark" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="20" cy="28" r="5" fill="currentColor"/><circle cx="36" cy="28" r="5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>
+            <span class="en">Recruitment</span><h3>採用支援</h3>
+          </div>
+          <div class="ds">
+            <p class="lead">採用を、事業をつくる力に。<span class="tag-kari">文言は仮</span></p>
+            <p>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。</p>
+          </div>
+          <a class="more go" href="#business">採用支援について <span class="latin">→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- AIドリブンな組織 -->
+  <section class="sec band" id="ai">
+    <div class="in">
+      <div class="sec-h"><span class="lb">AI-Driven Team</span><h2>少人数で、大きな事業を動かせる理由。</h2></div>
+      <div class="ai-grid">
+        <div class="ai-item"><span class="w">高速に</span><span class="ex">試作画面を、翌日に。</span><p>話を聞いたその日のうちに画面をつくり、翌日には触れる形で確かめる。</p></div>
+        <div class="ai-item"><span class="w">大量に</span><span class="ex">広告とLPを、50パターン。</span><p>人の手では作れない数の案を出し、反応で絞り込む。</p></div>
+        <div class="ai-item"><span class="w">網羅的に</span><span class="ex">競合と市場を、数百社規模で。</span><p>調べる範囲を限定せず、見落としをなくす。</p></div>
+        <div class="ai-item"><span class="w">自動的に</span><span class="ex">定型の業務を、仕組みに。</span><p>繰り返しの作業は仕組みに任せ、人は判断と対話に時間を使う。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 行動指針 -->
+  <section class="sec" id="values">
+    <div class="in">
+      <div class="sec-h"><span class="lb">Values</span><h2>私たちの行動指針</h2></div>
+      <div class="values">
+        <div class="value"><span class="en">Ignite First</span><span class="jp">動き出すのは、私たちから。</span><p>答えが見えなくても、最初の一歩を踏み出す。</p></div>
+        <div class="value"><span class="en">Deploy or Die</span><span class="jp">実装しなければ、意味がない。</span><p>構想で終わらせない。使われる形で届ける。</p></div>
+        <div class="value"><span class="en">Focus on the “Next”</span><span class="jp">過去ではなく、次を見る。</span><p>起きたことに執着せず、“次”を問い続ける。</p></div>
+        <div class="value"><span class="en">Forge Together</span><span class="jp">対話で、磨く。</span><p>一緒に考え、一緒につくる。答えは、対話の中で生まれる。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 組織とメンバー -->
+  <section class="sec band" id="people">
+    <div class="in">
+      <div class="sec-h"><span class="lb">People</span><h2>JILを動かす人たち</h2></div>
+      <div class="members">
+        <div class="mem"><div class="pic"><img src="img/member_takei.jpg" alt="武井 遼太郎"></div><span class="role">代表取締役</span><h3>武井 遼太郎<small>Ryotaro Takei</small></h3><ul><li>300社を超える企業のHRコンサルティングと事業開発</li><li>AIを活用したHR Tech事業</li><li>ベンチャー企業のCOO・CHROを経て、上場企業へ事業売却</li></ul></div>
+        <div class="mem"><div class="pic"><img src="img/member_shinohara.jpg" alt="篠原 孝弘"></div><span class="role">取締役</span><h3>篠原 孝弘<small>Takahiro Shinohara</small></h3><ul><li>2020年〜 リーガル系SaaSの新規事業立ち上げ</li><li>年間1,500件を超える事業審査、累計10件の立ち上げ支援</li><li>さまざまな業種のAI活用支援を推進</li></ul></div>
+        <div class="mem"><div class="pic"><img src="img/member_tanaka.jpg" alt="田中 伸英"></div><span class="role">監査役</span><h3>田中 伸英<small>Nobuhide Tanaka</small></h3><ul><li>2010年から企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など幅広い領域を支援</li><li>テクノロジー企業・VCとの協業実績が豊富</li></ul></div>
+      </div>
+      <div class="team">
+        <div><h3>チームの専門性</h3><div class="chips"><span class="chip">コンサルタント</span><span class="chip">PM</span><span class="chip">マーケティング</span><span class="chip">企画・推進</span><span class="chip">IS／FS</span><span class="chip">業務設計</span><span class="chip">デザイナー</span><span class="chip">AIエンジニア</span><span class="chip">Webエンジニア</span></div><p>要件定義から、設計・開発・運用・内製化まで、ひとつのチームで。</p></div>
+        <div><h3>メンバーの経験</h3><div class="chips"><span class="chip">リクルート</span><span class="chip">楽天</span><span class="chip">新日鉄ソリューションズ</span><span class="chip">アクセンチュア</span><span class="chip">博報堂</span></div><p>などで経験を積んだ、事業開発と生成AIのプロフェッショナルが集まっています。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ニュース -->
+  <section class="sec" id="news">
+    <div class="in">
+      <div class="sec-h"><span class="lb">News</span><h2>ニュース</h2></div>
+      <div class="news">
+        <a href="#news"><span class="d">2026.10.20</span><span class="c">お知らせ</span><span class="t">コーポレートサイトをリニューアルしました（仮のお知らせ）</span><span class="ar">→</span></a>
+        <a href="#news"><span class="d">2026.10.01</span><span class="c">サービス</span><span class="t">新規事業開発の支援サービスのページを公開しました（仮のお知らせ）</span><span class="ar">→</span></a>
+        <a href="#news"><span class="d">2026.09.12</span><span class="c">プロダクト</span><span class="t">「えほんにおいでよ」の新しいテーマを追加しました（仮のお知らせ）</span><span class="ar">→</span></a>
+      </div>
+      <p style="margin-top:28px"><a class="more" href="#news">ニュース一覧 <span class="latin">→</span></a></p>
+    </div>
+  </section>
+
+  <!-- 採用 -->
+  <section class="recruit" id="recruit">
+    <svg class="rings" viewBox="0 0 620 620" aria-hidden="true"><circle cx="310" cy="310" r="60"/><circle cx="310" cy="310" r="130"/><circle cx="310" cy="310" r="200"/><circle cx="310" cy="310" r="270"/></svg>
+    <div class="in">
+      <div>
+        <span class="lb">JOIN US</span>
+        <h2>次の事業を、<br>一緒につくる仲間を。</h2>
+      </div>
+      <div>
+        <div class="rc-photos"><div><img src="img/p_notes.jpg" alt="" loading="lazy"></div><div><img src="img/p_present.jpg" alt="" loading="lazy"></div></div>
+        <p>AIを道具に、事業をつくることに本気で向き合いたい人を探しています。職種や働き方は、まず話しながら一緒に考えます。</p>
+        <a class="btn" href="#recruit">採用情報を見る <span class="ar">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- お問い合わせ -->
+  <section class="sec contact" id="contact">
+    <div class="in">
+      <h2>事業のこと、採用のこと、<br>まずは気軽にご相談ください。</h2>
+      <div class="acts"><a class="btn acc" href="#contact">お問い合わせ <span class="ar">→</span></a><a class="btn ghost" href="#contact">30分の無料相談</a></div>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="in">
+    <div>
+      <a class="logo" href="#top">JIL</a>
+      <dl><dt>会社名</dt><dd>株式会社JIL（JIL inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
+    </div>
+    <div><h4>私たちについて</h4><ul><li>ミッション・ビジョン</li><li>行動指針</li><li>会社概要</li></ul></div>
+    <div><h4>事業</h4><ul><li>自社事業</li><li>新規事業開発の支援</li><li>採用支援</li></ul></div>
+    <div><h4>組織</h4><ul><li>メンバー</li><li>ニュース</li><li>採用情報</li><li>お問い合わせ</li></ul></div>
+    <div class="cp"><span>JAPAN IS LOVELY.</span><span>© 2026 JIL Inc.</span></div>
+  </div>
+</footer>
+
+<div class="switch" role="group" aria-label="デザイン案の切り替え">
+  <span>デザイン案</span>
+  <button type="button" data-d="a">A 波紋</button>
+  <button type="button" data-d="b">B 点の集まり</button>
+  <button type="button" data-d="c">C 人と写真</button>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const store = { get() { try { return localStorage.getItem("jil-corp-dir"); } catch (e) { return null; } }, set(v) { try { localStorage.setItem("jil-corp-dir", v); } catch (e) {} } };
+  const fromHash = (location.hash || "").replace("#", "");
+  let dir = ["a", "b", "c"].includes(fromHash) ? fromHash : (store.get() || "a");
+
+  // ヘッダー
+  const hd = document.getElementById("hd");
+  addEventListener("scroll", () => hd.classList.toggle("scrolled", scrollY > 8), { passive: true });
+  const mb = document.getElementById("menu-btn");
+  mb.addEventListener("click", () => { const o = hd.classList.toggle("open"); mb.setAttribute("aria-expanded", String(o)); });
+  document.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", () => { hd.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); }));
+
+  // 高解像度のキャンバス
+  function fit(cv) {
+    const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+    cv.width = Math.max(1, Math.round(r.width * d)); cv.height = Math.max(1, Math.round(r.height * d));
+    const ctx = cv.getContext("2d"); ctx.setTransform(d, 0, 0, d, 0, 0);
+    return { ctx, w: r.width, h: r.height };
+  }
+  const css = n => getComputedStyle(root).getPropertyValue(n).trim();
+  const rgba = (hex, a) => { const m = hex.replace("#", ""); const n = parseInt(m.length === 3 ? m.split("").map(c => c + c).join("") : m, 16); return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`; };
+  const LABELS = ["自社事業", "新規事業開発の支援", "採用支援"];
+
+  // A 波紋：中心の「人」から輪が広がり、3つの事業に届く
+  function rippleScene(cv) {
+    let s, t0 = performance.now();
+    function layout() {
+      s = fit(cv);
+      const mob = s.w < 760; s.mob = mob;
+      s.cx = mob ? s.w * .5 : s.w * .67; s.cy = mob ? s.h * .27 : s.h * .46;
+      s.max = Math.hypot(Math.max(s.cx, s.w - s.cx), Math.max(s.cy, s.h - s.cy));
+      s.nodeR = Math.min(mob ? s.w * .33 : s.h * .34, 300);
+      s.nodes = (mob ? [-90, 150, 30] : [-120, 0, 100]).map((deg, i) => { const a = deg * Math.PI / 180; return { x: s.cx + Math.cos(a) * s.nodeR, y: s.cy + Math.sin(a) * s.nodeR, label: LABELS[i], hit: 0 }; });
+    }
+    function draw(now) {
+      const { ctx, w, h, cx, cy } = s; const ink = css("--ink"), acc = css("--accent"), mut = css("--muted");
+      const t = (now - t0) / 1000;
+      ctx.clearRect(0, 0, w, h);
+      // 静かな基準の輪
+      for (let r = 40; r < s.max; r += 40) { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.strokeStyle = rgba(ink, .05); ctx.lineWidth = 1; ctx.stroke(); }
+      // AIの輪
+      const aiR = s.nodeR * .48;
+      ctx.beginPath(); ctx.arc(cx, cy, aiR, 0, Math.PI * 2); ctx.strokeStyle = rgba(acc, .9); ctx.lineWidth = 1.6; ctx.stroke();
+      // 広がる波
+      const gap = 120, speed = 46, n = Math.ceil(s.max / gap) + 1;
+      for (let k = 0; k < n; k++) {
+        const r = ((t * speed) + k * gap) % (n * gap);
+        if (r > s.max) continue;
+        const a = Math.max(0, 1 - r / s.max);
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.strokeStyle = rgba(ink, .28 * a); ctx.lineWidth = 1.2; ctx.stroke();
+        s.nodes.forEach(nd => { if (Math.abs(r - s.nodeR) < 2.2) nd.hit = now; });
+      }
+      // 事業の点
+      ctx.font = `500 13px "Noto Sans JP", sans-serif`; ctx.textBaseline = "middle";
+      s.nodes.forEach((nd, i) => {
+        const since = (now - nd.hit) / 1000; const p = nd.hit ? Math.max(0, 1 - since / 1.6) : 0;
+        if (p > 0) { ctx.beginPath(); ctx.arc(nd.x, nd.y, 6 + (1 - p) * 26, 0, Math.PI * 2); ctx.strokeStyle = rgba(acc, .5 * p); ctx.lineWidth = 1.2; ctx.stroke(); }
+        ctx.beginPath(); ctx.arc(nd.x, nd.y, 6, 0, Math.PI * 2); ctx.fillStyle = acc; ctx.fill();
+        ctx.fillStyle = ink;
+        if (s.mob) { ctx.textAlign = "center"; ctx.fillText(nd.label, nd.x, nd.y + 20); }
+        else { ctx.textAlign = nd.x < cx - 4 ? "right" : "left"; ctx.fillText(nd.label, nd.x + (ctx.textAlign === "left" ? 16 : -16), nd.y); }
+      });
+      // 中心の人
+      ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI * 2); ctx.fillStyle = ink; ctx.fill();
+      ctx.fillStyle = css("--bg"); ctx.textAlign = "center"; ctx.font = `700 18px "Noto Sans JP", sans-serif`; ctx.fillText("人", cx, cy + 1);
+      ctx.fillStyle = mut; ctx.font = `600 11px "Manrope", sans-serif`; ctx.fillText("DX・AI", cx, cy - aiR - 14);
+    }
+    return { layout, draw };
+  }
+
+  // B 点の集まり：1点＝1人。中心の集まりから黄色の波が広がり、3つの集まり（事業）に届く
+  function dotScene(cv) {
+    let s, t0 = performance.now();
+    function layout() {
+      s = fit(cv);
+      const mob = s.w < 760; s.mob = mob;
+      s.gap = mob ? 15 : 19;
+      s.R = Math.min(mob ? s.w * .3 : s.h * .3, 270);
+      s.cx = mob ? s.w * .5 : Math.min(s.w * .68, s.w - s.R - 230); s.cy = mob ? s.h - s.R - 84 : s.h * .52;
+      s.clusters = (mob ? [-90, 150, 30] : [-110, 5, 110]).map((deg, i) => { const a = deg * Math.PI / 180; return { x: s.cx + Math.cos(a) * s.R, y: s.cy + Math.sin(a) * s.R, label: LABELS[i] }; });
+      s.dots = [];
+      for (let y = s.gap / 2; y < s.h; y += s.gap) for (let x = s.gap / 2; x < s.w; x += s.gap) {
+        const d = Math.hypot(x - s.cx, y - s.cy);
+        let kind = 0;
+        if (d < s.gap * 2.6) kind = 2;
+        else if (s.clusters.some(c => Math.hypot(x - c.x, y - c.y) < s.gap * 1.8)) kind = 3;
+        // 文字の上は薄く
+        s.dots.push({ x, y, d, kind, ph: (x * 13 + y * 7) % 100 / 100 });
+      }
+      s.max = Math.hypot(s.w, s.h);
+    }
+    function draw(now) {
+      const { ctx, w, h } = s; const ink = css("--ink"), acc = css("--accent");
+      const t = (now - t0) / 1000; ctx.clearRect(0, 0, w, h);
+      const wr = (t * 120) % (s.R * 2.2);
+      const mob = w < 760;
+      for (const p of s.dots) {
+        let r = 1.3, col = rgba(ink, .16);
+        // 左の文字の領域は控えめに
+        const quiet = !mob && p.x < w * .5;
+        if (quiet) col = rgba(ink, .07);
+        const front = Math.abs(p.d - wr);
+        if (p.kind === 2) { r = 3.4 + Math.sin(t * 2 + p.ph * 6) * .4; col = ink; }
+        else if (p.kind === 3) { r = 3.2; col = ink; }
+        else if (front < s.gap * .9 && p.d < s.R * 1.15) { r = 4.2 * (1 - front / (s.gap * .9)) + 1.4; col = acc; }
+        else if (p.d < s.R * 1.05 && !quiet) { r = 1.7; col = rgba(ink, .32); }
+        ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2); ctx.fillStyle = col; ctx.fill();
+      }
+      ctx.font = `700 14px "Noto Sans JP", sans-serif`; ctx.textBaseline = "middle";
+      s.clusters.forEach((c, i) => {
+        const tw = ctx.measureText(c.label).width;
+        let lx, ly = c.y, x0;
+        if (s.mob) { ctx.textAlign = "center"; lx = c.x; ly = c.y + s.gap * 2.6; x0 = lx - tw / 2 - 6; }
+        else { ctx.textAlign = "left"; lx = c.x + s.gap * 2.4; x0 = lx - 6; }
+        ctx.fillStyle = acc; ctx.fillRect(x0, ly - 12, tw + 12, 24);
+        ctx.fillStyle = ink; ctx.fillText(c.label, lx, ly + 1);
+      });
+      ctx.textAlign = "center"; ctx.fillStyle = ink; ctx.font = `700 13px "Noto Sans JP", sans-serif`;
+      ctx.fillText("人", s.cx, s.cy - s.gap * 3.6);
+    }
+    return { layout, draw };
+  }
+
+  const scenes = {};
+  let raf = 0, active = null;
+  function start() {
+    cancelAnimationFrame(raf);
+    const id = dir === "a" ? "cv-a" : dir === "b" ? "cv-b" : null;
+    if (!id) { active = null; return; }
+    const cv = document.getElementById(id);
+    if (!scenes[id]) scenes[id] = id === "cv-a" ? rippleScene(cv) : dotScene(cv);
+    active = scenes[id]; active.layout();
+    if (reduce) { active.draw(performance.now() + 1200); return; }
+    const loop = now => { if (document.hidden) { raf = requestAnimationFrame(loop); return; } active.draw(now); raf = requestAnimationFrame(loop); };
+    raf = requestAnimationFrame(loop);
+  }
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { if (active) { active.layout(); if (reduce) active.draw(performance.now()); } }, 120); });
+
+  function setDir(v) {
+    dir = v; root.dataset.dir = v; store.set(v);
+    document.querySelectorAll(".switch button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.d === v)));
+    requestAnimationFrame(start);
+  }
+  document.querySelectorAll(".switch button").forEach(b => b.addEventListener("click", () => { setDir(b.dataset.d); scrollTo({ top: 0 }); }));
+  setDir(dir);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (active) { active.layout(); if (reduce) active.draw(performance.now()); } });
+})();
+</script>

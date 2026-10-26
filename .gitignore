@@ -2,3 +2,7 @@
 references/design/
 references/screenshots/
 __pycache__/
+
+# コーポレートサイトの参考サイト画面写真
+corporate/references/design/
+corporate/references/current/*.png
