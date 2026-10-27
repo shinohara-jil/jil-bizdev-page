@@ -89,13 +89,14 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
 .value .w::before { counter-increment: v; content: counter(v, decimal-leading-zero); display: block; font-size: 12px; letter-spacing: .14em; color: var(--accent); margin-bottom: 14px; }
 /* 写真を背景に敷く欄（ビジョン） */
 .sec.photo-sec { position: relative; overflow: hidden; background: var(--ink); color: var(--white); border-top: 0; padding-block: clamp(120px, 14vw, 220px); }
-.photo-sec .bg { position: absolute; inset: -6% 0; background: url(img/about_vision_crossing.jpg) center / cover no-repeat; will-change: transform; }
-.photo-sec::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(14,16,19,.9) 0%, rgba(14,16,19,.72) 50%, rgba(14,16,19,.45) 100%); }
+.photo-sec .bg { position: absolute; inset: -6% 0; background: url(img/about_vision_summit.jpg) 4% 42% / 170% auto no-repeat; will-change: transform; }
+.photo-sec::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(14,16,19,.88) 0%, rgba(14,16,19,.6) 48%, rgba(14,16,19,.18) 100%); }
 .photo-sec .in { position: relative; z-index: 2; }
 .photo-sec .grid > .cap { color: #C3C8CF; }
 .photo-sec .stmt .ch { color: rgba(251,251,252,.25); }
 .photo-sec .stmt .ch.on { color: var(--white); }
 .photo-sec .body { color: #D3D7DD; }
+@media (max-width: 720px) { .photo-sec .bg { background-size: cover; background-position: 47% 50%; } }
 .photo-sec .credit { position: absolute; right: var(--gr); bottom: 20px; z-index: 2; font-size: 11px; color: rgba(251,251,252,.5); letter-spacing: .08em; }
 .value:hover .w { color: var(--accent); }
 .value .w { transition: transform .7s var(--ease), color .5s; }
@@ -375,7 +376,6 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
     <div class="bt"><span>© 2026 JIL Inc.</span><span>Privacy Policy</span></div>
   </div>
 </footer>
-
 <script>
 (() => {
   document.documentElement.classList.add("js");
