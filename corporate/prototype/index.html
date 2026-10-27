@@ -1,4 +1,5 @@
 <title>JIL コーポレートサイト試作</title>
+<script>document.documentElement.lang='ja'</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +33,7 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 main section[id] { scroll-margin-top: 64px; }
 .skip { position: fixed; left: -9999px; top: 12px; z-index: 90; padding: 10px 16px; background: var(--ink); color: var(--white); border-radius: 999px; font-size: 13px; }
 .skip:focus { left: 12px; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--jp); font-size: 15px; line-height: 1.95; letter-spacing: .04em; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--jp); font-size: 15px; line-height: 1.95; letter-spacing: .04em; -webkit-font-smoothing: antialiased; word-break: auto-phrase; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 80; background: var(--paper); }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
@@ -46,22 +47,10 @@ canvas { display: block; }
 .cap { font-family: var(--en); font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
-/* ヘッダー */
-.hd { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 60; transition: background .5s var(--ease), border-color .5s var(--ease); border-bottom: 1px solid transparent; }
-.hd.solid { background: rgba(241, 242, 244, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
-.hd .in { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.logo { font-family: var(--en); font-weight: 700; font-size: 25px; letter-spacing: .01em; display: inline-flex; align-items: baseline; gap: 2px; }
-.logo i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; transform: translateY(-1px); }
-.nav { display: flex; align-items: center; gap: 32px; font-size: 13px; letter-spacing: .08em; }
-.nav a { position: relative; padding: 4px 0; }
-.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
-.nav a:hover::after, .nav a.cur::after { transform: scaleX(1); transform-origin: left; }
 .pill { display: inline-flex; align-items: center; gap: 14px; height: 44px; padding: 0 8px 0 22px; border-radius: 999px; border: 1px solid var(--ink); font-size: 13px; letter-spacing: .08em; transition: background .4s var(--ease), color .4s var(--ease); cursor: pointer; white-space: nowrap; font-family: var(--jp); background: transparent; color: var(--ink); }
 .pill .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-family: var(--en); font-size: 13px; transition: transform .4s var(--ease); }
 .pill:hover { background: var(--ink); color: var(--paper); }
 .pill:hover .dot { background: var(--paper); color: var(--ink); transform: rotate(-45deg); }
-.nav .pill::after { display: none; }
-.menu-btn { display: none; }
 
 /* 最初の画面：人の線とAIの線 */
 .hero { position: relative; height: max(660px, min(100svh, 1000px)); overflow: hidden; background: linear-gradient(160deg, #F6F7F8, #DDE1E6); }
@@ -109,14 +98,16 @@ canvas { display: block; }
 .origin { grid-column: 2; margin-top: 56px; display: flex; align-items: center; gap: 24px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .origin .en { font-size: clamp(22px, 2.2vw, 30px); font-weight: 500; letter-spacing: -.01em; }
 .origin .en b { font-weight: 700; }
-.origin small { color: var(--mute); font-size: 12.5px; line-height: 1.8; }
+.origin small { color: var(--mute); font-size: 14px; line-height: 1.8; letter-spacing: .06em; }
 .mission .more { grid-column: 2; margin-top: 36px; }
+/* 意味のまとまりの途中では改行しない */
+.cl { display: inline-block; }
 
 /* 私たちについて：写真を背景に敷き、墨を重ねて白い文字で読ませる（最初の画面の明るさとの切り替え） */
 .about-ph { overflow: hidden; background: var(--ink); color: var(--white); padding-bottom: clamp(56px, 6vw, 88px); }
 .about-ph .bg { position: absolute; inset: -9% 0; background: var(--ink) center / cover no-repeat; will-change: transform; transition: opacity .6s var(--ease); }
-.about-ph .bg { background-image: url(img/about_vision_crossing.jpg); background-position: center; }
-.about-ph::after { content: ""; position: absolute; inset: 0; background: linear-gradient(98deg, rgba(14,16,19,.84) 0%, rgba(14,16,19,.6) 46%, rgba(14,16,19,.22) 100%), linear-gradient(0deg, rgba(14,16,19,.8) 0%, rgba(14,16,19,0) 38%); pointer-events: none; }
+/* 写真に墨を重ねる（重ねを写真と同じ層に描き、下端まで確実に暗くする） */
+.about-ph .bg { background-image: linear-gradient(98deg, rgba(14,16,19,.9) 0%, rgba(14,16,19,.74) 46%, rgba(14,16,19,.42) 100%), linear-gradient(0deg, rgba(14,16,19,.8) 0%, rgba(14,16,19,0) 38%), url(img/about_vision_crossing.jpg); background-position: center; }
 .about-ph .in { position: relative; z-index: 2; }
 .about-ph .cap { color: #AEB4BD; }
 .about-ph .cap .no { color: var(--white); }
@@ -124,21 +115,12 @@ canvas { display: block; }
 .about-ph .stmt .ch.on { color: var(--white); }
 .about-ph .mission .body { color: #D3D7DD; }
 .about-ph .origin { border-color: rgba(251,251,252,.18); }
-.about-ph .origin small { color: #A3A9B2; }
+.about-ph .origin small { color: #D3D7DD; }
 .on-dark .pill { border-color: var(--white); color: var(--white); }
 .on-dark .pill .dot { background: var(--white); color: var(--ink); }
 .on-dark .pill:hover { background: var(--white); color: var(--ink); }
 .on-dark .pill:hover .dot { background: var(--ink); color: var(--white); }
 .on-dark :focus-visible { outline-color: var(--white); }
-/* 数字で見るJIL */
-.nums { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(80px, 9vw, 136px); border-top: 1px solid rgba(251,251,252,.22); }
-.num { display: grid; gap: 10px; align-content: start; padding: 26px 24px 0 0; }
-.num + .num { padding-left: 24px; border-left: 1px solid rgba(251,251,252,.12); }
-.num b { font-family: var(--en); font-weight: 500; font-size: clamp(44px, 5.2vw, 84px); line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-.num b small { font-family: var(--jp); font-size: 15px; font-weight: 500; letter-spacing: .04em; margin-left: 6px; }
-.num > span { font-size: 13px; color: #C3C8CF; letter-spacing: .06em; line-height: 1.7; }
-.nums-note { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 16px; margin-top: 28px; font-size: 11px; color: rgba(251,251,252,.5); letter-spacing: .08em; }
-.nums-note .kari { color: #C3C8CF; border-color: rgba(251,251,252,.3); margin-left: 0; }
 
 /* JILのかたち：図と説明を並べ、画面に入ったら図ができていく */
 .shape-sec { background: var(--white); }
@@ -183,6 +165,17 @@ canvas { display: block; }
 .biz .tg i { font-style: normal; font-size: 12px; letter-spacing: .06em; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; line-height: 1.9; }
 .biz .go { align-self: center; width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font-family: var(--en); font-size: 18px; transition: background .4s var(--ease), color .4s var(--ease), transform .5s var(--ease); }
 .biz:hover .go { background: var(--ink); color: var(--paper); transform: rotate(-45deg); }
+/* 事業の数字（画面に入ると数え上がる） */
+.bst { display: flex; flex-wrap: wrap; gap: 14px clamp(28px, 3.4vw, 56px); margin-top: 8px; padding-top: 20px; border-top: 1px solid var(--line); }
+.bst .st { display: grid; gap: 6px; }
+.bst b { font-family: var(--en); font-weight: 500; font-size: clamp(38px, 3.8vw, 60px); line-height: 1; letter-spacing: -.045em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.bst b small { font-family: var(--jp); font-size: 14px; font-weight: 500; letter-spacing: .04em; margin-left: 5px; }
+.bst .st > span { font-size: 12.5px; color: var(--mute); letter-spacing: .06em; line-height: 1.6; }
+/* 新規事業開発の支援：専用サイトへ移る印 */
+.biz .cap .ext { display: inline-flex; align-items: center; gap: 6px; margin-left: 14px; padding: 1px 10px 1px 11px; border: 1px solid var(--accent); border-radius: 999px; color: var(--accent); font-family: var(--jp); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: none; vertical-align: 1px; }
+.biz .cap .ext span { font-family: var(--en); font-size: 12px; }
+.biz.out .go { border-color: var(--accent); color: var(--accent); }
+.biz.out:hover .go { background: var(--accent); color: var(--white); transform: none; }
 .kari { font-size: 10.5px; color: var(--mute); border: 1px dashed var(--mute-2); padding: 0 6px; margin-left: 8px; font-weight: 400; vertical-align: 2px; letter-spacing: .04em; }
 
 /* 人とAI（両輪）：人の円とAIの球が寄って重なり、重なったところがJIL */
@@ -196,37 +189,32 @@ canvas { display: block; }
 .vl.c .cap { color: var(--accent); font-size: 10.5px; }
 .vl.c b { font-family: var(--en); font-size: clamp(26px, 2.4vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -.01em; color: var(--accent); }
 
-/* 行動指針 */
-.values { border-bottom: 1px solid var(--line); }
-.value { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 8px 40px; align-items: center; padding: clamp(26px, 3vw, 44px) 0; border-top: 1px solid var(--line); }
-.values { counter-reset: v; }
-.value .w { grid-row: span 2; font-family: var(--en); font-size: clamp(34px, 4.6vw, 72px); font-weight: 500; letter-spacing: -.045em; line-height: 1; transition: transform .7s var(--ease); }
-.value .w::before { counter-increment: v; content: counter(v, decimal-leading-zero); display: block; font-size: 12px; letter-spacing: .14em; font-weight: 700; color: var(--mute); margin-bottom: 14px; }
-.value:hover .w { transform: translateX(12px); }
-.value .jp { font-weight: 700; font-size: 18px; align-self: end; letter-spacing: .06em; }
-.value p { color: var(--ink-2); font-size: 15px; align-self: start; }
-
 /* メンバー */
 .people-sec { background: var(--white); }
-.members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 36px); }
-.mem { display: grid; gap: 18px; align-content: start; }
-.mem .pic { aspect-ratio: 4 / 5; max-width: 100%; overflow: hidden; background: #E9EBEE; border-radius: 3px; }
+.members { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 36px); align-items: start; }
+.mem { display: grid; align-content: start; }
+/* 写真・肩書・名前だけを見せ、押すと経歴が開く */
+.mem-btn { appearance: none; background: none; border: 0; padding: 0; margin: 0; width: 100%; font: inherit; color: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; display: grid; gap: 18px; }
+.mem .pic { display: block; aspect-ratio: 4 / 5; max-width: 100%; overflow: hidden; background: #E9EBEE; border-radius: 3px; }
 .mem .pic img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.02); transform: scale(1.02); transition: filter .8s var(--ease), transform 1.2s var(--ease); }
-.mem:hover .pic img { filter: grayscale(0); transform: scale(1.05); }
-.mem .who { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
-.mem h3 { font-size: 24px; letter-spacing: .02em; font-weight: 500; }
-.mem .who .cap { font-size: 11px; }
+.mem-btn:hover .pic img, .mem.open .pic img { filter: grayscale(0); transform: scale(1.05); }
 .mem .role { font-size: 12px; color: var(--mute); letter-spacing: .1em; }
-.mem ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+.mem .who { display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+.mem .mn { font-size: 24px; letter-spacing: .02em; font-weight: 500; line-height: 1.5; }
+.mem .who .cap { font-size: 11px; flex: 1; }
+.mem .pl { flex: none; position: relative; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--ink); transition: background .4s var(--ease), color .4s var(--ease), transform .5s var(--ease); }
+.mem .pl::before, .mem .pl::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.3px; background: currentColor; transform: translate(-50%, -50%); }
+.mem .pl::after { transform: translate(-50%, -50%) rotate(90deg); }
+.mem-btn:hover .pl { background: var(--ink); color: var(--white); }
+.mem.open .pl { transform: rotate(45deg); }
+.mem-cv { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .55s var(--ease); }
+.mem.open .mem-cv { grid-template-rows: 1fr; }
+.mem-cv > div { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 0s .55s; }
+.mem.open .mem-cv > div { visibility: visible; transition-delay: 0s; }
+.mem ul { margin: 0; padding: 18px 0 4px; list-style: none; display: grid; gap: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.75; }
 .mem li { display: grid; grid-template-columns: 14px minmax(0, 1fr); }
 .mem li::before { content: ""; width: 6px; height: 1px; background: var(--mute); margin-top: .9em; }
-.team { margin-top: clamp(64px, 7vw, 104px); display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: 24px; border-top: 1px solid var(--ink); padding-top: 32px; }
-.team .rws { display: grid; gap: 28px; }
-.team h3 { font-size: 13px; font-weight: 700; letter-spacing: .1em; margin-bottom: 12px; }
-.tags { display: flex; flex-wrap: wrap; font-size: clamp(18px, 1.7vw, 24px); letter-spacing: .02em; line-height: 1.7; }
-.tags span { display: inline-flex; align-items: center; }
-.tags span + span::before { content: "／"; color: var(--mute-2); margin: 0 .35em; }
-.team p { color: var(--mute); font-size: 13px; margin-top: 8px; }
+.mem-more { margin-top: clamp(44px, 4.6vw, 64px); display: flex; justify-content: flex-end; }
 
 /* ニュース */
 .news { border-top: 1px solid var(--ink); }
@@ -238,41 +226,20 @@ canvas { display: block; }
 .news a:hover .ar { transform: translateX(4px); }
 .news .c { justify-self: start; border: 1px solid var(--line); border-radius: 999px; padding: 0 10px; line-height: 2; }
 .news-more { margin-top: 36px; display: flex; justify-content: flex-end; }
-
-/* 採用（墨の帯に、白い人の線） */
-.recruit { position: relative; overflow: hidden; height: clamp(520px, 52vw, 680px); background: var(--ink); color: var(--white); }
-.recruit canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.recruit .in { position: relative; z-index: 2; height: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 360px; grid-template-rows: auto 1fr; align-items: end; padding-top: clamp(40px, 5vw, 72px); padding-bottom: clamp(56px, 6vw, 88px); pointer-events: none; }
-.recruit .cap { grid-column: 1 / -1; align-self: start; color: #9EA4AD; }
-.recruit h2 { font-size: clamp(38px, 5vw, 80px); line-height: 1.16; letter-spacing: -.05em; font-feature-settings: "palt" 1; margin-left: -.04em; }
-.recruit h2 span { display: block; }
-.recruit .side { display: grid; gap: 22px; pointer-events: auto; }
-.recruit .side p { color: #C3C8CF; font-size: 14px; }
-.recruit .side .pill { justify-self: start; }
+/* ニュースのすぐ後にお問い合わせが続くので、あいだの余白が二重にならないように */
+#news { padding-top: clamp(64px, 6vw, 96px); padding-bottom: 0; }
+.people-sec { padding-bottom: clamp(64px, 6vw, 96px); }
+#contact { padding-top: clamp(80px, 7.5vw, 120px); }
 
 /* お問い合わせ */
-.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.contact a { display: grid; gap: 20px; padding: clamp(48px, 6vw, 88px) 0; position: relative; }
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-top: 1px solid var(--ink); }
+.contact a { display: grid; gap: 20px; align-content: start; padding: clamp(40px, 4.6vw, 64px) 0 0; position: relative; }
 .contact a + a { padding-left: clamp(24px, 4vw, 64px); border-left: 1px solid var(--line); }
 .contact a .t { font-size: clamp(26px, 3vw, 46px); letter-spacing: -.03em; line-height: 1.3; font-feature-settings: "palt" 1; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-right: clamp(0px, 3vw, 48px); }
 .contact a .t .go { width: 64px; height: 64px; flex: none; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font-family: var(--en); font-size: 20px; transition: background .4s var(--ease), color .4s var(--ease), transform .5s var(--ease); }
 .contact a:hover .go { background: var(--ink); color: var(--paper); transform: rotate(-45deg); }
 .contact a p { color: var(--ink-2); font-size: 14px; }
 
-/* フッター */
-.ft { background: var(--ink); color: #D9DCE1; padding-top: 72px; overflow: hidden; }
-.ft .top { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2fr)); gap: 24px; font-size: 13px; }
-.ft dl { margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 6px 14px; color: #9EA4AD; line-height: 1.8; }
-.ft dt { color: #D9DCE1; }
-.ft dd { margin: 0; }
-.ft h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: .12em; color: #FFFFFF; font-weight: 700; }
-.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: #9EA4AD; }
-.ft ul a:hover { color: #FFFFFF; }
-.ft .mark { font-family: var(--en); font-weight: 500; font-size: clamp(48px, 9vw, 144px); letter-spacing: -.055em; line-height: .86; color: #F3F4F6; margin-top: 88px; white-space: nowrap; margin-left: -.04em; }
-.ft .mark i { font-style: normal; color: var(--accent); }
-.ft .bt { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--en); font-size: 12px; color: #7F858E; padding-block: 28px; letter-spacing: .04em; }
-.ft .bt .r { display: flex; gap: 28px; }
-.ft .bt a:hover { color: #FFFFFF; }
 
 /* 出現の動き */
 .rise { transition: transform 1.1s var(--ease), opacity 1.1s var(--ease); }
@@ -280,38 +247,20 @@ canvas { display: block; }
 
 /* タブレット */
 @media (max-width: 1080px) {
-  .nav .md-hide { display: none; }
   .hero .in { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto auto; }
   .hero .side { grid-column: 1; max-width: 420px; padding-top: 28px; }
   .biz { grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) 56px; gap: 28px; }
-  .nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .num:nth-child(3) { padding-left: 0; border-left: 0; }
-  .num:nth-child(n+3) { margin-top: 28px; border-top: 1px solid rgba(251,251,252,.12); }
-  .ft .top { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .ft .top > :first-child { grid-column: 1 / -1; }
 }
 /* スマホ */
 @media (max-width: 720px) {
   :root { --gl: max(20px, env(safe-area-inset-left, 0px)); --gr: max(20px, env(safe-area-inset-right, 0px)); }
   body { font-size: 14.5px; }
-  .hd .in { height: 64px; }
-  .nav { display: none; }
-  .menu-btn { display: inline-flex; height: 40px; padding: 0 18px; }
-  .hd.open { background: var(--paper); }
-  /* スマホのメニュー：画面いっぱいに大きな文字で */
-  .hd.open .nav { display: grid; align-content: start; position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); left: 0; right: 0; bottom: 0; overflow-y: auto; background: var(--paper); padding: 12px var(--gr) calc(32px + env(safe-area-inset-bottom, 0px)) var(--gl); gap: 0; font-size: 22px; letter-spacing: .04em; counter-reset: m; animation: menu-in .45s var(--ease); }
-  .hd.open .nav a:not(.pill) { padding: 16px 0; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 16px; }
-  .hd.open .nav a:not(.pill)::before { counter-increment: m; content: counter(m, decimal-leading-zero); font-family: var(--en); font-size: 12px; font-weight: 700; color: var(--mute); letter-spacing: .1em; }
-  .hd.open .nav a:not(.pill)::after { display: none; }
-  .hd.open .nav .md-hide { display: flex; }
-  .hd.open .nav .pill { margin-top: 28px; justify-self: start; height: 52px; font-size: 15px; padding-left: 26px; }
-  body.lock { overflow: hidden; }
   .hero { height: max(700px, 100svh); }
   .hero .in { padding-top: 88px; padding-bottom: 40px; }
   .hero h1 { font-size: clamp(34px, 10.4vw, 58px); }
   .hero .sub { font-size: 16px; }
   .hero .meta { flex-direction: column; gap: 2px; }
-  .head, .mission, .team { grid-template-columns: minmax(0, 1fr); }
+  .head, .mission { grid-template-columns: minmax(0, 1fr); }
   .head .cap, .mission .cap { padding-top: 0; }
   .head h2 { font-size: 26px; letter-spacing: -.03em; }
   .head .lead { grid-column: 1; font-size: 14.5px; }
@@ -320,15 +269,7 @@ canvas { display: block; }
   .mission .body { grid-column: 1; font-size: 15px; }
   .mission .more { grid-column: 1; }
   .origin { grid-column: 1; flex-direction: column; align-items: flex-start; gap: 8px; }
-  .about-ph::after { background: linear-gradient(180deg, rgba(14,16,19,.62) 0%, rgba(14,16,19,.82) 45%, rgba(14,16,19,.9) 100%); }
-  .nums { margin-top: 64px; }
-  .num { padding: 20px 12px 0 0; }
-  .num + .num { padding-left: 16px; }
-  .num:nth-child(3) { padding-left: 0; }
-  .num b { font-size: clamp(36px, 11vw, 48px); }
-  .num b small { font-size: 13px; margin-left: 4px; }
-  .num > span { font-size: 12px; }
-  .nums-note { flex-direction: column; gap: 6px; }
+  .about-ph .bg { background-image: linear-gradient(180deg, rgba(14,16,19,.62) 0%, rgba(14,16,19,.82) 45%, rgba(14,16,19,.9) 100%), url(img/about_vision_crossing.jpg); }
   .shape { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   /* JILのかたち：図を画面の上に留め、説明を読み進めると図の該当部分が濃くなる */
   .sqw { position: sticky; top: calc(64px + env(safe-area-inset-top, 0px)); z-index: 3; background: var(--white); padding-block: 4px 12px; margin-inline: calc(var(--gl) * -1) calc(var(--gr) * -1); box-shadow: 0 1px 0 var(--line); }
@@ -351,53 +292,37 @@ canvas { display: block; }
   .biz .bd { grid-column: 1; gap: 12px; }
   .biz .go { grid-column: 2; grid-row: 2; align-self: start; width: 48px; height: 48px; margin-top: 26px; }
   .biz .ds { font-size: 14.5px; }
-  .value { grid-template-columns: minmax(0, 1fr); }
-  .value .w { grid-row: auto; font-size: clamp(36px, 11vw, 52px); }
-  .members { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+  .bst b { font-size: clamp(34px, 10vw, 44px); }
+  .biz .cap .ext { margin: 6px 0 0; display: flex; width: max-content; }
+  .members { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   /* メンバー：写真と名前を横に並べ、縦に長くなりすぎないように */
-  .mem { grid-template-columns: 38% minmax(0, 1fr); gap: 6px 18px; align-items: end; }
+  .mem-btn { grid-template-columns: 34% minmax(0, 1fr); gap: 4px 18px; align-items: end; }
   .mem .pic { grid-row: 1 / span 2; }
-  .mem .role { grid-column: 2; }
-  .mem .who { grid-column: 2; flex-direction: column; align-items: flex-start; gap: 2px; }
-  .mem ul { grid-column: 1 / -1; margin-top: 14px; }
+  .mem .role, .mem .who { grid-column: 2; }
+  .mem .who { flex-wrap: wrap; gap: 2px 12px; }
+  .mem .mn { flex: 1; font-size: 22px; }
+  .mem .who .cap { order: 3; flex: 0 0 100%; }
+  .mem-more { justify-content: flex-start; }
   .news-more { justify-content: flex-start; }
   .news a { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; }
   .news .t { grid-column: 1 / -1; }
   .news .ar { display: none; }
-  .recruit { height: 680px; }
-  .recruit .in { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr auto; gap: 28px; }
-  .recruit h2 { font-size: clamp(32px, 9.6vw, 44px); }
   .contact { grid-template-columns: minmax(0, 1fr); }
-  .contact a + a { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
-  .ft .top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .contact a + a { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); margin-top: 40px; }
 }
-@keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hd.open .nav { animation: none; }
   .rise, .hero h1 span b, .hero .sub, .stmt .ch, .layer { transition: none !important; }
   .js .rise:not(.in-view) { transform: none; opacity: 1; }
   .js .hero:not(.ready) h1 span b, .js .hero:not(.ready) .sub { transform: none; opacity: 1; }
 }
 </style>
+<link rel="stylesheet" href="common/header.css">
+<link rel="stylesheet" href="common/footer.css">
 
 <a class="skip" href="#about">本文へ移動</a>
-<header class="hd" id="hd">
-  <div class="in">
-    <a class="logo" href="#top" aria-label="JIL トップへ">JIL<i></i></a>
-    <nav class="nav" id="nav" aria-label="メインメニュー">
-      <a href="about.html">私たちについて</a>
-      <a href="#business">事業</a>
-      <a href="product.html">プロダクト</a>
-      <a href="#ai" class="md-hide">人とAI</a>
-      <a href="member.html">メンバー</a>
-      <a href="#news" class="md-hide">ニュース</a>
-      <a href="#recruit">採用</a>
-      <a class="pill" href="#contact">お問い合わせ<span class="dot">→</span></a>
-    </nav>
-    <button class="pill menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
-  </div>
-</header>
+<header class="hd" id="hd" data-page="top"></header>
+<script src="common/header.js"></script>
 
 <main id="top">
   <section class="hero" id="hero" aria-label="JILについてひとこと">
@@ -409,10 +334,10 @@ canvas { display: block; }
         <p class="sub"><span>AI時代を生きる、</span><span>私たちの手と意思で。</span></p>
       </div>
       <div class="side">
-        <p>JILは、事業づくりのプロが集まり、あらゆる仕事にAIを使い倒す会社です。自社事業・新規事業開発の支援・採用支援の3つの事業を展開しています。</p>
+        <p>JILは、事業づくりのプロが集まり、あらゆる仕事にAIを使い倒す会社です。プロダクト・新規事業開発の支援・採用支援の3つの事業を展開しています。</p>
         <nav class="idx" aria-label="事業">
-          <a href="#biz-1">自社事業<span class="en">→</span></a>
-          <a href="#biz-2">新規事業開発の支援<span class="en">→</span></a>
+          <a href="#biz-1">プロダクト<span class="en">→</span></a>
+          <a href="service.html" data-local="../../prototype/index.html">新規事業開発の支援<span class="en">↗</span></a>
           <a href="#biz-3">採用支援<span class="en">→</span></a>
         </nav>
       </div>
@@ -426,18 +351,11 @@ canvas { display: block; }
         <div class="cap rise"><i class="no">01</i>About JIL</div>
         <p class="stmt" id="stmt"><span class="ln"><span class="ph">日本の現場力と、</span><span class="ph">AIの進化。</span></span><span class="ln"><span class="ph">そのあいだを、</span><span class="ph">実践で埋める。</span></span></p>
         <div class="body rise">
-          <p>日本には、世界に誇れる現場の力があります。ものづくりも、教育も、医療も、エンタメも。足りないのは、その力をAIの時代に合わせて動かす「実践」です。</p>
-          <p>JILは、AIを誰よりも使い倒す、事業づくりのプロの集まりです。自分たちの事業で試し、お客様の事業で形にし、成果が出るまでやり切る。その積み重ねで、日本の可能性を解き放っていきます。</p>
+          <p><span class="cl">日本には、</span><span class="cl">世界に誇れる現場の力があります。</span><span class="cl">ものづくりも、</span><span class="cl">教育も、</span><span class="cl">医療も、</span><span class="cl">エンタメも。</span><span class="cl">足りないのは、</span><span class="cl">その力をAIの時代に合わせて動かす</span><span class="cl">「実践」です。</span></p>
+          <p><span class="cl">JILは、</span><span class="cl">AIを誰よりも使い倒す、</span><span class="cl">事業づくりのプロの集まりです。</span><span class="cl">自分たちの事業で試し、</span><span class="cl">お客様の事業で形にし、</span><span class="cl">成果が出るまでやり切る。</span><span class="cl">その積み重ねで、</span><span class="cl">日本の可能性を解き放っていきます。</span></p>
         </div>
         <div class="origin rise"><span class="en"><b>J</b>apan <b>I</b>s <b>L</b>ovely.</span><small>社名の由来。日本の真価が、世界を変える未来を信じています。</small></div>
         <div class="more rise"><a class="pill" href="about.html">私たちについて詳しく<span class="dot">→</span></a></div>
-        <div class="nums rise" id="nums">
-          <div class="num"><b><span data-to="1500" data-comma>1,500</span>+<small>件</small></b><span>年間の事業審査</span></div>
-          <div class="num"><b><span data-to="300">300</span>+<small>社</small></b><span>HRコンサルティングの支援</span></div>
-          <div class="num"><b><span data-to="10">10</span><small>件</small></b><span>新規事業の立ち上げ支援</span></div>
-          <div class="num"><b><span data-to="4">4</span><small>つ</small></b><span>自社プロダクト</span></div>
-        </div>
-        <p class="nums-note"><span class="kari">数字は仮（役員の経歴の数字をもとに置いています。会社の実績として出せるか確認が必要）</span><span class="credit" id="about-credit">Photo: Unsplash</span></p>
       </div>
     </div>
   </section>
@@ -447,17 +365,17 @@ canvas { display: block; }
       <div class="head rise"><span class="cap"><i class="no">02</i>Our Shape</span><h2>すべては、人から。</h2></div>
       <div class="shape">
         <div class="sqw"><div class="sq" id="sq">
-          <canvas id="cv-shape" role="img" aria-label="中心に人、その周りをAIが包み、さらに外側に自社事業・新規事業開発の支援・採用支援がある図"></canvas>
+          <canvas id="cv-shape" role="img" aria-label="中心に人、その周りをAIが包み、さらに外側にプロダクト・新規事業開発の支援・採用支援がある図"></canvas>
           <canvas id="cv-shape-f" aria-hidden="true"></canvas>
           <span class="lb ai" data-l="ai" style="left:76%;top:29%"><b>AI</b><small>全員がAIを使う組織</small></span>
-          <span class="lb bz r" data-l="bz" style="left:54.5%;top:10%">自社事業</span>
+          <span class="lb bz r" data-l="bz" style="left:54.5%;top:10%">プロダクト</span>
           <span class="lb bz b" data-l="bz" style="left:15.4%;top:75%">新規事業<br>開発の支援</span>
           <span class="lb bz b" data-l="bz" style="left:84.6%;top:75%">採用支援</span>
         </div></div>
         <div class="layers">
           <div class="layer" data-k="1"><div class="k"><b>人</b><span class="cap">Human-Driven</span></div><div><h3>事業をつくるプロが、真ん中にいる。</h3><p>コンサルタント、PM、マーケター、デザイナー、エンジニア。専門の違うメンバーが、一人ひとり当事者として事業に向き合います。</p></div></div>
           <div class="layer" data-k="2"><div class="k"><b>AI</b><span class="cap">AI-Driven</span></div><div><h3>その周りを、AIが固める。</h3><p>調べる、つくる、届ける、採る、支える。社内のあらゆる仕事にAIを組み込み、少人数でも大きく、速く動ける組織にしています。</p></div></div>
-          <div class="layer" data-k="3"><div class="k"><b>3つの事業</b><span class="cap">Business</span></div><div><h3>人とAIの力を、3つの事業に。</h3><p>自社事業で試したことを支援に生かし、支援で得た知見を次の事業と採用に生かす。3つの事業は、互いに知見を返し合っています。</p></div></div>
+          <div class="layer" data-k="3"><div class="k"><b>3つの事業</b><span class="cap">Business</span></div><div><h3>人とAIの力を、3つの事業に。</h3><p>プロダクトで試したことを支援に生かし、支援で得た知見を次のプロダクトと採用に生かす。3つの事業は、互いに知見を返し合っています。</p></div></div>
         </div>
       </div>
     </div>
@@ -467,9 +385,9 @@ canvas { display: block; }
     <div class="in">
       <div class="head rise"><span class="cap"><i class="no">03</i>Business</span><h2>3つの事業</h2></div>
       <div class="biz-list">
-        <a class="biz rise" id="biz-1" href="product.html"><span class="th"><img src="img/biz_product.jpg" alt="アプリの画面をスマートフォンで確かめる手元" loading="lazy"></span><span class="bd"><span class="cap">01 — Own Products</span><span class="nm">自社事業</span><span class="ds"><b>AIで、これまでにない体験をつくる。</b>「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。<span class="tg"><i>えほんにおいでよ</i><i>llabo</i><i>AIインサイトバンク</i><i>JWP</i></span></span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="biz rise" id="biz-2" href="#biz-2"><span class="th"><img src="img/biz_bizdev.jpg" alt="ホワイトボードの前でアイデアを話し合う二人" loading="lazy"></span><span class="bd"><span class="cap">02 — Business Development</span><span class="nm">新規事業開発の支援</span><span class="ds"><b>戦略から、実行まで。ひとつのチームで。</b>大企業の新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目が強みです。<span class="tg"><i>構想・戦略</i><i>検証</i><i>開発</i><i>立ち上げ</i><i>AI活用</i></span></span></span><span class="go" aria-hidden="true">↗</span></a>
-        <a class="biz rise" id="biz-3" href="#biz-3"><span class="th"><img src="img/biz_recruit.jpg" alt="面談で向き合う人たち" loading="lazy"></span><span class="bd"><span class="cap">03 — Recruitment</span><span class="nm">採用支援</span><span class="ds"><b>採用を、事業をつくる力に。<span class="kari">文言は仮</span></b>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。<span class="tg"><i>採用設計</i><i>採用実務</i><i>AI活用</i></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-1" href="product.html"><span class="th"><img src="img/biz_product.jpg" alt="アプリの画面をスマートフォンで確かめる手元" loading="lazy"></span><span class="bd"><span class="cap">01 — Products</span><span class="nm">プロダクト</span><span class="ds"><b>AIで、これまでにない体験をつくる。</b>「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。<span class="tg"><i>えほんにおいでよ</i><i>llabo</i><i>AIインサイトバンク</i><i>JWP</i></span></span><span class="bst"><span class="st"><b><span data-to="4">4</span><small>つ</small></b><span>開発・準備中のプロダクト</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz out rise" id="biz-2" href="service.html" data-local="../../prototype/index.html"><span class="th"><img src="img/biz_service.jpg" alt="エスカレーターを行き交う人たち" loading="lazy"></span><span class="bd"><span class="cap">02 — Business Development<span class="ext">専用サイトへ<span aria-hidden="true">↗</span></span></span><span class="nm">新規事業開発の支援</span><span class="ds"><b>戦略から、実行まで。ひとつのチームで。</b>大企業の新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目が強みです。<span class="tg"><i>構想・戦略</i><i>検証</i><i>開発</i><i>立ち上げ</i><i>AI活用</i></span></span><span class="bst"><span class="st"><b><span data-to="1500" data-comma>1,500</span>+<small>件</small></b><span>年間の事業審査</span></span><span class="st"><b><span data-to="10">10</span><small>件</small></b><span>新規事業の立ち上げ支援</span></span></span></span><span class="go" aria-hidden="true">↗</span></a>
+        <a class="biz rise" id="biz-3" href="#contact"><span class="th"><img src="img/biz_recruit.jpg" alt="面談で向き合う人たち" loading="lazy"></span><span class="bd"><span class="cap">03 — Recruitment</span><span class="nm">採用支援</span><span class="ds"><b>採用を、事業をつくる力に。</b>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。<span class="tg"><i>採用設計</i><i>採用実務</i><i>AI活用</i></span></span><span class="bst"><span class="st"><b><span data-to="300">300</span>+<small>社</small></b><span>HRコンサルティングの支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -486,40 +404,21 @@ canvas { display: block; }
     </div>
   </section>
 
-  <section class="sec" id="values">
-    <div class="in">
-      <div class="head rise"><span class="cap"><i class="no">05</i>Values</span><h2>私たちの行動指針</h2></div>
-      <div class="values">
-        <div class="value rise"><span class="w">Ignite First</span><span class="jp">動き出すのは、私たちから。</span><p>答えが見えなくても、最初の一歩を踏み出す。</p></div>
-        <div class="value rise"><span class="w">Deploy or Die</span><span class="jp">実装しなければ、意味がない。</span><p>構想で終わらせない。使われる形で届ける。</p></div>
-        <div class="value rise"><span class="w">Focus on the Next</span><span class="jp">過去ではなく、次を見る。</span><p>起きたことに執着せず、“次”を問い続ける。</p></div>
-        <div class="value rise"><span class="w">Forge Together</span><span class="jp">対話で、磨く。</span><p>一緒に考え、一緒につくる。答えは、対話の中で生まれる。</p></div>
-      </div>
-    </div>
-  </section>
-
   <section class="sec people-sec" id="people">
     <div class="in">
-      <div class="head rise"><span class="cap"><i class="no">06</i>People</span><h2>JILをつくる人たち</h2></div>
+      <div class="head rise"><span class="cap"><i class="no">05</i>People</span><h2>JILをつくる人たち</h2></div>
       <div class="members">
-        <article class="mem rise"><div class="pic"><img src="img/member_takei.jpg" alt="武井 遼太郎"></div><span class="role">代表取締役</span><div class="who"><h3>武井 遼太郎</h3><span class="cap">Ryotaro Takei</span></div><ul><li>300社を超える企業のHRコンサルティングと事業開発</li><li>AIを活用したHR Tech事業</li><li>ベンチャー企業のCOO・CHROを経て、上場企業へ事業売却</li></ul></article>
-        <article class="mem rise"><div class="pic"><img src="img/member_shinohara.jpg" alt="篠原 孝弘"></div><span class="role">取締役</span><div class="who"><h3>篠原 孝弘</h3><span class="cap">Takahiro Shinohara</span></div><ul><li>2020年〜 リーガル系SaaSの新規事業立ち上げ</li><li>年間1,500件を超える事業審査、累計10件の立ち上げ支援</li><li>さまざまな業種のAI活用支援を推進</li></ul></article>
-        <article class="mem rise"><div class="pic"><img src="img/member_tanaka.jpg" alt="田中 伸英"></div><span class="role">監査役</span><div class="who"><h3>田中 伸英</h3><span class="cap">Nobuhide Tanaka</span></div><ul><li>2010年から企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など幅広く支援</li><li>テクノロジー企業・VCとの協業実績が豊富</li></ul></article>
+        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-takei"><span class="pic"><img src="img/member_takei.jpg" alt=""></span><span class="role">代表取締役</span><span class="who"><span class="mn">武井 遼太郎</span><span class="cap">Ryotaro Takei</span><i class="pl" aria-hidden="true"></i></span></button><div class="mem-cv" id="cv-takei"><div><ul><li>300社を超える企業のHRコンサルティングと事業開発</li><li>AIを活用したHR Tech事業</li><li>ベンチャー企業のCOO・CHROを経て、上場企業へ事業売却</li></ul></div></div></article>
+        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-shinohara"><span class="pic"><img src="img/member_shinohara.jpg" alt=""></span><span class="role">取締役</span><span class="who"><span class="mn">篠原 孝弘</span><span class="cap">Takahiro Shinohara</span><i class="pl" aria-hidden="true"></i></span></button><div class="mem-cv" id="cv-shinohara"><div><ul><li>2020年〜 リーガル系SaaSの新規事業立ち上げ</li><li>年間1,500件を超える事業審査、累計10件の立ち上げ支援</li><li>さまざまな業種のAI活用支援を推進</li></ul></div></div></article>
+        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-tanaka"><span class="pic"><img src="img/member_tanaka.jpg" alt=""></span><span class="role">監査役</span><span class="who"><span class="mn">田中 伸英</span><span class="cap">Nobuhide Tanaka</span><i class="pl" aria-hidden="true"></i></span></button><div class="mem-cv" id="cv-tanaka"><div><ul><li>2010年から企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など幅広く支援</li><li>テクノロジー企業・VCとの協業実績が豊富</li></ul></div></div></article>
       </div>
-      <div class="team rise">
-        <span class="cap">Team</span>
-        <div class="rws">
-          <div><h3>チームの専門性</h3><div class="tags"><span>コンサルタント</span><span>PM</span><span>マーケティング</span><span>企画・推進</span><span>IS／FS</span><span>業務設計</span><span>デザイナー</span><span>AIエンジニア</span><span>Webエンジニア</span></div><p>要件定義から、設計・開発・運用・内製化まで、ひとつのチームで。</p></div>
-          <div><h3>メンバーの経験</h3><div class="tags"><span>リクルート</span><span>楽天</span><span>新日鉄ソリューションズ</span><span>アクセンチュア</span><span>博報堂</span></div><p>などで経験を積んだ、事業開発と生成AIのプロフェッショナルが集まっています。</p></div>
-        </div>
-      </div>
-      <div class="news-more rise"><a class="pill" href="member.html">メンバーについて詳しく<span class="dot">→</span></a></div>
+      <div class="mem-more rise"><a class="pill" href="member.html">メンバーについて詳しく<span class="dot">→</span></a></div>
     </div>
   </section>
 
   <section class="sec" id="news">
     <div class="in">
-      <div class="head rise"><span class="cap"><i class="no">07</i>News</span><h2>ニュース</h2></div>
+      <div class="head rise"><span class="cap"><i class="no">06</i>News</span><h2>ニュース</h2></div>
       <div class="news rise">
         <a href="#news"><span class="d">2026.10.20</span><span class="c">お知らせ</span><span class="t">コーポレートサイトをリニューアルしました（仮のお知らせ）</span><span class="ar">→</span></a>
         <a href="#news"><span class="d">2026.10.01</span><span class="c">サービス</span><span class="t">新規事業開発の支援サービスのページを公開しました（仮のお知らせ）</span><span class="ar">→</span></a>
@@ -529,40 +428,19 @@ canvas { display: block; }
     </div>
   </section>
 
-  <section class="recruit on-dark" id="recruit" aria-label="採用">
-    <canvas id="cv-recruit" aria-hidden="true"></canvas>
+  <section class="sec" id="contact">
     <div class="in">
-      <span class="cap">Join Us</span>
-      <h2><span>次の可能性を、</span><span>あなたの手で。</span></h2>
-      <div class="side">
-        <p>AIを道具に、事業をつくることに本気で向き合いたい人を探しています。職種や関わり方は、話しながら一緒に考えます。</p>
-        <a class="pill" href="#recruit">採用情報を見る<span class="dot">→</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" aria-label="お問い合わせ">
-    <div class="in">
-      <div class="contact">
-        <a href="#contact"><span class="cap">Contact</span><span class="t">事業・採用の<br>ご相談<span class="go">→</span></span><p>新規事業、AI活用、採用のことなど、まずはお気軽にご相談ください。</p></a>
-        <a href="#contact"><span class="cap">Free Session</span><span class="t">30分の<br>無料相談<span class="go">→</span></span><p>役員が直接お話を伺います。オンラインで予約できます。</p></a>
+      <div class="head rise"><span class="cap"><i class="no">07</i>Contact</span><h2>お問い合わせ</h2></div>
+      <div class="contact rise">
+        <a href="#contact"><span class="cap">Business</span><span class="t">事業の<br>お問い合わせ<span class="go">→</span></span><p>新規事業開発の支援、採用支援、プロダクトのことなど、お気軽にご相談ください。</p></a>
+        <a href="#contact" id="contact-recruit"><span class="cap">Recruit</span><span class="t">採用の<br>お問い合わせ<span class="go">→</span></span><p>JILで働くことに興味のある方へ。職種や関わり方は、話しながら一緒に考えます。</p></a>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="ft">
-  <div class="in">
-    <div class="top">
-      <dl><dt>会社名</dt><dd>株式会社JIL（JIL Inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
-      <div><h4>私たちについて</h4><ul><li><a href="about.html#mission">ミッション・ビジョン</a></li><li><a href="about.html#values">行動指針</a></li><li><a href="about.html#company">会社概要</a></li><li><a href="#shape">JILのかたち</a></li><li><a href="#ai">人とAI</a></li></ul></div>
-      <div><h4>事業</h4><ul><li><a href="#biz-1">自社事業</a></li><li><a href="product.html">プロダクト</a></li><li><a href="#biz-2">新規事業開発の支援</a></li><li><a href="#biz-3">採用支援</a></li></ul></div>
-      <div><h4>組織</h4><ul><li><a href="member.html">メンバー</a></li><li><a href="#news">ニュース</a></li><li><a href="#recruit">採用情報</a></li><li><a href="#contact">お問い合わせ</a></li></ul></div>
-    </div>
-    <div class="mark" aria-hidden="true">Japan Is Lovely<i>.</i></div>
-    <div class="bt"><span>© 2026 JIL Inc.</span><span class="r"><a href="#">Privacy Policy</a><a href="#top">Page Top ↑</a></span></div>
-  </div>
-</footer>
+<footer class="ft" id="ft" data-page="top"></footer>
+<script src="common/footer.js"></script>
 <script>
 (() => {
   const root = document.documentElement; root.classList.add("js");
@@ -581,70 +459,6 @@ canvas { display: block; }
   const bez = (P, t) => { const u = 1 - t, a = u * u * u, b = 3 * u * u * t, c = 3 * u * t * t, e = t * t * t; return [a * P[0][0] + b * P[1][0] + c * P[2][0] + e * P[3][0], a * P[0][1] + b * P[1][1] + c * P[2][1] + e * P[3][1]]; };
 
   const ac = a => `rgba(45,68,224,${a})`;
-
-  /* ===== 人の線とAIの線（採用） =====
-     太い1本＝人。途中から細い線が筒状にからみつき、ねじれながら右へ伸びる＝AI */
-  function Ribbon(cv, o) {
-    let ctx, w, h, S = [], wMax = 0, t0 = null, mx = .5, tmx = .5, twk = 1;
-    const K = 220;
-    const resize = () => {
-      ({ ctx, w, h } = fit(cv)); const m = mob(); const P = o.spine(w, h, m); wMax = o.width(w, h, m); twk = m ? .5 : 1; S = [];
-      for (let k = 0; k <= K; k++) S.push(bez(P, k / K));
-      for (let k = 0; k <= K; k++) { const a = S[Math.max(0, k - 1)], b = S[Math.min(K, k + 1)]; const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; S[k][2] = -dy / l; S[k][3] = dx / l; }
-    };
-    const pt = (k, th, tau, el) => {
-      const t = k / K, env = ss(o.from, o.from + o.grow, t);
-      const tw = th + t * o.twist * twk * TAU + tau * .16 + (mx - .5) * 1.4;
-      const wd = wMax * env * (.78 + .22 * Math.sin(t * 5 + tau * .35));
-      const off = wd * Math.sin(tw); const s = S[k];
-      return [s[0] + s[2] * off, s[1] + s[3] * off, Math.cos(tw)];
-    };
-    const draw = now => {
-      if (t0 === null) t0 = now;
-      const el = reduce ? 9 : (now - t0) / 1000, tau = reduce ? 2 : el;
-      const rh = eo(clamp(el / 1.5)), rf = eo(clamp((el - .8) / 2.6));
-      mx += (tmx - mx) * .04;
-      ctx.clearRect(0, 0, w, h);
-      const n = mob() ? o.n * .7 | 0 : o.n, step = 2;
-      const k0 = Math.floor(K * o.from), kEnd = Math.floor(K * (o.from + (1 - o.from) * rf));
-      // 奥と手前、濃さの段階ごとにまとめて描く
-      const B = [[], []].map(() => Array.from({ length: 5 }, () => new Path2D()));
-      const A = [new Path2D(), new Path2D()];
-      for (let i = 0; i < n; i++) {
-        const th = i / n * TAU, acc = i % o.accEvery === 0;
-        let prev = pt(k0, th, tau), lastP = null;
-        for (let k = k0 + step; k <= kEnd; k += step) {
-          const cur = pt(k, th, tau), z = (prev[2] + cur[2]) / 2, layer = z >= 0 ? 1 : 0;
-          const p = acc ? A[layer] : B[layer][Math.min(4, Math.floor((Math.abs(z)) * 5))];
-          // 同じ濃さが続くあいだは1本の線としてつなぐ（つなぎ目の点が縦じまに見えないように）
-          if (p !== lastP) p.moveTo(prev[0], prev[1]);
-          p.lineTo(cur[0], cur[1]); prev = cur; lastP = p;
-        }
-      }
-      const fine = (layer) => {
-        for (let q = 0; q < 5; q++) { ctx.strokeStyle = o.fine(layer ? .1 + q * .05 : .05 + (4 - q) * .012); ctx.lineWidth = .7; ctx.stroke(B[layer][q]); }
-        ctx.strokeStyle = o.acc(layer ? .55 : .18); ctx.lineWidth = .9; ctx.stroke(A[layer]);
-      };
-      fine(0);
-      // 人の線
-      const kh = Math.floor(K * rh);
-      if (kh > 1) {
-        ctx.beginPath(); ctx.moveTo(S[0][0], S[0][1]);
-        for (let k = 1; k <= kh; k++) ctx.lineTo(S[k][0], S[k][1]);
-        ctx.strokeStyle = o.thick; ctx.lineWidth = o.thickW; ctx.lineCap = "round"; ctx.stroke();
-      }
-      fine(1);
-      // 線の上を流れる点
-      if (rf > .2) for (let q = 0; q < 9; q++) {
-        const sp = .05 + (q % 3) * .018, f = (tau * sp + q / 9) % 1, k = Math.floor(k0 + f * (K - k0));
-        if (k > kEnd) continue;
-        const c = pt(k, (q * 7 % o.n) / o.n * TAU, tau);
-        ctx.fillStyle = o.acc(c[2] > 0 ? .9 : .3); ctx.beginPath(); ctx.arc(c[0], c[1], c[2] > 0 ? 2.4 : 1.6, 0, TAU); ctx.fill();
-      }
-    };
-    resize();
-    return { el: cv, draw, resize, point: x => { tmx = x; }, reset: () => { t0 = null; } };
-  }
 
   /* ===== 水面（WebGL2：計算はCPU、描画はシェーダー） ===== */
   const VS = `#version 300 es
@@ -790,14 +604,6 @@ canvas { display: block; }
     const t = performance.now(); heroScene.tick(t); for (let i = 0; i < 70; i++) heroW.step(); heroScene.tick(t + 1200); for (let i = 0; i < 40; i++) heroW.step(); heroW.render();
   } } : null;
 
-
-  /* ===== JILのかたち：中心の人、包むAI、3つの事業 ===== */
-  const recruit = Ribbon(document.getElementById("cv-recruit"), {
-    spine: (w, h, m) => m ? [[-.1 * w, .3 * h], [.3 * w, .5 * h], [.62 * w, -.04 * h], [1.1 * w, .2 * h]] : [[-.04 * w, .42 * h], [.32 * w, .72 * h], [.6 * w, -.04 * h], [1.04 * w, .3 * h]],
-    width: (w, h, m) => m ? .075 * h : .15 * h,
-    from: .16, grow: .45, twist: 1.3, n: 80, accEvery: 14,
-    fine: a => `rgba(251,251,252,${a * .9})`, acc: a => `rgba(120,140,255,${a})`, thick: "#FBFBFC", thickW: 2.4
-  });
 
   /* ===== 人のアイコン：JILのかたちの中心＝2色（頭が墨、肩が青）、重なりの図＝線 ===== */
   const INK = "#0E1013";
@@ -963,7 +769,7 @@ canvas { display: block; }
   const venn = Venn(document.getElementById("cv-venn"), document.getElementById("venn"));
 
   /* ===== 見えている絵だけ動かす ===== */
-  const anims = [hero, shape, venn, recruit].filter(Boolean), vis = new Set();
+  const anims = [hero, shape, venn].filter(Boolean), vis = new Set();
   const io = new IntersectionObserver(es => es.forEach(e => {
     const a = anims.find(x => x.el === e.target); if (!a) return;
     if (e.isIntersecting) { vis.add(a); if (a.reset) a.reset(); } else vis.delete(a);
@@ -975,17 +781,6 @@ canvas { display: block; }
 
   const heroSec = document.getElementById("hero");
 
-  /* ===== ヘッダー・メニュー ===== */
-  const hd = document.getElementById("hd");
-  const onScroll = () => hd.classList.toggle("solid", scrollY > heroSec.offsetHeight - 90);
-  addEventListener("scroll", onScroll, { passive: true }); onScroll();
-  const mb = document.getElementById("menu-btn");
-  const menu = o => { hd.classList.toggle("open", o); document.body.classList.toggle("lock", o); mb.setAttribute("aria-expanded", String(o)); mb.textContent = o ? "Close" : "Menu"; };
-  mb.addEventListener("click", () => menu(!hd.classList.contains("open")));
-  document.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", () => menu(false)));
-  addEventListener("keydown", e => { if (e.key === "Escape" && hd.classList.contains("open")) { menu(false); mb.focus(); } });
-  addEventListener("resize", () => { if (!mob() && hd.classList.contains("open")) menu(false); });
-
   // 今読んでいる欄を、メニューに下線で示す
   const navLinks = [...document.querySelectorAll('.nav a[href^="#"]:not(.pill)')];
   const spy = new IntersectionObserver(es => es.forEach(e => {
@@ -994,24 +789,33 @@ canvas { display: block; }
   }), { rootMargin: "-45% 0px -50% 0px" });
   navLinks.forEach(a => { const s = document.querySelector(a.getAttribute("href")); if (s) spy.observe(s); });
   const clearSpy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) navLinks.forEach(a => a.classList.remove("cur")); }), { rootMargin: "-45% 0px -50% 0px" });
-  ["hero", "about", "shape", "values", "contact"].forEach(id => clearSpy.observe(document.getElementById(id)));
+  ["hero", "about", "shape", "people"].forEach(id => clearSpy.observe(document.getElementById(id)));
 
-  /* ===== 私たちについて：背景の写真（スクロールでゆっくり動く）と数字 ===== */
+  /* ===== 私たちについて：背景の写真（スクロールでゆっくり動く） ===== */
   const about = document.getElementById("about"), abg = document.getElementById("about-bg");
   const onBg = () => { const r = about.getBoundingClientRect(), vh = innerHeight; if (r.bottom < 0 || r.top > vh) return; const t = (r.top + r.height / 2 - vh / 2) / (vh + r.height); abg.style.transform = `translate3d(0,${(t * -10).toFixed(2)}%,0)`; };
   if (!reduce) { addEventListener("scroll", onBg, { passive: true }); onBg(); }
-  const nums = [...document.querySelectorAll("#nums [data-to]")];
+
+  /* ===== 事業の数字：画面に入ると0から数え上がる ===== */
   const fmt = (v, c) => c ? Math.round(v).toLocaleString("en-US") : String(Math.round(v));
   if (!reduce) {
-    nums.forEach(n => n.textContent = "0");
     const nio = new IntersectionObserver(es => es.forEach(e => {
-      if (!e.isIntersecting) return; nio.disconnect();
-      const t0 = performance.now();
-      const run = now => { const p = eo(clamp((now - t0) / 1600)); nums.forEach(n => n.textContent = fmt(+n.dataset.to * p, n.hasAttribute("data-comma"))); if (p < 1) requestAnimationFrame(run); };
+      if (!e.isIntersecting) return; nio.unobserve(e.target);
+      const ns = [...e.target.querySelectorAll("[data-to]")], t0 = performance.now();
+      const run = now => { const p = eo(clamp((now - t0) / 1800)); ns.forEach(n => n.textContent = fmt(+n.dataset.to * p, n.hasAttribute("data-comma"))); if (p < 1) requestAnimationFrame(run); };
       requestAnimationFrame(run);
     }), { rootMargin: "0px 0px -15% 0px" });
-    nio.observe(document.getElementById("nums"));
+    document.querySelectorAll(".bst").forEach(b => { b.querySelectorAll("[data-to]").forEach(n => n.textContent = "0"); nio.observe(b); });
   }
+
+  /* ===== メンバー：押すと経歴が開く ===== */
+  document.querySelectorAll(".mem-btn").forEach(b => b.addEventListener("click", () => {
+    const o = b.getAttribute("aria-expanded") !== "true";
+    b.setAttribute("aria-expanded", String(o)); b.closest(".mem").classList.toggle("open", o);
+  }));
+
+  // 新規事業開発の支援は別の試作（サービスページ）。手元のファイルで開いたときは、そのファイルへ
+  if (location.protocol === "file:") document.querySelectorAll("a[data-local]").forEach(a => a.href = a.dataset.local);
 
   /* ===== 出現と、読んだところから文字が濃くなる一文（文節の途中では改行しない） ===== */
   requestAnimationFrame(() => setTimeout(() => heroSec.classList.add("ready"), 120));

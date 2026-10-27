@@ -33,12 +33,15 @@
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--jp); font-size: 15px; line-height: 1.95; letter-spacing: .04em; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--jp); font-size: 15px; line-height: 1.95; letter-spacing: .04em; -webkit-font-smoothing: antialiased; word-break: auto-phrase; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 80; background: var(--paper); }
 a { color: inherit; text-decoration: none; }
 p { margin: 0; }
 h1, h2, h3 { margin: 0; font-weight: 500; }
 h1, h2, h3, .stmt, .jp { word-break: auto-phrase; }
+/* 文章の最後の行が1〜2語だけ残らないように。.kp は途中で折り返したくない語のまとまり */
+p, li { text-wrap: pretty; }
+.kp { display: inline-block; }
 img { display: block; }
 
 .in { max-width: 1440px; margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
@@ -47,21 +50,10 @@ img { display: block; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 /* ヘッダー（共通） */
-.hd { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 60; transition: background .5s var(--ease), border-color .5s var(--ease); border-bottom: 1px solid transparent; }
-.hd.solid { background: rgba(241, 242, 244, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
-.hd .in { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.logo { font-family: var(--en); font-weight: 700; font-size: 25px; letter-spacing: .01em; display: inline-flex; align-items: baseline; gap: 2px; }
-.logo i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; transform: translateY(-1px); }
-.nav { display: flex; align-items: center; gap: 32px; font-size: 13px; letter-spacing: .08em; }
-.nav a { position: relative; padding: 4px 0; }
-.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
-.nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
 .pill { display: inline-flex; align-items: center; gap: 14px; height: 44px; padding: 0 8px 0 22px; border-radius: 999px; border: 1px solid var(--ink); font-size: 13px; letter-spacing: .08em; transition: background .4s var(--ease), color .4s var(--ease); cursor: pointer; white-space: nowrap; font-family: var(--jp); background: transparent; color: var(--ink); }
 .pill .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-family: var(--en); font-size: 13px; transition: transform .4s var(--ease); }
 .pill:hover { background: var(--ink); color: var(--paper); }
 .pill:hover .dot { background: var(--paper); color: var(--ink); transform: rotate(-45deg); }
-.nav .pill::after { display: none; }
-.menu-btn { display: none; }
 
 /* 下層ページ共通の冒頭：大きな英字のページ名、日本語の見出し、パンくず、目次。背景は青の光のグラデーション */
 .ph-top { position: relative; overflow: hidden; min-height: min(78svh, 760px); display: grid; align-items: end; padding-top: 140px; padding-bottom: clamp(56px, 6vw, 88px); background: linear-gradient(165deg, #F6F7F9, #DFE3E8); }
@@ -121,35 +113,100 @@ img { display: block; }
 .bm li { display: grid; grid-template-columns: 18px minmax(0, 1fr); }
 .bm li::before { content: ""; width: 8px; height: 1px; background: var(--mute); margin-top: .95em; }
 
-/* チーム：分業との比べ図と、専門の一覧 */
-.flow { margin-top: clamp(48px, 5vw, 72px); border-top: 1px solid var(--ink); }
-.flow-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line); }
-.flow-row > .lb { font-size: 13px; font-weight: 700; letter-spacing: .08em; }
-.flow-row > .lb small { display: block; font-weight: 400; color: var(--mute); font-size: 12px; }
-.flow-ph { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); font-size: 13px; letter-spacing: .06em; color: var(--ink-2); }
-.flow-ph span { border-left: 1px solid var(--line); padding-left: 12px; }
-.flow-ph span b { display: block; font-family: var(--en); font-size: 11px; color: var(--mute); letter-spacing: .12em; font-weight: 500; }
-.bars { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); height: 44px; }
-.bars i { font-style: normal; display: flex; align-items: center; padding-left: 14px; font-size: 12.5px; letter-spacing: .06em; border-radius: 3px; height: 100%; }
-.bars.split i { background: var(--paper-2); color: var(--ink-2); margin-right: 14px; position: relative; }
-.bars.split i:not(:last-child)::after { content: ""; position: absolute; right: -13px; top: 50%; width: 12px; border-top: 1px dashed var(--mute); }
-.bars.one i { grid-column: 1 / -1; background: var(--ink); color: var(--white); font-weight: 700; justify-content: space-between; padding-right: 14px; transform-origin: left; transition: transform 1.6s var(--ease) .2s; }
-.bars.one i::after { content: "→"; font-family: var(--en); }
-.js .flow:not(.in-view) .bars.one i { transform: scaleX(.04); }
-.flow-note { font-size: 13px; color: var(--mute); margin-top: 14px; }
+/* チームの構成図：3案を下部の切替で比べる（.tm- はこの図専用の名前） */
+.tm-fig { margin-top: clamp(48px, 5vw, 72px); }
+/* 図は見出しの列から出し、役員の欄と同じく左端から広く使う */
+.tm-fig { grid-column: 1 / -1; }
+#team .grid > .cap { position: static; } /* 見出しがスクロールについてきて図に重ならないように */
+.tm-v { display: none; }
+.tm-v.tm-on { display: block; }
+.tm-lb { font-size: 13px; font-weight: 700; letter-spacing: .08em; line-height: 1.6; }
+.tm-lb small { display: block; font-weight: 400; color: var(--mute); font-size: 12px; }
+.tm-note { font-size: 12.5px; color: var(--mute); margin-top: 16px; }
+/* 工程の帯（A・Cで共通）：5つの工程を1本の線でつなぐ */
+.tm-ph { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; align-items: center; margin-top: clamp(40px, 4vw, 56px); padding-top: 22px; border-top: 1px solid var(--ink); }
+.tm-ph ol { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.tm-ph ol::before { content: ""; position: absolute; left: 6px; right: 0; top: 6px; height: 2px; background: var(--ink); transform-origin: left; transition: transform 1.4s var(--ease) .3s; }
+.tm-ph li { position: relative; display: grid; gap: 4px; padding-top: 22px; font-size: 13px; letter-spacing: .06em; }
+.tm-ph li::before { content: ""; position: absolute; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); box-sizing: border-box; }
+.tm-ph li b { font-family: var(--en); font-size: 11px; color: var(--mute); font-weight: 500; letter-spacing: .12em; }
+.js .tm-v:not(.in-view) .tm-ph ol::before { transform: scaleX(0); }
 
-.roles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); margin-top: clamp(56px, 6vw, 88px); }
-.roles > div { position: relative; padding: 28px 28px 8px 0; }
-.roles > div + div { padding-left: 28px; border-left: 1px solid var(--line); }
-.roles > div::before { content: ""; position: absolute; left: 0; top: -2px; width: 40px; height: 3px; background: var(--accent-2); }
-.roles > div + div::before { left: 28px; background: var(--accent); }
-.roles > div:last-child::before { background: var(--ink); }
-.roles h3 { font-size: 15px; font-weight: 700; letter-spacing: .06em; display: grid; gap: 2px; margin-bottom: 14px; }
-.roles h3 .cap { font-size: 11px; }
-.roles ul { margin: 0; padding: 0; list-style: none; }
-.roles li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: clamp(18px, 1.6vw, 22px); letter-spacing: .02em; line-height: 1.5; }
-.roles li .en { font-size: 12px; color: var(--mute); white-space: nowrap; }
-.roles li small { display: block; font-size: 12px; color: var(--mute); letter-spacing: .04em; }
+/* A 組織図：JIL（ワンチーム）から3つの領域、その下に職種がぶら下がる */
+.tm-a-root { position: relative; z-index: 1; width: max-content; min-width: 260px; margin: 0 auto; display: grid; justify-items: center; gap: 2px; padding: 18px 40px; background: var(--ink); color: var(--white); border-radius: 6px; text-align: center; }
+.tm-a-root .cap { color: #9EA4AD; font-size: 11px; }
+.tm-a-root b { font-family: var(--en); font-size: 30px; font-weight: 700; line-height: 1.15; }
+.tm-a-root small { font-size: 12px; color: #C3C8CF; letter-spacing: .06em; }
+.tm-a-br { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; padding-top: 56px; }
+.tm-a-br::before { content: ""; position: absolute; left: 50%; top: 0; width: 1px; height: 28px; background: var(--ink); transform-origin: top; transition: transform .5s var(--ease) .2s; }
+.tm-a-br::after { content: ""; position: absolute; top: 28px; left: calc((100% - 56px) / 6); right: calc((100% - 56px) / 6); height: 1px; background: var(--ink); transition: transform .7s var(--ease) .6s; }
+.tm-a-g { position: relative; }
+.tm-a-g::before { content: ""; position: absolute; left: 50%; top: -28px; width: 1px; height: 28px; background: var(--ink); transform-origin: top; transition: transform .4s var(--ease) 1.2s; }
+.tm-a-node { display: grid; justify-items: center; gap: 2px; padding: 16px 12px 14px; border: 1px solid var(--ink); border-top: 4px solid var(--tm-c); border-radius: 6px; background: var(--white); text-align: center; }
+.tm-a-node .cap { font-size: 11px; }
+.tm-a-node b { font-size: 17px; font-weight: 700; letter-spacing: .06em; line-height: 1.5; }
+.tm-a-node .n { font-family: var(--en); font-size: 11px; color: var(--mute); letter-spacing: .1em; }
+.tm-a-g ul { margin: 0; padding: 8px 0 0 30px; list-style: none; }
+.tm-a-g li { position: relative; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: clamp(16px, 1.4vw, 20px); letter-spacing: .02em; line-height: 1.5; }
+.tm-a-g li::before { content: ""; position: absolute; left: -16px; top: 0; bottom: 0; width: 1px; background: var(--mute-2); }
+.tm-a-g li:first-child::before { top: -8px; }
+.tm-a-g li:last-child::before { bottom: 50%; }
+.tm-a-g li::after { content: ""; position: absolute; left: -16px; top: 50%; width: 10px; height: 1px; background: var(--mute-2); }
+.tm-a-g li .en { font-size: 11.5px; color: var(--mute); white-space: nowrap; }
+.tm-a-g li small, .tm-b i small { display: block; font-size: 11.5px; color: var(--mute); letter-spacing: .04em; }
+.js .tm-a:not(.in-view) .tm-a-br::before, .js .tm-a:not(.in-view) .tm-a-g::before { transform: scaleY(0); }
+.js .tm-a:not(.in-view) .tm-a-br::after { transform: scaleX(0); }
+
+/* B 工程×領域：分業は工程ごとに箱が分かれる。JILは1つの枠の中で、3つの領域が全工程を通して走る */
+.tm-b { border-top: 1px solid var(--ink); }
+.tm-b-r { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 24px; align-items: center; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.tm-b-ph { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); font-size: 13px; letter-spacing: .06em; color: var(--ink-2); }
+.tm-b-ph span { border-left: 1px solid var(--line); padding-left: 12px; }
+.tm-b-ph span b { display: block; font-family: var(--en); font-size: 11px; color: var(--mute); letter-spacing: .12em; font-weight: 500; }
+.tm-b-split { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); height: 44px; }
+.tm-b-split i { position: relative; display: flex; align-items: center; margin-right: 14px; padding-left: 14px; border-radius: 3px; background: var(--paper-2); color: var(--ink-2); font-style: normal; font-size: 12.5px; letter-spacing: .06em; }
+.tm-b-split i:not(:last-child)::after { content: ""; position: absolute; right: -13px; top: 50%; width: 12px; border-top: 1px dashed var(--mute); }
+.tm-b-team { position: relative; display: grid; border: 1.5px solid var(--ink); border-radius: 6px; padding: 14px 18px 4px; }
+.tm-b-tag { position: absolute; left: 14px; top: -10px; padding: 0 8px; background: var(--paper); font-family: var(--en); font-size: 11px; font-weight: 700; letter-spacing: .14em; line-height: 20px; }
+.tm-b-lane { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: center; padding: 12px 0; }
+.tm-b-lane + .tm-b-lane { border-top: 1px dashed var(--line); }
+.tm-b-lane .tm-lb { display: grid; }
+.tm-b-lane .tm-lb .cap { font-size: 10.5px; }
+.tm-b-track { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 4px 30px 4px 0; }
+.tm-b-track::before { content: ""; position: absolute; left: 0; right: 6px; top: 50%; height: 2px; background: var(--tm-c); transform-origin: left; transition: transform 1.2s var(--ease) calc(.3s + var(--d, 0s)); }
+.tm-b-track::after { content: ""; position: absolute; right: 2px; top: calc(50% - 4px); width: 8px; height: 8px; border-top: 2px solid var(--tm-c); border-right: 2px solid var(--tm-c); transform: rotate(45deg); }
+.tm-b-team i { position: relative; font-style: normal; font-size: 14px; letter-spacing: .04em; line-height: 1.4; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); }
+.tm-b-team i { white-space: nowrap; }
+.js .tm-b:not(.in-view) .tm-b-track::before { transform: scaleX(0); }
+
+/* C 円：真ん中にJIL（ワンチーム）、そのまわりに3つの領域、外側の輪に職種 */
+.tm-c { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 4vw, 64px); align-items: center; }
+.tm-v.tm-c.tm-on { display: grid; }
+.tm-c-o { position: relative; width: 100%; max-width: 560px; aspect-ratio: 1; margin-inline: auto; }
+.tm-c-o svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.tm-c-o .ar { fill: none; stroke-width: 3px; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s var(--ease) .3s; }
+.tm-c-o .sp { stroke-width: 1px; vector-effect: non-scaling-stroke; opacity: .45; transition: opacity .8s var(--ease) 1s; }
+.tm-c-o .rim { fill: none; stroke: var(--mute-2); stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-dasharray: 2 5; }
+.tm-c-core { position: absolute; left: 50%; top: 50%; width: 21%; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-content: center; gap: 2px; border-radius: 50%; background: var(--ink); color: var(--white); text-align: center; }
+.tm-c-core .cap { color: #9EA4AD; font-size: 10.5px; }
+.tm-c-core b { font-family: var(--en); font-size: clamp(20px, 2.2vw, 30px); font-weight: 700; line-height: 1.1; }
+.tm-c-d, .tm-c-r { position: absolute; transform: translate(-50%, -50%); white-space: nowrap; text-align: center; transition: opacity .7s var(--ease) calc(.6s + var(--d, 0s)); }
+.tm-c-d { display: grid; padding: 0; font-size: 13px; font-weight: 700; letter-spacing: .06em; line-height: 1.4; }
+.tm-c-d .cap { font-size: 10px; color: var(--tm-c); }
+.tm-c-r { padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); font-size: 14px; letter-spacing: .02em; line-height: 1.4; }
+.tm-c-r::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--tm-c); margin-right: 8px; vertical-align: 2px; }
+.tm-c-leg { display: grid; gap: 0; }
+.tm-c-leg p.tm-c-lead { font-size: clamp(18px, 1.6vw, 22px); line-height: 1.7; letter-spacing: .02em; margin-bottom: 20px; }
+.tm-c-leg dl { margin: 0; border-top: 1px solid var(--ink); }
+.tm-c-leg dl > div { display: grid; grid-template-columns: 4px minmax(0, 1fr); gap: 0 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.tm-c-leg dl > div::before { content: ""; grid-row: 1 / span 2; background: var(--tm-c); border-radius: 2px; }
+.tm-c-leg dt, .tm-c-leg dd { grid-column: 2; }
+.tm-c-leg dt { font-size: 15px; font-weight: 700; letter-spacing: .06em; }
+.tm-c-leg dt .cap { display: block; font-size: 10.5px; font-weight: 500; }
+.tm-c-leg dd { margin: 4px 0 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.8; }
+.tm-c .tm-ph { grid-column: 1 / -1; }
+.js .tm-c:not(.in-view) .ar { stroke-dashoffset: 1; }
+.js .tm-c:not(.in-view) .sp, .js .tm-c:not(.in-view) .tm-c-d, .js .tm-c:not(.in-view) .tm-c-r { opacity: 0; }
 
 /* メンバーの経験：社名を大きく並べる墨の帯 */
 .career-band { background: radial-gradient(50% 90% at 88% 10%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%), var(--ink); color: var(--white); padding-block: clamp(80px, 8vw, 128px); }
@@ -174,17 +231,6 @@ img { display: block; }
 .contact a p { color: var(--ink-2); font-size: 14px; }
 
 /* フッター（共通） */
-.ft { background: var(--ink); color: #D9DCE1; padding-top: 72px; overflow: hidden; }
-.ft .top { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2fr)); gap: 24px; font-size: 13px; }
-.ft dl { margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 6px 14px; color: #9EA4AD; line-height: 1.8; }
-.ft dt { color: #D9DCE1; }
-.ft dd { margin: 0; }
-.ft h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: .12em; color: #FFFFFF; font-weight: 700; }
-.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: #9EA4AD; }
-.ft ul a:hover { color: #FFFFFF; }
-.ft .mark { font-family: var(--en); font-weight: 500; font-size: clamp(48px, 9vw, 144px); letter-spacing: -.055em; line-height: .86; color: #F3F4F6; margin-top: 88px; white-space: nowrap; margin-left: -.04em; }
-.ft .mark i { font-style: normal; color: var(--accent); }
-.ft .bt { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--en); font-size: 12px; color: #7F858E; padding-block: 28px; letter-spacing: .04em; }
 
 /* 出現の動き */
 .rise { transition: transform 1.1s var(--ease), opacity 1.1s var(--ease); }
@@ -193,27 +239,14 @@ img { display: block; }
 .stmt .ch.on { color: var(--ink); }
 
 @media (max-width: 1080px) {
-  .nav .md-hide { display: none; }
   .ph-top .row { grid-template-columns: minmax(0, 1fr); }
   .ph-top { min-height: 0; padding-top: 120px; }
   .bm { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 32px; }
-  .roles { grid-template-columns: minmax(0, 1fr); }
-  .roles > div, .roles > div + div { padding: 24px 0 8px; border-left: 0; }
-  .roles > div + div::before { left: 0; }
-  .ft .top { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .ft .top > :first-child { grid-column: 1 / -1; }
+  .tm-c { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 720px) {
   :root { --gl: max(20px, env(safe-area-inset-left, 0px)); --gr: max(20px, env(safe-area-inset-right, 0px)); }
   body { font-size: 14.5px; }
-  .hd .in { height: 64px; }
-  .nav { display: none; }
-  .menu-btn { display: inline-flex; height: 40px; padding: 0 18px; }
-  .hd.open { background: var(--paper); }
-  .hd.open .nav { display: grid; position: absolute; top: 64px; left: 0; right: 0; background: var(--paper); padding: 8px var(--gr) 28px var(--gl); gap: 0; font-size: 16px; border-bottom: 1px solid var(--line); }
-  .hd.open .nav a { padding: 14px 0; border-bottom: 1px solid var(--line); }
-  .hd.open .nav .md-hide { display: block; }
-  .hd.open .nav .pill { margin-top: 18px; justify-self: start; border-bottom: 1px solid var(--ink); }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .grid > .cap { position: static; padding-top: 0; }
   .stmt { font-size: clamp(28px, 8.4vw, 36px); }
@@ -229,46 +262,60 @@ img { display: block; }
   .bm-key { margin-top: 4px; }
   .bm-key .fig { font-size: 44px; }
   .bm ul { font-size: 14px; }
-  .flow-row { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 18px 0; }
-  .flow-row.ph-row > .lb { display: none; }
-  .flow-ph { font-size: 11px; letter-spacing: 0; }
-  .flow-ph span { padding-left: 6px; }
-  .bars { height: 40px; }
-  .bars i { font-size: 11px; padding-left: 8px; letter-spacing: 0; }
-  .bars.split i { margin-right: 8px; }
-  .bars .tm { display: none; }
-  .bars.split i:not(:last-child)::after { right: -8px; width: 8px; }
+  /* チームの構成図（スマホ） */
+  .tm-ph, .tm-b-r { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .tm-ph ol { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .tm-ph li { font-size: 11px; letter-spacing: 0; }
+  .tm-a-root { width: 100%; }
+  /* A はスマホでは左に1本の幹を通し、そこから3つの領域が枝分かれする */
+  .tm-a-br { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 28px 0 0 24px; }
+  .tm-a-br::before { left: 12px; height: 28px; }
+  .tm-a-br::after { display: none; }
+  .tm-a-g::before { left: -12px; top: -24px; height: calc(100% + 24px); }
+  .tm-a-g:first-child::before { top: -28px; height: calc(100% + 28px); }
+  .tm-a-g:last-child::before { height: 62px; }
+  .tm-a-g::after { content: ""; position: absolute; left: -12px; top: 38px; width: 12px; height: 1px; background: var(--ink); }
+  .tm-b-r.tm-b-phr > .tm-lb { display: none; }
+  .tm-b-ph { font-size: 11px; letter-spacing: 0; }
+  .tm-b-ph span { padding-left: 6px; }
+  .tm-b-split { height: 40px; }
+  .tm-b-split i { font-size: 11px; padding-left: 8px; margin-right: 8px; letter-spacing: 0; }
+  .tm-b-split i:not(:last-child)::after { right: -8px; width: 8px; }
+  .tm-b-split .tm-x { display: none; }
+  .tm-b-team { padding: 18px 14px 4px; }
+  .tm-b-lane { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .tm-b-team i { font-size: 13px; padding: 4px 10px; }
+  /* 職種が2行になっても線が間を通らないよう、スマホでは線を下に敷く */
+  .tm-b-track { padding: 0 0 18px; }
+  .tm-b-track::before { top: auto; bottom: 5px; right: 4px; }
+  .tm-b-track::after { top: auto; bottom: 1px; right: 0; }
+  .tm-c-core .cap { font-size: 7.5px; letter-spacing: .08em; }
+  .tm-c-core b { font-size: 18px; }
+  .tm-c-o { max-width: 100%; }
+  .tm-c-r { font-size: 11.5px; padding: 3px 8px; }
+  .tm-c-r::before { width: 5px; height: 5px; margin-right: 5px; }
+  .tm-c-d { font-size: 10.5px; letter-spacing: .02em; }
+  .tm-c-d .cap { font-size: 7.5px; letter-spacing: .06em; }
   .co-list li { font-size: clamp(22px, 6.4vw, 28px); }
   .contact { grid-template-columns: minmax(0, 1fr); }
   .contact a + a { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
-  .ft .top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rise, .stmt .ch, .bars.one i { transition: none !important; }
+  .rise, .stmt .ch, [class^="tm-"], [class^="tm-"]::before, [class^="tm-"]::after, .tm-c-o .ar, .tm-c-o .sp { transition: none !important; }
   .ph-grad::after { animation: none; }
   .js .rise:not(.in-view) { transform: none; opacity: 1; }
-  .js .flow:not(.in-view) .bars.one i { transform: none; }
+  .js .tm-v:not(.in-view) .tm-ph ol::before, .js .tm-a:not(.in-view) .tm-a-br::before, .js .tm-a:not(.in-view) .tm-a-br::after, .js .tm-a:not(.in-view) .tm-a-g::before, .js .tm-b:not(.in-view) .tm-b-track::before { transform: none; }
+  .js .tm-c:not(.in-view) .ar { stroke-dashoffset: 0; }
+  .js .tm-c:not(.in-view) .sp, .js .tm-c:not(.in-view) .tm-c-d, .js .tm-c:not(.in-view) .tm-c-r { opacity: 1; }
 }
 </style>
+<link rel="stylesheet" href="common/header.css">
+<link rel="stylesheet" href="common/footer.css">
 </head>
 <body>
 
-<header class="hd" id="hd">
-  <div class="in">
-    <a class="logo" href="index.html" aria-label="JIL トップへ">JIL<i></i></a>
-    <nav class="nav" id="nav" aria-label="メインメニュー">
-      <a href="about.html">私たちについて</a>
-      <a href="index.html#business">事業</a>
-      <a href="product.html">プロダクト</a>
-      <a href="index.html#ai" class="md-hide">人とAI</a>
-      <a href="member.html" aria-current="page">メンバー</a>
-      <a href="index.html#news" class="md-hide">ニュース</a>
-      <a href="index.html#recruit">採用</a>
-      <a class="pill" href="#contact">お問い合わせ<span class="dot">→</span></a>
-    </nav>
-    <button class="pill menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
-  </div>
-</header>
+<header class="hd" id="hd" data-page="member"></header>
+<script src="common/header.js"></script>
 
 <main>
   <section class="ph-top" aria-label="メンバー">
@@ -277,7 +324,7 @@ img { display: block; }
       <div class="crumb"><a href="index.html">トップ</a><span aria-hidden="true">／</span><span>メンバー</span></div>
       <div class="ttl"><p class="en-t" aria-hidden="true">Member<i>.</i></p><h1>メンバー</h1></div>
       <div class="row">
-        <p class="lead">JILには、事業開発と生成AIのプロが集まっています。コンサルタントからエンジニアまで、専門の違うメンバーが、要件定義から内製化までをひとつのチームで担います。</p>
+        <p class="lead">JILには、事業開発と生成AIのプロが集まっています。コンサルタントからエンジニアまで、専門の違うメンバーが、要件定義から内製化までを<span class="kp">ひとつのチームで担います。</span></p>
         <nav class="toc" aria-label="このページの目次">
           <a href="#board">役員<span class="en">↓</span></a>
           <a href="#team">チーム<span class="en">↓</span></a>
@@ -331,7 +378,7 @@ img { display: block; }
           <h3>田中 伸英</h3>
           <span class="rm">Nobuhide Tanaka</span>
           <p class="bm-key"><span class="fig">2010<small>年〜</small></span><span class="lb">企業法務のスペシャリストとして</span></p>
-          <ul><li>2010年から、企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など、幅広い領域で支援</li><li>テクノロジー企業やベンチャーキャピタルとの協業実績が豊富</li></ul>
+          <ul><li>2010年から、企業法務のスペシャリスト</li><li><span>M&amp;A、契約交渉、知的財産、労務問題など、<span class="kp">幅広い</span>領域で支援</span></li><li>テクノロジー企業やベンチャーキャピタルとの協業実績が豊富</li></ul>
         </div>
       </article>
     </div>
@@ -345,16 +392,11 @@ img { display: block; }
         <div class="body rise">
           <p>考える人と、つくる人と、届ける人が、別々の会社にいる。そのたびに引き継ぎが生まれ、意図が少しずつ抜け落ちていきます。JILは、最初から最後までを同じチームで担い、お客様が自分たちで回せるようになるところまで伴走します。<span class="kari">文言は仮</span></p>
         </div>
-        <div class="flow rise" role="img" aria-label="分業では戦略・開発・運用が別々のチームに分かれ、間で引き継ぎが起きる。JILは要件定義から内製化までをひとつのチームで担う">
-          <div class="flow-row ph-row"><span class="lb"></span><div class="flow-ph"><span><b>01</b>要件定義</span><span><b>02</b>設計</span><span><b>03</b>開発</span><span><b>04</b>運用</span><span><b>05</b>内製化</span></div></div>
-          <div class="flow-row"><span class="lb">分業の場合<small>会社や部署ごとに</small></span><div class="bars split"><i style="grid-column: span 2">戦略<span class="tm">チーム</span></i><i>開発<span class="tm">チーム</span></i><i style="grid-column: span 2">運用<span class="tm">チーム</span></i></div></div>
-          <div class="flow-row"><span class="lb">JILの場合<small>ひとつのチームで</small></span><div class="bars one"><i>ワンチーム</i></div></div>
-        </div>
-        <div class="roles">
-          <div class="rise"><h3><span class="cap">Business</span>事業をつくる</h3><ul><li>コンサルタント<span class="en">Consultant</span></li><li>PM<span class="en">Project Manager</span></li><li>業務設計・企画<span class="en">Planning</span></li></ul></div>
-          <div class="rise"><h3><span class="cap">Growth</span>届ける</h3><ul><li><span>マーケティング<small>企画・推進</small></span><span class="en">Marketing</span></li><li><span>IS／FS<small>インサイドセールス・フィールドセールス</small></span><span class="en">Sales</span></li></ul></div>
-          <div class="rise"><h3><span class="cap">Technology</span>形にする</h3><ul><li>デザイナー<span class="en">Designer</span></li><li>AIエンジニア<span class="en">AI Engineer</span></li><li>Webエンジニア<span class="en">Web Engineer</span></li></ul></div>
-        </div>
+      </div>
+      <div class="tm-fig">
+        <div class="tm-v tm-a rise" data-v="A" role="img" aria-label="JILというひとつのチームの下に、事業をつくる・届ける・形にするの3つの領域があり、それぞれに専門の職種がいる組織図"><div class="tm-a-root"><span class="cap">One Team</span><b>JIL</b><small>事業開発 × 生成AIのチーム</small></div><div class="tm-a-br"><div class="tm-a-g" style="--tm-c: var(--accent-2)"><div class="tm-a-node"><span class="cap">Business</span><b>事業をつくる</b><span class="n">3 ROLES</span></div><ul><li><span>コンサルタント</span><span class="en">Consultant</span></li><li><span>PM</span><span class="en">Project Manager</span></li><li><span>業務設計・企画</span><span class="en">Planning</span></li></ul></div><div class="tm-a-g" style="--tm-c: var(--accent)"><div class="tm-a-node"><span class="cap">Growth</span><b>届ける</b><span class="n">2 ROLES</span></div><ul><li><span>マーケティング<small>企画・推進</small></span><span class="en">Marketing</span></li><li><span>IS／FS<small>インサイドセールス・フィールドセールス</small></span><span class="en">Sales</span></li></ul></div><div class="tm-a-g" style="--tm-c: var(--ink)"><div class="tm-a-node"><span class="cap">Technology</span><b>形にする</b><span class="n">3 ROLES</span></div><ul><li><span>デザイナー</span><span class="en">Designer</span></li><li><span>AIエンジニア</span><span class="en">AI Engineer</span></li><li><span>Webエンジニア</span><span class="en">Web Engineer</span></li></ul></div></div><div class="tm-ph"><span class="tm-lb">担う範囲<small>この1チームで、最初から最後まで</small></span><ol><li><b>01</b>要件定義</li><li><b>02</b>設計</li><li><b>03</b>開発</li><li><b>04</b>運用</li><li><b>05</b>内製化</li></ol></div></div>
+        <div class="tm-v tm-b rise" data-v="B" role="img" aria-label="分業では戦略・開発・運用が別々のチームに分かれ、間で引き継ぎが起きる。JILはひとつの枠の中で、事業をつくる・届ける・形にするの3つの領域が、要件定義から内製化までのすべての工程を通して動く"><div class="tm-b-r tm-b-phr"><span class="tm-lb"></span><div class="tm-b-ph"><span><b>01</b>要件定義</span><span><b>02</b>設計</span><span><b>03</b>開発</span><span><b>04</b>運用</span><span><b>05</b>内製化</span></div></div><div class="tm-b-r"><span class="tm-lb">分業の場合<small>会社や部署ごとに</small></span><div class="tm-b-split"><i style="grid-column: span 2">戦略<span class="tm-x">チーム</span></i><i>開発<span class="tm-x">チーム</span></i><i style="grid-column: span 2">運用<span class="tm-x">チーム</span></i></div></div><div class="tm-b-r"><span class="tm-lb">JILの場合<small>ひとつのチームで</small></span><div class="tm-b-team"><span class="tm-b-tag">ONE TEAM</span><div class="tm-b-lane" style="--tm-c: var(--accent-2); --d: 0.00s"><span class="tm-lb"><span class="cap">Business</span>事業をつくる</span><div class="tm-b-track"><i>コンサルタント</i><i>PM</i><i>業務設計・企画</i></div></div><div class="tm-b-lane" style="--tm-c: var(--accent); --d: 0.25s"><span class="tm-lb"><span class="cap">Growth</span>届ける</span><div class="tm-b-track"><i>マーケティング</i><i>IS／FS</i></div></div><div class="tm-b-lane" style="--tm-c: var(--ink); --d: 0.50s"><span class="tm-lb"><span class="cap">Technology</span>形にする</span><div class="tm-b-track"><i>デザイナー</i><i>AIエンジニア</i><i>Webエンジニア</i></div></div></div></div></div>
+        <div class="tm-v tm-c rise" data-v="C"><div class="tm-c-o" role="img" aria-label="真ん中にJILというひとつのチーム、そのまわりに事業をつくる・届ける・形にするの3つの領域、外側の輪に8つの職種が並ぶ図"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="rim" cx="50" cy="50" r="41"/><path class="ar" pathLength="1" d="M26.24 33.37A29 29 0 0 1 73.76 33.37" stroke="var(--accent-2)"/><line class="sp" x1="33.37" y1="26.24" x2="26.48" y2="16.41" stroke="var(--accent-2)"/><line class="sp" x1="50.00" y1="21.00" x2="50.00" y2="9.00" stroke="var(--accent-2)"/><line class="sp" x1="66.63" y1="26.24" x2="73.52" y2="16.41" stroke="var(--accent-2)"/><path class="ar" pathLength="1" d="M76.28 37.74A29 29 0 0 1 52.53 78.89" stroke="var(--accent)"/><line class="sp" x1="78.56" y1="55.04" x2="90.38" y2="57.12" stroke="var(--accent)"/><line class="sp" x1="68.64" y1="72.22" x2="76.35" y2="81.41" stroke="var(--accent)"/><path class="ar" pathLength="1" d="M47.47 78.89A29 29 0 0 1 23.72 37.74" stroke="var(--ink)"/><line class="sp" x1="37.74" y1="76.28" x2="32.67" y2="87.16" stroke="var(--ink)"/><line class="sp" x1="24.89" y1="64.50" x2="14.49" y2="70.50" stroke="var(--ink)"/><line class="sp" x1="21.11" y1="47.47" x2="9.16" y2="46.43" stroke="var(--ink)"/></svg><div class="tm-c-core"><span class="cap">One Team</span><b>JIL</b></div><span class="tm-c-d" style="left:50.00%;top:31.50%;--tm-c:var(--accent-2)"><span class="cap">Business</span>事業をつくる</span><span class="tm-c-r" style="left:26.48%;top:16.41%;--tm-c:var(--accent-2);--d:0.15s">コンサルタント</span><span class="tm-c-r" style="left:50.00%;top:9.00%;--tm-c:var(--accent-2);--d:0.27s">PM</span><span class="tm-c-r" style="left:73.52%;top:16.41%;--tm-c:var(--accent-2);--d:0.39s">業務設計・企画</span><span class="tm-c-d" style="left:66.02%;top:59.25%;--tm-c:var(--accent)"><span class="cap">Growth</span>届ける</span><span class="tm-c-r" style="left:90.38%;top:57.12%;--tm-c:var(--accent);--d:0.15s">マーケティング</span><span class="tm-c-r" style="left:76.35%;top:81.41%;--tm-c:var(--accent);--d:0.27s">IS／FS</span><span class="tm-c-d" style="left:33.98%;top:59.25%;--tm-c:var(--ink)"><span class="cap">Technology</span>形にする</span><span class="tm-c-r" style="left:32.67%;top:87.16%;--tm-c:var(--ink);--d:0.15s">デザイナー</span><span class="tm-c-r" style="left:14.49%;top:70.50%;--tm-c:var(--ink);--d:0.27s">AIエンジニア</span><span class="tm-c-r" style="left:9.16%;top:46.43%;--tm-c:var(--ink);--d:0.39s">Webエンジニア</span></div><div class="tm-c-leg"><p class="tm-c-lead">真ん中に、ひとつのチーム。<br>8つの専門が、同じ輪の中で動きます。<span class="kari">文言は仮</span></p><dl><div style="--tm-c: var(--accent-2)"><dt><span class="cap">Business</span>事業をつくる</dt><dd>コンサルタント・PM・業務設計・企画</dd></div><div style="--tm-c: var(--accent)"><dt><span class="cap">Growth</span>届ける</dt><dd>マーケティング（企画・推進）・IS／FS</dd></div><div style="--tm-c: var(--ink)"><dt><span class="cap">Technology</span>形にする</dt><dd>デザイナー・AIエンジニア・Webエンジニア</dd></div></dl></div><div class="tm-ph"><span class="tm-lb">担う範囲<small>この1チームで、最初から最後まで</small></span><ol><li><b>01</b>要件定義</li><li><b>02</b>設計</li><li><b>03</b>開発</li><li><b>04</b>運用</li><li><b>05</b>内製化</li></ol></div></div>
       </div>
     </div>
   </section>
@@ -370,7 +412,7 @@ img { display: block; }
           <li class="rise" style="--i:3">アクセンチュア<span class="en">04</span></li>
           <li class="rise" style="--i:4">博報堂<span class="en">05</span></li>
         </ul>
-        <p class="txt rise">などで経験を積んだ、事業開発と生成AIのプロフェッショナルが集まっています。大企業の事業づくりの作法と、スタートアップの速さ。その両方を知るメンバーが、お客様の現場に入ります。<span class="kari">文言は仮</span></p>
+        <p class="txt rise">などで経験を積んだ、事業開発と生成AIのプロフェッショナルが集まっています。大企業の事業づくりの作法と、<span class="kp">スタートアップの速さ。</span>その両方を知るメンバーが、お客様の現場に入ります。<span class="kari">文言は仮</span></p>
       </div>
     </div>
   </section>
@@ -381,9 +423,9 @@ img { display: block; }
       <div>
         <p class="stmt js-fill"><span class="ln"><span class="w">次の可能性を、</span></span><span class="ln"><span class="w">あなたの手で。</span></span></p>
         <div class="body rise">
-          <p>JILは、一緒に事業をつくる仲間を探しています。事業開発の経験を、AIでもっと大きく使いたい人。AIの力で、日本の現場を変えたい人。まずは、気軽に話しましょう。<span class="kari">文言は仮</span></p>
+          <p>JILは、一緒に事業をつくる仲間を探しています。事業開発の経験を、AIでもっと大きく<span class="kp">使いたい人。</span>AIの力で、日本の現場を<span class="kp">変えたい人。</span>まずは、気軽に話しましょう。<span class="kari">文言は仮</span></p>
         </div>
-        <div class="links rise"><a class="pill" href="index.html#recruit">採用情報を見る<span class="dot">→</span></a><a class="pill" href="about.html#values">行動指針を読む<span class="dot">→</span></a></div>
+        <div class="links rise"><a class="pill" href="index.html#contact-recruit">採用のお問い合わせ<span class="dot">→</span></a><a class="pill" href="about.html#values">行動指針を読む<span class="dot">→</span></a></div>
       </div>
     </div>
   </section>
@@ -391,34 +433,27 @@ img { display: block; }
   <section id="contact" aria-label="お問い合わせ">
     <div class="in">
       <div class="contact">
-        <a href="index.html#contact"><span class="cap">Contact</span><span class="t">業務・採用の<br>お問い合わせ<span class="go">→</span></span><p>新規事業、AI活用、採用のことなど、まずはお気軽にご相談ください。</p></a>
-        <a href="index.html#contact"><span class="cap">Free Session</span><span class="t">30分の<br>無料相談<span class="go">→</span></span><p>役員が直接お話を伺います。オンラインで予約できます。</p></a>
+        <a href="index.html#contact"><span class="cap">Business</span><span class="t">事業の<br>お問い合わせ<span class="go">→</span></span><p>新規事業開発の支援、採用支援、プロダクトのことなど、お気軽にご相談ください。</p></a>
+        <a href="index.html#contact-recruit" id="contact-recruit"><span class="cap">Recruit</span><span class="t">採用の<br>お問い合わせ<span class="go">→</span></span><p>JILで働くことに興味のある方へ。職種や関わり方は、話しながら一緒に考えます。</p></a>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="ft">
-  <div class="in">
-    <div class="top">
-      <dl><dt>会社名</dt><dd>株式会社JIL（JIL Inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
-      <div><h4>私たちについて</h4><ul><li><a href="about.html#mission">ミッション・ビジョン</a></li><li><a href="about.html#values">行動指針</a></li><li><a href="about.html#company">会社概要</a></li><li><a href="index.html#shape">JILのかたち</a></li><li><a href="index.html#ai">人とAI</a></li></ul></div>
-      <div><h4>事業</h4><ul><li><a href="index.html#biz-1">自社事業</a></li><li><a href="product.html">プロダクト</a></li><li><a href="index.html#biz-2">新規事業開発の支援</a></li><li><a href="index.html#biz-3">採用支援</a></li></ul></div>
-      <div><h4>組織</h4><ul><li><a href="member.html">メンバー</a></li><li><a href="index.html#news">ニュース</a></li><li><a href="index.html#recruit">採用情報</a></li><li><a href="#contact">お問い合わせ</a></li></ul></div>
-    </div>
-    <div class="mark" aria-hidden="true">Japan Is Lovely<i>.</i></div>
-    <div class="bt"><span>© 2026 JIL Inc.</span><span>Privacy Policy</span></div>
-  </div>
-</footer>
+<footer class="ft" id="ft" data-page="member"></footer>
+<script src="common/footer.js"></script>
+<script>
+(() => {
+  const nav = performance.getEntriesByType("navigation")[0];
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (!location.hash && (!nav || nav.type === "navigate")) { scrollTo(0, 0); addEventListener("load", () => scrollTo(0, 0)); }
+  addEventListener("DOMContentLoaded", () => { if (location.protocol === "file:") document.querySelectorAll("a[data-local]").forEach(a => a.href = a.dataset.local); });
+})();
+</script>
 <script>
 (() => {
   document.documentElement.classList.add("js");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const hd = document.getElementById("hd"), mb = document.getElementById("menu-btn");
-  const onScroll = () => hd.classList.toggle("solid", scrollY > 20);
-  addEventListener("scroll", onScroll, { passive: true }); onScroll();
-  mb.addEventListener("click", () => { const o = hd.classList.toggle("open"); mb.setAttribute("aria-expanded", String(o)); mb.textContent = o ? "Close" : "Menu"; });
-  document.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", () => { hd.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); mb.textContent = "Menu"; }));
   const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in-view"); rio.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".rise").forEach(el => rio.observe(el));
   // 読んだところから文字が濃くなる一文（文節の途中では改行しない）
@@ -432,6 +467,8 @@ img { display: block; }
     const n = Math.round(p * chs.length); chs.forEach((s, i) => s.classList.toggle("on", i < n));
   });
   addEventListener("scroll", fill, { passive: true }); fill();
+  // チームの図はC（円）に決定。A（組織図）・B（工程×領域）も残してあり、ここを "A" / "B" にすると戻せる
+  document.querySelectorAll(".tm-v").forEach(v => v.classList.toggle("tm-on", v.dataset.v === "C"));
   if (location.hash) { const t = document.querySelector(location.hash); if (t) setTimeout(() => t.scrollIntoView(), 50); }
 })();
 </script>

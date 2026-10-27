@@ -1,0 +1,24 @@
+/* 全ページ共通のフッター（中身は footer.js がつくる）。色・書体などの値は各ページの :root を使う */
+.ft { position: relative; background: var(--ink); color: #D9DCE1; padding-top: 72px; overflow: hidden; }
+.ft-cv { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: clamp(240px, 30vw, 420px); pointer-events: none; opacity: .55; }
+.ft .in { position: relative; z-index: 2; }
+.ft .top { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2fr)); gap: 24px; font-size: 13px; }
+.ft dl { margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 6px 14px; color: #9EA4AD; line-height: 1.8; }
+.ft dt { color: #D9DCE1; }
+.ft dd { margin: 0; }
+.ft h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: .12em; color: #FFFFFF; font-weight: 700; }
+.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: #9EA4AD; }
+.ft ul a:hover { color: #FFFFFF; }
+.ft .mark { font-family: var(--en); font-weight: 500; font-size: clamp(48px, 9vw, 144px); letter-spacing: -.055em; line-height: .86; color: #F3F4F6; margin-top: 88px; white-space: nowrap; margin-left: -.04em; }
+.ft .mark i { font-style: normal; color: var(--accent); }
+.ft .bt { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--en); font-size: 12px; color: #7F858E; padding-block: 28px; letter-spacing: .04em; }
+.ft .bt .r { display: flex; gap: 28px; }
+.ft .bt a:hover { color: #FFFFFF; }
+.ft .bt .r a { cursor: pointer; }
+@media (max-width: 1080px) {
+  .ft .top { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ft .top > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 720px) {
+  .ft .top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}

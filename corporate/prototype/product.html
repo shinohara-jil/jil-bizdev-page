@@ -33,7 +33,7 @@
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--jp); font-size: 15px; line-height: 1.95; letter-spacing: .04em; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--jp); font-size: 15px; line-height: 1.95; letter-spacing: .04em; -webkit-font-smoothing: antialiased; word-break: auto-phrase; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 80; background: var(--paper); }
 a { color: inherit; text-decoration: none; }
 p { margin: 0; }
@@ -47,21 +47,10 @@ img { display: block; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 /* ヘッダー（共通） */
-.hd { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 60; transition: background .5s var(--ease), border-color .5s var(--ease); border-bottom: 1px solid transparent; }
-.hd.solid { background: rgba(241, 242, 244, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
-.hd .in { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.logo { font-family: var(--en); font-weight: 700; font-size: 25px; letter-spacing: .01em; display: inline-flex; align-items: baseline; gap: 2px; }
-.logo i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; transform: translateY(-1px); }
-.nav { display: flex; align-items: center; gap: 32px; font-size: 13px; letter-spacing: .08em; }
-.nav a { position: relative; padding: 4px 0; }
-.nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
-.nav a:hover::after, .nav a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
 .pill { display: inline-flex; align-items: center; gap: 14px; height: 44px; padding: 0 8px 0 22px; border-radius: 999px; border: 1px solid var(--ink); font-size: 13px; letter-spacing: .08em; transition: background .4s var(--ease), color .4s var(--ease); cursor: pointer; white-space: nowrap; font-family: var(--jp); background: transparent; color: var(--ink); }
 .pill .dot { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-family: var(--en); font-size: 13px; transition: transform .4s var(--ease); }
 .pill:hover { background: var(--ink); color: var(--paper); }
 .pill:hover .dot { background: var(--paper); color: var(--ink); transform: rotate(-45deg); }
-.nav .pill::after { display: none; }
-.menu-btn { display: none; }
 
 /* 下層ページ共通の冒頭：大きな英字のページ名、日本語の見出し、パンくず、目次。背景は青の光のグラデーション */
 .ph-top { position: relative; overflow: hidden; min-height: min(78svh, 760px); display: grid; align-items: end; padding-top: 140px; padding-bottom: clamp(56px, 6vw, 88px); background: linear-gradient(165deg, #F6F7F9, #DFE3E8); }
@@ -128,16 +117,51 @@ img { display: block; }
 .pill.off:hover { background: transparent; color: var(--mute); }
 
 /* つくる→確かめる→支援に返す */
-.loop { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); margin-top: clamp(48px, 5vw, 72px); counter-reset: lp; }
-.loop > div { position: relative; padding: 28px 28px 8px 0; display: grid; gap: 12px; align-content: start; }
-.loop > div + div { padding-left: 28px; border-left: 1px solid var(--line); }
-.loop > div::before { content: ""; position: absolute; left: 0; top: -2px; width: 40px; height: 3px; background: var(--accent-2); }
-.loop > div + div::before { left: 28px; background: var(--accent); }
-.loop > div:last-child::before { background: var(--ink); }
-.loop .cap { font-size: 11px; }
-.loop .cap::before { counter-increment: lp; content: counter(lp, decimal-leading-zero) " — "; color: var(--ink); font-weight: 700; }
-.loop h3 { font-size: clamp(19px, 1.6vw, 23px); font-weight: 700; line-height: 1.6; letter-spacing: .02em; }
-.loop p { color: var(--ink-2); font-size: 14px; }
+/* Why We Build：知見が回るサイクル図（A 円環／B らせん／C ∞ を下部の切替で比較） */
+.cyc { margin-top: clamp(48px, 5vw, 72px); border-top: 1px solid var(--ink); padding-top: clamp(36px, 4vw, 56px); }
+.cyc-art { position: relative; display: none; }
+.cyc[data-v="a"] .cyc-art[data-v="a"], .cyc[data-v="b"] .cyc-art[data-v="b"], .cyc[data-v="c"] .cyc-art[data-v="c"] { display: block; }
+.cyc-art svg { display: block; width: 100%; height: auto; overflow: visible; }
+.cyc-base { fill: none; stroke: var(--line); stroke-width: 1; }
+.cyc-trk { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2s var(--ease); }
+.cyc.on .cyc-trk { stroke-dashoffset: 0; }
+.cyc-chev { fill: none; stroke: var(--ink); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .6s 1.4s; }
+.cyc.on .cyc-chev { opacity: 1; }
+.cyc-node { fill: var(--white); stroke: var(--ink); stroke-width: 1.3; opacity: 0; transition: opacity .5s, fill .4s, stroke .4s; }
+.cyc.on .cyc-node { opacity: 1; }
+.cyc-node.act { fill: var(--accent); stroke: var(--accent); }
+.cyc-lead { stroke: var(--mute-2); stroke-width: 1; stroke-dasharray: 2 4; opacity: 0; transition: opacity .6s 1.4s; }
+.cyc.on .cyc-lead { opacity: 1; }
+.cyc-dot { fill: var(--accent); opacity: 0; transition: opacity .4s; }
+.cyc.run .cyc-dot { opacity: 1; }
+.cyc-lb { position: absolute; transform: translate(-50%, -50%); padding: 2px 8px; background: var(--white); font-family: var(--en); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; color: var(--mute); transition: color .4s; pointer-events: none; }
+.cyc-lb i { font-style: normal; color: var(--ink); margin-right: 6px; }
+.cyc-lb.act { color: var(--accent); }
+.cyc-lobe { position: absolute; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 2px; white-space: nowrap; pointer-events: none; }
+.cyc-lobe b { font-size: clamp(14px, 1.3vw, 17px); font-weight: 700; letter-spacing: .06em; }
+.cyc-lobe .cap { font-size: 10.5px; }
+.cyc-mid { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 4px; pointer-events: none; }
+.cyc-mid .cap { font-size: 10.5px; }
+.cyc-mid b { font-family: var(--en); font-weight: 500; font-size: clamp(30px, 3vw, 44px); line-height: 1; letter-spacing: -.03em; }
+.cyc-mid b i { font-style: normal; color: var(--accent); }
+.cyc-list { list-style: none; margin: clamp(28px, 3vw, 44px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: cy; }
+.cyc-list li { position: relative; display: grid; gap: 10px; align-content: start; padding: 22px 28px 8px 0; border-top: 1px solid var(--line); transition: opacity .5s var(--ease); }
+.cyc-list li + li { padding-left: 28px; border-left: 1px solid var(--line); }
+.cyc-list li::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .7s var(--ease); }
+.cyc-list li + li::before { left: 28px; }
+.cyc-list li.act::before { transform: scaleX(1); }
+.cyc.run .cyc-list li:not(.act) { opacity: .5; }
+.cyc-list .cap { font-size: 11px; }
+.cyc-list .cap::before { counter-increment: cy; content: counter(cy, decimal-leading-zero) " — "; color: var(--ink); font-weight: 700; }
+.cyc-list h3 { font-size: clamp(19px, 1.6vw, 23px); font-weight: 700; line-height: 1.6; letter-spacing: .02em; }
+.cyc-list p { color: var(--ink-2); font-size: 14px; }
+/* A 円環：図を左、説明を右に縦に並べる */
+.cyc[data-v="a"] { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+.cyc[data-v="a"] .cyc-art { max-width: 460px; width: 100%; margin-inline: auto; }
+.cyc[data-v="a"] .cyc-list { grid-template-columns: minmax(0, 1fr); margin-top: 0; }
+.cyc[data-v="a"] .cyc-list li, .cyc[data-v="a"] .cyc-list li + li { padding: 20px 0; border-left: 0; }
+.cyc[data-v="a"] .cyc-list li + li::before { left: 0; }
+/* 比較用の切替（下部） */
 .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px; }
 .kari { font-size: 10.5px; color: var(--mute); border: 1px dashed var(--mute-2); padding: 0 6px; margin-left: 8px; font-weight: 400; vertical-align: 2px; letter-spacing: .04em; white-space: nowrap; }
 
@@ -151,17 +175,6 @@ img { display: block; }
 .contact a p { color: var(--ink-2); font-size: 14px; }
 
 /* フッター（共通） */
-.ft { background: var(--ink); color: #D9DCE1; padding-top: 72px; overflow: hidden; }
-.ft .top { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2fr)); gap: 24px; font-size: 13px; }
-.ft dl { margin: 0; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 6px 14px; color: #9EA4AD; line-height: 1.8; }
-.ft dt { color: #D9DCE1; }
-.ft dd { margin: 0; }
-.ft h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: .12em; color: #FFFFFF; font-weight: 700; }
-.ft ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; color: #9EA4AD; }
-.ft ul a:hover { color: #FFFFFF; }
-.ft .mark { font-family: var(--en); font-weight: 500; font-size: clamp(48px, 9vw, 144px); letter-spacing: -.055em; line-height: .86; color: #F3F4F6; margin-top: 88px; white-space: nowrap; margin-left: -.04em; }
-.ft .mark i { font-style: normal; color: var(--accent); }
-.ft .bt { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: var(--en); font-size: 12px; color: #7F858E; padding-block: 28px; letter-spacing: .04em; }
 
 /* 出現の動き */
 .rise { transition: transform 1.1s var(--ease), opacity 1.1s var(--ease); }
@@ -170,26 +183,16 @@ img { display: block; }
 .stmt .ch.on { color: var(--ink); }
 
 @media (max-width: 1080px) {
-  .nav .md-hide { display: none; }
   .ph-top .row { grid-template-columns: minmax(0, 1fr); }
   .ph-top { min-height: 0; padding-top: 120px; }
-  .loop { grid-template-columns: minmax(0, 1fr); }
-  .loop > div, .loop > div + div { padding: 24px 0; border-left: 0; border-bottom: 1px solid var(--line); }
-  .loop > div + div::before { left: 0; }
-  .ft .top { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .ft .top > :first-child { grid-column: 1 / -1; }
+  .cyc-list, .cyc[data-v="a"] { grid-template-columns: minmax(0, 1fr); }
+  .cyc-list li, .cyc-list li + li { padding: 20px 0; border-left: 0; }
+  .cyc-list li + li::before { left: 0; }
+  .cyc[data-v="a"] .cyc-art { max-width: 380px; }
 }
 @media (max-width: 720px) {
   :root { --gl: max(20px, env(safe-area-inset-left, 0px)); --gr: max(20px, env(safe-area-inset-right, 0px)); }
   body { font-size: 14.5px; }
-  .hd .in { height: 64px; }
-  .nav { display: none; }
-  .menu-btn { display: inline-flex; height: 40px; padding: 0 18px; }
-  .hd.open { background: var(--paper); }
-  .hd.open .nav { display: grid; position: absolute; top: 64px; left: 0; right: 0; background: var(--paper); padding: 8px var(--gr) 28px var(--gl); gap: 0; font-size: 16px; border-bottom: 1px solid var(--line); }
-  .hd.open .nav a { padding: 14px 0; border-bottom: 1px solid var(--line); }
-  .hd.open .nav .md-hide { display: block; }
-  .hd.open .nav .pill { margin-top: 18px; justify-self: start; border-bottom: 1px solid var(--ink); }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
   .grid > .cap { position: static; padding-top: 0; }
   .stmt { font-size: clamp(28px, 8.4vw, 36px); }
@@ -199,9 +202,13 @@ img { display: block; }
   .pd h3 { font-size: clamp(26px, 7.4vw, 32px); }
   .pd-proof { grid-template-columns: minmax(0, 1fr); }
   .pd-proof b { font-size: 15px; }
+  .cyc-lb { font-size: 10px; letter-spacing: .08em; padding: 1px 5px; }
+  .cyc-lb i { margin-right: 4px; }
+  .cyc-lobe b { font-size: 12px; }
+  .cyc-lobe .cap { display: none; }
+  .cyc-mid b { font-size: 28px; }
   .contact { grid-template-columns: minmax(0, 1fr); }
   .contact a + a { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
-  .ft .top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
   .rise, .stmt .ch, .pd-stage img { transition: none !important; }
@@ -210,34 +217,22 @@ img { display: block; }
   .pd-stage img { transform: none !important; }
 }
 </style>
+<link rel="stylesheet" href="common/header.css">
+<link rel="stylesheet" href="common/footer.css">
 </head>
 <body>
 
-<header class="hd" id="hd">
-  <div class="in">
-    <a class="logo" href="index.html" aria-label="JIL トップへ">JIL<i></i></a>
-    <nav class="nav" id="nav" aria-label="メインメニュー">
-      <a href="about.html">私たちについて</a>
-      <a href="index.html#business">事業</a>
-      <a href="product.html" aria-current="page">プロダクト</a>
-      <a href="index.html#ai" class="md-hide">人とAI</a>
-      <a href="member.html">メンバー</a>
-      <a href="index.html#news" class="md-hide">ニュース</a>
-      <a href="index.html#recruit">採用</a>
-      <a class="pill" href="#contact">お問い合わせ<span class="dot">→</span></a>
-    </nav>
-    <button class="pill menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
-  </div>
-</header>
+<header class="hd" id="hd" data-page="product"></header>
+<script src="common/header.js"></script>
 
 <main>
   <section class="ph-top" aria-label="プロダクト">
     <div class="ph-bg ph-grad" aria-hidden="true"></div>
     <div class="in">
-      <div class="crumb"><a href="index.html">トップ</a><span aria-hidden="true">／</span><a href="index.html#biz-1">自社事業</a><span aria-hidden="true">／</span><span>プロダクト</span></div>
+      <div class="crumb"><a href="index.html">トップ</a><span aria-hidden="true">／</span><span>プロダクト</span></div>
       <div class="ttl"><p class="en-t" aria-hidden="true">Product<i>.</i></p><h1>プロダクト</h1></div>
       <div class="row">
-        <p class="lead">JILの3つの事業のひとつ、自社事業。AIを使ったプロダクトを、企画から開発、販売まで自分たちの手で手がけています。絵本、研修、リサーチ、営業。分野はばらばらでも、目指すのは同じ「これまでにない体験」です。</p>
+        <p class="lead">JILの3つの事業のひとつ、プロダクト。AIを使ったサービスを、企画から開発、販売まで自分たちの手で手がけています。絵本、研修、リサーチ、営業。分野はばらばらでも、目指すのは同じ「これまでにない体験」です。</p>
         <nav class="toc" aria-label="このページの目次">
           <a href="#p-ehon"><span><span class="no">01</span>えほんにおいでよ</span><span class="en">↓</span></a>
           <a href="#p-llabo"><span><span class="no">02</span>AI研修「llabo」</span><span class="en">↓</span></a>
@@ -317,12 +312,17 @@ img { display: block; }
         <div class="body rise">
           <p>JILが自社でプロダクトをつくるのは、新規事業の難しさを、自分たちの手で知り続けるためです。企画し、つくり、売る。その中で得た手触りのある知見が、お客様の新規事業開発を支える力になります。<span class="kari">文言は仮</span></p>
         </div>
-        <div class="loop">
-          <div class="rise"><span class="cap">Build</span><h3>小さく、速く、つくる。</h3><p>AIを前提に、少人数で形にします。まず出して、使われ方から学びます。</p></div>
-          <div class="rise"><span class="cap">Prove</span><h3>市場で、確かめる。</h3><p>使われ続けるか、お金を払ってもらえるか。数字とお客様の声で確かめます。</p></div>
-          <div class="rise"><span class="cap">Return</span><h3>支援に、返す。</h3><p>自社事業で得た知見を、新規事業開発の支援と、次のプロダクトに生かします。</p></div>
+        <div class="cyc" id="cyc" data-v="a">
+          <div class="cyc-art" data-v="a" role="img" aria-label="Build、Prove、Returnの3つが円の上を回り続ける図"><div class="cyc-mid" aria-hidden="true"><span class="cap">Now</span><b>Build</b></div></div>
+          <div class="cyc-art" data-v="b" role="img" aria-label="Build、Prove、Returnと一周するごとに一段上がっていく、らせんの図"></div>
+          <div class="cyc-art" data-v="c" role="img" aria-label="プロダクトの輪と、新規事業開発の支援の輪が、Returnでつながる8の字の図"><div class="cyc-lobe" style="left:27%;top:50%"><span class="cap">Products</span><b>プロダクト</b></div><div class="cyc-lobe" style="left:75%;top:50%"><span class="cap">Business Development</span><b>新規事業開発の支援</b></div></div>
+          <ol class="cyc-list">
+            <li><span class="cap">Build</span><h3>小さく、速く、つくる。</h3><p>AIを前提に、少人数で形にします。まず出して、使われ方から学びます。</p></li>
+            <li><span class="cap">Prove</span><h3>市場で、確かめる。</h3><p>使われ続けるか、お金を払ってもらえるか。数字とお客様の声で確かめます。</p></li>
+            <li><span class="cap">Return</span><h3>支援に、返す。</h3><p>プロダクトで得た知見を、新規事業開発の支援と、次のプロダクトに生かします。</p></li>
+          </ol>
         </div>
-        <div class="links rise"><a class="pill" href="index.html#biz-2">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
+        <div class="links rise"><a class="pill" href="service.html" data-local="../../prototype/index.html">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
       </div>
     </div>
   </section>
@@ -330,34 +330,27 @@ img { display: block; }
   <section id="contact" aria-label="お問い合わせ">
     <div class="in">
       <div class="contact">
-        <a href="index.html#contact"><span class="cap">Contact</span><span class="t">導入・協業の<br>ご相談<span class="go">→</span></span><p>プロダクトの導入や、協業のご相談など、お気軽にお問い合わせください。</p></a>
-        <a href="index.html#contact"><span class="cap">Free Session</span><span class="t">30分の<br>無料相談<span class="go">→</span></span><p>役員が直接お話を伺います。オンラインで予約できます。</p></a>
+        <a href="index.html#contact"><span class="cap">Business</span><span class="t">事業の<br>お問い合わせ<span class="go">→</span></span><p>プロダクトの導入や協業、新規事業開発の支援のことなど、お気軽にご相談ください。</p></a>
+        <a href="index.html#contact-recruit" id="contact-recruit"><span class="cap">Recruit</span><span class="t">採用の<br>お問い合わせ<span class="go">→</span></span><p>JILで働くことに興味のある方へ。職種や関わり方は、話しながら一緒に考えます。</p></a>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="ft">
-  <div class="in">
-    <div class="top">
-      <dl><dt>会社名</dt><dd>株式会社JIL（JIL Inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
-      <div><h4>私たちについて</h4><ul><li><a href="about.html#mission">ミッション・ビジョン</a></li><li><a href="about.html#values">行動指針</a></li><li><a href="about.html#company">会社概要</a></li><li><a href="index.html#shape">JILのかたち</a></li><li><a href="index.html#ai">人とAI</a></li></ul></div>
-      <div><h4>事業</h4><ul><li><a href="index.html#biz-1">自社事業</a></li><li><a href="product.html">プロダクト</a></li><li><a href="index.html#biz-2">新規事業開発の支援</a></li><li><a href="index.html#biz-3">採用支援</a></li></ul></div>
-      <div><h4>組織</h4><ul><li><a href="member.html">メンバー</a></li><li><a href="index.html#news">ニュース</a></li><li><a href="index.html#recruit">採用情報</a></li><li><a href="#contact">お問い合わせ</a></li></ul></div>
-    </div>
-    <div class="mark" aria-hidden="true">Japan Is Lovely<i>.</i></div>
-    <div class="bt"><span>© 2026 JIL Inc.</span><span>Privacy Policy</span></div>
-  </div>
-</footer>
+<footer class="ft" id="ft" data-page="product"></footer>
+<script src="common/footer.js"></script>
+<script>
+(() => {
+  const nav = performance.getEntriesByType("navigation")[0];
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (!location.hash && (!nav || nav.type === "navigate")) { scrollTo(0, 0); addEventListener("load", () => scrollTo(0, 0)); }
+  addEventListener("DOMContentLoaded", () => { if (location.protocol === "file:") document.querySelectorAll("a[data-local]").forEach(a => a.href = a.dataset.local); });
+})();
+</script>
 <script>
 (() => {
   document.documentElement.classList.add("js");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const hd = document.getElementById("hd"), mb = document.getElementById("menu-btn");
-  const onScroll = () => hd.classList.toggle("solid", scrollY > 20);
-  addEventListener("scroll", onScroll, { passive: true }); onScroll();
-  mb.addEventListener("click", () => { const o = hd.classList.toggle("open"); mb.setAttribute("aria-expanded", String(o)); mb.textContent = o ? "Close" : "Menu"; });
-  document.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", () => { hd.classList.remove("open"); mb.setAttribute("aria-expanded", "false"); mb.textContent = "Menu"; }));
   const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in-view"); rio.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".rise").forEach(el => rio.observe(el));
   // 読んだところから文字が濃くなる一文（文節の途中では改行しない）
@@ -372,6 +365,95 @@ img { display: block; }
   });
   addEventListener("scroll", fill, { passive: true }); fill();
   if (location.hash) { const t = document.querySelector(location.hash); if (t) setTimeout(() => t.scrollIntoView(), 50); }
+})();
+</script>
+<script>
+/* ===== Why We Build：サイクル図。A 円環／B らせん／C ∞ を下部の切替で比較 =====
+   どの案も「線の上を点が回り、今いる段（Build・Prove・Return）の説明が濃くなる」 */
+(() => {
+  const box = document.getElementById("cyc"); if (!box) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const NS = "http://www.w3.org/2000/svg", TAU = Math.PI * 2, STEPS = ["Build", "Prove", "Return"];
+  const items = [...box.querySelectorAll(".cyc-list li")], mid = box.querySelector(".cyc-mid b");
+  // 各案：pt(u) は線の上の位置（u は 0〜1 で一周）、nodes は3つの段の位置、step(u) は今どの段か
+  const lemn = (u, cx, cy, A) => { const t = Math.PI / 2 + u * TAU, d = 1 + Math.sin(t) ** 2; return [cx + A * Math.cos(t) / d, cy + A * Math.sin(t) * Math.cos(t) / d]; };
+  const V = {
+    a: { w: 400, h: 400, sec: 7.5, pt: u => { const t = -Math.PI / 2 + u * TAU; return [200 + 150 * Math.cos(t), 200 + 150 * Math.sin(t)]; },
+         nodes: [0, 1 / 3, 2 / 3], step: u => Math.floor(u * 3) % 3, chev: [1 / 6, .5, 5 / 6],
+         lb: (p, i) => { const a = -Math.PI / 2 + i / 3 * TAU; return [200 + 196 * Math.cos(a), 200 + 192 * Math.sin(a)]; } },
+    // 一周（Build→Prove→Return）するたびに一段上がり、右へ進むらせん
+    b: { w: 1000, h: 340, sec: 9, pt: u => { const t = u * 3 * TAU; return [.5 + 53 * t + 105 * Math.sin(t), 315 - 4.77 * t - 105 * (1 - Math.cos(t))]; },
+         nodes: [1 / 6, 1 / 2, 5 / 6], step: u => Math.min(2, Math.floor(u * 3)), chev: [.07, .4, .73, .995],
+         lb: p => [p[0], p[1] - 30] },
+    // 左の輪＝プロダクト（Build・Prove）、交点＝Return、右の輪＝新規事業開発の支援
+    c: { w: 1000, h: 340, sec: 9, pt: u => lemn(u, 500, 170, 440),
+         nodes: [.11, .375, .5], step: u => u < .25 ? 0 : u < .45 ? 1 : 2, chev: [.03, .24, .62, .86],
+         lb: (p, i) => [p[0], p[1] + (i === 0 ? -32 : i === 2 ? 108 : 34)], lead: 2 }
+  };
+  const el = (n, a, parent) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); parent.appendChild(e); return e; };
+  const arts = {};
+  for (const k in V) {
+    const v = V[k], art = box.querySelector(`.cyc-art[data-v="${k}"]`), N = 480;
+    const svg = el("svg", { viewBox: `0 0 ${v.w} ${v.h}`, "aria-hidden": "true" }, art);
+    art.prepend(svg);
+    const pts = Array.from({ length: N + 1 }, (_, i) => v.pt(i / N));
+    const d = "M" + pts.map(p => p[0].toFixed(1) + " " + p[1].toFixed(1)).join("L");
+    el("path", { d, class: "cyc-base" }, svg);
+    el("path", { d, class: "cyc-trk", pathLength: 1 }, svg);
+    // 進む向きを示す小さな矢印
+    v.chev.forEach(u => {
+      const a = v.pt(u), b = v.pt(Math.min(1, u + .004)), ang = Math.atan2(b[1] - a[1], b[0] - a[0]), s = 7;
+      const q = (r, dx) => [a[0] + Math.cos(ang + r) * s * dx, a[1] + Math.sin(ang + r) * s * dx];
+      const l = q(Math.PI - .55, 1), r = q(Math.PI + .55, 1);
+      el("path", { d: `M${l[0].toFixed(1)} ${l[1].toFixed(1)}L${a[0].toFixed(1)} ${a[1].toFixed(1)}L${r[0].toFixed(1)} ${r[1].toFixed(1)}`, class: "cyc-chev" }, svg);
+    });
+    const nodes = v.nodes.map((u, i) => {
+      const p = v.pt(u), c = el("circle", { cx: p[0], cy: p[1], r: 7, class: "cyc-node" }, svg);
+      const lp = v.lb(p, i), lb = document.createElement("span");
+      lb.className = "cyc-lb"; lb.innerHTML = `<i>0${i + 1}</i>${STEPS[i]}`;
+      lb.style.left = (lp[0] / v.w * 100) + "%"; lb.style.top = (lp[1] / v.h * 100) + "%";
+      art.appendChild(lb);
+      if (v.lead === i) el("line", { x1: p[0], y1: p[1] + 10, x2: lp[0], y2: lp[1] - 14, class: "cyc-lead" }, svg);
+      return { c, lb };
+    });
+    const dot = el("circle", { r: 5, class: "cyc-dot" }, svg);
+    arts[k] = { v, nodes, dot };
+  }
+
+  let cur = -1, u = 0, last = 0, running = false;
+  const setStep = i => {
+    if (i === cur) return; cur = i;
+    const a = arts[box.dataset.v];
+    a.nodes.forEach((n, j) => { n.c.classList.toggle("act", j === i); n.lb.classList.toggle("act", j === i); });
+    items.forEach((li, j) => li.classList.toggle("act", j === i));
+    if (mid) mid.innerHTML = i < 0 ? "Build" : STEPS[i];
+  };
+  const loop = now => {
+    if (!running) return;
+    const a = arts[box.dataset.v];
+    if (last) u = (u + (now - last) / 1000 / a.v.sec) % 1; last = now;
+    const p = a.v.pt(u); a.dot.setAttribute("cx", p[0]); a.dot.setAttribute("cy", p[1]);
+    setStep(a.v.step(u));
+    requestAnimationFrame(loop);
+  };
+  let timer;
+  const start = () => {
+    box.classList.remove("on", "run"); running = false; cur = -2; setStep(-1); u = 0; last = 0;
+    void box.offsetWidth; box.classList.add("on");
+    if (reduce) return;
+    clearTimeout(timer);
+    // 線が描き終わってから点が回り始める
+    timer = setTimeout(() => { box.classList.add("run"); running = true; requestAnimationFrame(loop); }, 1700);
+  };
+  let seen = false;
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !seen) { seen = true; start(); }
+    if (!e.isIntersecting && running) { running = false; }
+    else if (e.isIntersecting && seen && !running && box.classList.contains("run")) { running = true; last = 0; requestAnimationFrame(loop); }
+  }), { rootMargin: "0px 0px -15% 0px" }).observe(box);
+
+  // 図はA（円環）に決定。B（らせん）・C（∞）の描き方も残してあり、ここを "b" / "c" にすると戻せる
+  box.dataset.v = "a";
 })();
 </script>
 </body>

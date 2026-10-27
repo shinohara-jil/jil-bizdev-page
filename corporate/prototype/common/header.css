@@ -1,0 +1,36 @@
+/* 全ページ共通のヘッダー（中身は header.js がつくる）。色・書体などの値は各ページの :root を使う
+   各ページの <style> より後に読み込むこと（ボタンの .pill の余白を上書きするため） */
+.hd { position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 60; transition: background .5s var(--ease), border-color .5s var(--ease); border-bottom: 1px solid transparent; }
+.hd.solid { background: rgba(241, 242, 244, .82); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom-color: var(--line); }
+.hd .in { height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.hd .logo { font-family: var(--en); font-weight: 700; font-size: 25px; letter-spacing: .01em; display: inline-flex; align-items: baseline; gap: 2px; }
+.hd .logo i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; transform: translateY(-1px); }
+.hd .nav { display: flex; align-items: center; gap: 32px; font-size: 13px; letter-spacing: .08em; }
+.hd .nav a { position: relative; padding: 4px 0; }
+.hd .nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
+.hd .nav a:hover::after, .hd .nav a.cur::after, .hd .nav a[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+.hd .nav a.pill { padding: 0 8px 0 22px; }
+.hd .nav a.pill::after { display: none; }
+.hd .menu-btn { display: none; }
+
+@media (max-width: 1080px) {
+  .hd .nav .md-hide { display: none; }
+}
+/* スマホ：メニューは画面いっぱいに大きな文字で */
+@media (max-width: 720px) {
+  .hd .in { height: 64px; }
+  .hd .nav { display: none; }
+  .hd .menu-btn { display: inline-flex; height: 40px; padding: 0 18px; }
+  .hd.open { background: var(--paper); }
+  .hd.open .nav { display: grid; align-content: start; position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); left: 0; right: 0; bottom: 0; overflow-y: auto; background: var(--paper); padding: 12px var(--gr) calc(32px + env(safe-area-inset-bottom, 0px)) var(--gl); gap: 0; font-size: 22px; letter-spacing: .04em; counter-reset: m; animation: menu-in .45s var(--ease); }
+  .hd.open .nav a:not(.pill) { padding: 16px 0; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 16px; }
+  .hd.open .nav a:not(.pill)::before { counter-increment: m; content: counter(m, decimal-leading-zero); font-family: var(--en); font-size: 12px; font-weight: 700; color: var(--mute); letter-spacing: .1em; }
+  .hd.open .nav a:not(.pill)::after { display: none; }
+  .hd.open .nav .md-hide { display: flex; }
+  .hd.open .nav a.pill { margin-top: 28px; justify-self: start; height: 52px; font-size: 15px; padding-left: 26px; }
+  body.lock { overflow: hidden; }
+}
+@keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) {
+  .hd.open .nav { animation: none; }
+}
