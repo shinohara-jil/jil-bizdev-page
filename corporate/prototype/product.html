@@ -53,7 +53,7 @@ img { display: block; }
 .pill:hover .dot { background: var(--paper); color: var(--ink); transform: rotate(-45deg); }
 
 /* 下層ページ共通の冒頭：大きな英字のページ名、日本語の見出し、パンくず、目次。背景は青の光のグラデーション */
-.ph-top { position: relative; overflow: hidden; min-height: min(78svh, 760px); display: grid; align-items: end; padding-top: 140px; padding-bottom: clamp(56px, 6vw, 88px); background: linear-gradient(165deg, #F6F7F9, #DFE3E8); }
+.ph-top { position: relative; overflow: hidden; min-height: min(78svh, 760px); display: grid; align-items: end; padding-top: 140px; padding-bottom: clamp(56px, 6vw, 88px); background: var(--paper); }
 .ph-top > .in { position: relative; z-index: 2; width: 100%; }
 .ph-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .ph-grad { background:
@@ -116,9 +116,13 @@ img { display: block; }
 .pill.off { border-color: var(--mute-2); color: var(--mute); cursor: default; padding-right: 22px; }
 .pill.off:hover { background: transparent; color: var(--mute); }
 
-/* つくる→確かめる→支援に返す */
+/* つくる→確かめる→社会と顧客に返す */
 /* Why We Build：知見が回るサイクル図（A 円環／B らせん／C ∞ を下部の切替で比較） */
 .cyc { margin-top: clamp(48px, 5vw, 72px); border-top: 1px solid var(--ink); padding-top: clamp(36px, 4vw, 56px); }
+/* 図は見出しの列から出し、左端から広く使う。ボタンは図の下の右の列に */
+#loop .cyc { grid-column: 1 / -1; }
+#loop .loop-links { grid-column: 2; margin-top: clamp(36px, 4vw, 56px); }
+#loop .grid > .cap { position: static; } /* 見出しがスクロールについてきて図に重ならないように */
 .cyc-art { position: relative; display: none; }
 .cyc[data-v="a"] .cyc-art[data-v="a"], .cyc[data-v="b"] .cyc-art[data-v="b"], .cyc[data-v="c"] .cyc-art[data-v="c"] { display: block; }
 .cyc-art svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -157,7 +161,7 @@ img { display: block; }
 .cyc-list p { color: var(--ink-2); font-size: 14px; }
 /* A 円環：図を左、説明を右に縦に並べる */
 .cyc[data-v="a"] { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
-.cyc[data-v="a"] .cyc-art { max-width: 460px; width: 100%; margin-inline: auto; }
+.cyc[data-v="a"] .cyc-art { max-width: 520px; width: 100%; margin-inline: auto; }
 .cyc[data-v="a"] .cyc-list { grid-template-columns: minmax(0, 1fr); margin-top: 0; }
 .cyc[data-v="a"] .cyc-list li, .cyc[data-v="a"] .cyc-list li + li { padding: 20px 0; border-left: 0; }
 .cyc[data-v="a"] .cyc-list li + li::before { left: 0; }
@@ -186,6 +190,7 @@ img { display: block; }
   .ph-top .row { grid-template-columns: minmax(0, 1fr); }
   .ph-top { min-height: 0; padding-top: 120px; }
   .cyc-list, .cyc[data-v="a"] { grid-template-columns: minmax(0, 1fr); }
+  #loop .loop-links { grid-column: 1 / -1; }
   .cyc-list li, .cyc-list li + li { padding: 20px 0; border-left: 0; }
   .cyc-list li + li::before { left: 0; }
   .cyc[data-v="a"] .cyc-art { max-width: 380px; }
@@ -227,7 +232,7 @@ img { display: block; }
 
 <main>
   <section class="ph-top" aria-label="プロダクト">
-    <div class="ph-bg ph-grad" aria-hidden="true"></div>
+    <div class="ph-bg ph-lines" aria-hidden="true"><canvas></canvas></div>
     <div class="in">
       <div class="crumb"><a href="index.html">トップ</a><span aria-hidden="true">／</span><span>プロダクト</span></div>
       <div class="ttl"><p class="en-t" aria-hidden="true">Product<i>.</i></p><h1>プロダクト</h1></div>
@@ -258,7 +263,7 @@ img { display: block; }
 
   <section class="sec" id="products" aria-label="プロダクト一覧">
     <div class="in">
-      <div class="pd-head rise"><span class="cap">Our Products</span><span class="cnt">04<small>Products</small></span></div>
+      <div class="pd-head rise"><span class="cap">Our Products</span></div>
       <div class="pd-list">
         <article class="pd" id="p-ehon">
           <div class="pd-stage rise"><img src="img/product_ehon.jpg" alt="えほんにおいでよのサイト。絵本の主人公になった子どもたちのイラスト" loading="lazy"></div>
@@ -312,18 +317,18 @@ img { display: block; }
         <div class="body rise">
           <p>JILが自社でプロダクトをつくるのは、新規事業の難しさを、自分たちの手で知り続けるためです。企画し、つくり、売る。その中で得た手触りのある知見が、お客様の新規事業開発を支える力になります。<span class="kari">文言は仮</span></p>
         </div>
-        <div class="cyc" id="cyc" data-v="a">
+      </div>
+      <div class="cyc" id="cyc" data-v="a">
           <div class="cyc-art" data-v="a" role="img" aria-label="Build、Prove、Returnの3つが円の上を回り続ける図"><div class="cyc-mid" aria-hidden="true"><span class="cap">Now</span><b>Build</b></div></div>
           <div class="cyc-art" data-v="b" role="img" aria-label="Build、Prove、Returnと一周するごとに一段上がっていく、らせんの図"></div>
           <div class="cyc-art" data-v="c" role="img" aria-label="プロダクトの輪と、新規事業開発の支援の輪が、Returnでつながる8の字の図"><div class="cyc-lobe" style="left:27%;top:50%"><span class="cap">Products</span><b>プロダクト</b></div><div class="cyc-lobe" style="left:75%;top:50%"><span class="cap">Business Development</span><b>新規事業開発の支援</b></div></div>
           <ol class="cyc-list">
             <li><span class="cap">Build</span><h3>小さく、速く、つくる。</h3><p>AIを前提に、少人数で形にします。まず出して、使われ方から学びます。</p></li>
             <li><span class="cap">Prove</span><h3>市場で、確かめる。</h3><p>使われ続けるか、お金を払ってもらえるか。数字とお客様の声で確かめます。</p></li>
-            <li><span class="cap">Return</span><h3>支援に、返す。</h3><p>プロダクトで得た知見を、新規事業開発の支援と、次のプロダクトに生かします。</p></li>
+            <li><span class="cap">Return</span><h3>社会と顧客に、返す。</h3><p>確かめた価値を、お客様と社会に届けます。そこで得た手応えと知見を、次のプロダクトに生かします。</p></li>
           </ol>
         </div>
-        <div class="links rise"><a class="pill" href="service.html" data-local="../../prototype/index.html" target="_blank" rel="noopener">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
-      </div>
+      <div class="links loop-links rise"><a class="pill" href="service.html" data-local="../../prototype/index.html" target="_blank" rel="noopener">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
     </div>
   </section>
 
@@ -339,6 +344,7 @@ img { display: block; }
 
 <footer class="ft" id="ft" data-page="product"></footer>
 <script src="common/footer.js"></script>
+<script src="common/ph-lines.js"></script>
 <script>
 (() => {
   const nav = performance.getEntriesByType("navigation")[0];
