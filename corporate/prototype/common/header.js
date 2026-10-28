@@ -1,9 +1,10 @@
 /* 全ページ共通のヘッダー。メニューの項目はここだけで管理する
-   使い方：<header class="hd" id="hd" data-page="about"></header> の直後でこのファイルを読み込む（data-page は top / about / product / member） */
+   使い方：<header class="hd" id="hd" data-page="about"></header> の直後でこのファイルを読み込む（data-page は top / about / product / member。お問い合わせの欄がないページは data-contact="index.html" も付ける） */
 (() => {
   const hd = document.getElementById("hd"), page = hd.dataset.page || "top", top = page === "top";
   const t = top ? "" : "index.html"; // トップの中の欄へのリンク（トップではページ内移動）
   const ab = page === "about" ? "" : "about.html", mb_ = page === "member" ? "" : "member.html";
+  const ct = hd.dataset.contact || ""; // お問い合わせの欄がないページ（data-contact="index.html"）はトップの欄へ
   const ext = ' target="_blank" rel="noopener" data-local="../../prototype/index.html"'; // 新規事業開発の支援は専用サイトを別タブで
   // [リンク先, 名前, そのページの data-page, 追加のクラス, 子メニュー[[リンク先, 名前, 追加の属性]]]
   const items = [
@@ -11,14 +12,14 @@
     [t + "#business", "事業", "", "", [["product.html", "プロダクト"], ["service.html", "新規事業開発支援", ext], [t + "#biz-3", "採用支援"]]],
     ["member.html", "メンバー", "member", "", [[mb_ + "#board", "ボードメンバー"], [mb_ + "#team", "チームメンバー"]]],
     [t + "#news", "ニュース", "", "md-hide"],
-    ["#contact-recruit", "採用"]
+    [ct + "#contact-recruit", "採用"]
   ];
   const sub = ks => ks ? `<div class="sub"><ul>${ks.map(([h, l, x = ""]) => `<li><a href="${h}"${x}>${l}<span class="ar" aria-hidden="true">${x ? "↗" : "→"}</span></a></li>`).join("")}</ul></div>` : "";
   hd.innerHTML = `<div class="in">
     <a class="logo" href="${top ? "#top" : "index.html"}" aria-label="JIL トップへ">JIL<i></i></a>
     <nav class="nav" id="nav" aria-label="メインメニュー">
       ${items.map(([h, l, p, c, ks]) => `<div class="grp${ks ? " has" : ""}${c ? " " + c : ""}"><a class="p" href="${h}"${p && p === page ? ' aria-current="page"' : ""}>${l}${ks ? '<i class="cv" aria-hidden="true"></i>' : ""}</a>${sub(ks)}</div>`).join("")}
-      <a class="pill" href="#contact">お問い合わせ<span class="dot">→</span></a>
+      <a class="pill" href="${ct}#contact">お問い合わせ<span class="dot">→</span></a>
     </nav>
     <button class="pill menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav">Menu</button>
   </div>`;
