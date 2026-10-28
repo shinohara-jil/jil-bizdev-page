@@ -10,7 +10,7 @@
     <div class="top">
       <dl><dt>会社名</dt><dd>株式会社JIL（JIL Inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
       <div><h4>私たちについて</h4><ul>${li(ab + "#mission", "ミッション・ビジョン")}${li(ab + "#values", "行動指針")}${li(ab + "#style", "スタイル")}${li(ab + "#company", "会社概要")}</ul></div>
-      <div><h4>事業</h4><ul>${li("product.html", "プロダクト")}${li("bizdev.html", "新規事業開発の支援")}${li("recruit.html", "採用支援")}</ul></div>
+      <div><h4>事業</h4><ul>${li("product.html", "プロダクト")}${li("bizdev.html", "新規事業開発支援")}${li("recruit.html", "採用支援")}</ul></div>
       <div><h4>組織</h4><ul>${li("member.html", "メンバー")}${li(t + "#news", "ニュース")}${li(ct + "#contact", "事業のお問い合わせ")}${li(ct + "#contact-recruit", "採用のお問い合わせ")}</ul></div>
     </div>
     <div class="mark" aria-hidden="true">Japan Is Lovely<i>.</i></div>

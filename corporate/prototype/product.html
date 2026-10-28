@@ -328,14 +328,14 @@ img { display: block; }
       <div class="cyc" id="cyc" data-v="a">
           <div class="cyc-art" data-v="a" role="img" aria-label="Build、Prove、Returnの3つが円の上を回り続ける図"><div class="cyc-mid" aria-hidden="true"><span class="cap">Now</span><b>Build</b></div></div>
           <div class="cyc-art" data-v="b" role="img" aria-label="Build、Prove、Returnと一周するごとに一段上がっていく、らせんの図"></div>
-          <div class="cyc-art" data-v="c" role="img" aria-label="プロダクトの輪と、新規事業開発の支援の輪が、Returnでつながる8の字の図"><div class="cyc-lobe" style="left:27%;top:50%"><span class="cap">Products</span><b>プロダクト</b></div><div class="cyc-lobe" style="left:75%;top:50%"><span class="cap">Business Development</span><b>新規事業開発の支援</b></div></div>
+          <div class="cyc-art" data-v="c" role="img" aria-label="プロダクトの輪と、新規事業開発支援の輪が、Returnでつながる8の字の図"><div class="cyc-lobe" style="left:27%;top:50%"><span class="cap">Products</span><b>プロダクト</b></div><div class="cyc-lobe" style="left:75%;top:50%"><span class="cap">Business Development</span><b>新規事業開発支援</b></div></div>
           <div class="cyc-side">
           <ol class="cyc-list">
             <li><span class="cap">Build</span><h3>小さく、速く、つくる。</h3><p>AIを前提に、少人数で形にします。まず出して、使われ方から学びます。</p></li>
             <li><span class="cap">Prove</span><h3>市場で、確かめる。</h3><p>使われ続けるか、お金を払ってもらえるか。数字とお客様の声で確かめます。</p></li>
             <li><span class="cap">Return</span><h3>社会と顧客に、返す。</h3><p>確かめた価値を、お客様と社会に届けます。そこで得た手応えと知見を、次のプロダクトに生かします。</p></li>
           </ol>
-          <div class="links loop-links rise"><a class="pill" href="bizdev.html">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
+          <div class="links loop-links rise"><a class="pill" href="bizdev.html">新規事業開発支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
           </div>
         </div>
     </div>
@@ -345,7 +345,7 @@ img { display: block; }
     <div class="in">
       <div class="contact">
         <a href="index.html#contact-recruit" id="contact-recruit"><span class="cap">Recruit</span><span class="t">採用の<br>お問い合わせ<span class="go">→</span></span><p>JILで働くことに興味のある方へ。職種や関わり方は、話しながら一緒に考えます。</p></a>
-        <a href="index.html#contact"><span class="cap">Business</span><span class="t">事業の<br>お問い合わせ<span class="go">→</span></span><p>プロダクトの導入や協業、新規事業開発の支援のことなど、お気軽にご相談ください。</p></a>
+        <a href="index.html#contact"><span class="cap">Business</span><span class="t">事業の<br>お問い合わせ<span class="go">→</span></span><p>プロダクトの導入や協業、新規事業開発支援のことなど、お気軽にご相談ください。</p></a>
       </div>
     </div>
   </section>
@@ -400,7 +400,7 @@ img { display: block; }
     b: { w: 1000, h: 340, sec: 9, pt: u => { const t = u * 3 * TAU; return [.5 + 53 * t + 105 * Math.sin(t), 315 - 4.77 * t - 105 * (1 - Math.cos(t))]; },
          nodes: [1 / 6, 1 / 2, 5 / 6], step: u => Math.min(2, Math.floor(u * 3)), chev: [.07, .4, .73, .995],
          lb: p => [p[0], p[1] - 30] },
-    // 左の輪＝プロダクト（Build・Prove）、交点＝Return、右の輪＝新規事業開発の支援
+    // 左の輪＝プロダクト（Build・Prove）、交点＝Return、右の輪＝新規事業開発支援
     c: { w: 1000, h: 340, sec: 9, pt: u => lemn(u, 500, 170, 440),
          nodes: [.11, .375, .5], step: u => u < .25 ? 0 : u < .45 ? 1 : 2, chev: [.03, .24, .62, .86],
          lb: (p, i) => [p[0], p[1] + (i === 0 ? -32 : i === 2 ? 108 : 34)], lead: 2 }
