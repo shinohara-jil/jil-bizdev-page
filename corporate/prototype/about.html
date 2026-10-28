@@ -455,8 +455,8 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
         const rx = R * g.r, ry = rx * g.ry, rot = g.a + tau * g.s, t = g.ph + tau * g.sp, x = rx * Math.cos(t), y = ry * Math.sin(t);
         ctx.fillStyle = g.acc ? ac(1) : "rgba(14,16,19,.7)"; ctx.beginPath(); ctx.arc(cr + x * Math.cos(rot) - y * Math.sin(rot), cy + x * Math.sin(rot) + y * Math.cos(rot), g.acc ? 2.6 : 1.6, 0, TAU); ctx.fill();
       });
-      // ラベル：左右は円の下、真ん中は重なりの中
-      const pos = (n, x, y, o) => { n.style.left = x + "px"; n.style.top = y + "px"; n.style.opacity = o.toFixed(2); };
+      // ラベル：左右は円の下（狭い画面では枠の内側に寄せる）、真ん中は重なりの中
+      const pos = (n, x, y, o) => { const hw = n.offsetWidth / 2 + 4; n.style.left = Math.min(Math.max(x, hw), w - hw) + "px"; n.style.top = y + "px"; n.style.opacity = o.toFixed(2); };
       pos(lb.l, cl - R * .25, cy + R + 22, hd); pos(lb.r, cr + R * .25, cy + R + 22, Math.max(.5, e)); pos(lb.c, w / 2, cy, e);
     };
     resize();
