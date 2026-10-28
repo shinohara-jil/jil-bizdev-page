@@ -67,12 +67,14 @@ img { display: block; }
 .ph-top h1 { display: flex; align-items: center; gap: 14px; font-size: clamp(18px, 1.6vw, 24px); font-weight: 700; letter-spacing: .08em; }
 .ph-top h1::before { content: ""; width: 28px; height: 1px; background: currentColor; }
 .ph-top .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 40px; align-items: end; margin-top: clamp(32px, 3.6vw, 56px); }
+/* 冒頭の右：専用サイトへのボタン（目次の代わり） */
+.ph-act { justify-self: end; display: grid; justify-items: end; gap: 10px; }
+.ph-act .nt { font-size: 12px; color: var(--mute); letter-spacing: .06em; }
+.pill.solid { height: 56px; padding: 0 10px 0 28px; gap: 18px; font-size: 14px; background: var(--ink); color: var(--white); }
+.pill.solid .dot { width: 36px; height: 36px; background: var(--white); color: var(--ink); font-size: 15px; }
+.pill.solid:hover { background: var(--accent); border-color: var(--accent); color: var(--white); }
+.pill.solid:hover .dot { background: var(--white); color: var(--accent); transform: rotate(45deg); }
 .ph-top .lead { font-size: clamp(15px, 1.2vw, 17px); color: var(--ink-2); max-width: 34em; }
-.toc { display: grid; border-top: 1px solid var(--line); }
-.toc a { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 13px; letter-spacing: .08em; }
-.toc a .en { color: var(--mute); font-size: 12px; transition: transform .4s var(--ease), color .4s; }
-.toc a:hover .en { transform: translateY(3px); color: var(--ink); }
-.toc a .no { font-family: var(--en); color: var(--mute); font-size: 12px; margin-right: 12px; letter-spacing: .1em; }
 
 /* 共通の段組み：左に小見出し、右に本文 */
 .sec { padding-block: clamp(96px, 11vw, 176px); border-top: 1px solid var(--line); }
@@ -117,8 +119,8 @@ img { display: block; }
 .trt-d { margin-top: 18px; font-size: 15px; color: var(--ink-2); line-height: 2; max-width: 26em; }
 
 /* 専用サイトへのリンク：特徴の3列のすぐ下に置く写真の大きな箱。画面に入ると写真が下から開き、寄っていた写真が引いていく */
-.svc { grid-column: 1 / -1; position: relative; display: block; margin-top: clamp(56px, 6vw, 96px); aspect-ratio: 16 / 7.2; border-radius: 4px; overflow: hidden; color: var(--white); background: var(--ink); isolation: isolate; clip-path: inset(0 0 0 0 round 4px); transition: clip-path 1.4s var(--ease); }
-.js .svc:not(.in-view) { clip-path: inset(18% 0 0 0 round 4px); }
+.svc { --svc-r: clamp(14px, 1.6vw, 24px); grid-column: 1 / -1; position: relative; display: block; margin-top: clamp(56px, 6vw, 96px); aspect-ratio: 16 / 7.2; border-radius: var(--svc-r); overflow: hidden; color: var(--white); background: var(--ink); isolation: isolate; clip-path: inset(0 0 0 0 round var(--svc-r)); transition: clip-path 1.4s var(--ease); }
+.js .svc:not(.in-view) { clip-path: inset(18% 0 0 0 round var(--svc-r)); }
 .svc-img { position: absolute; inset: 0; z-index: -1; }
 .svc-img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1); transition: transform 1.8s var(--ease); }
 .js .svc:not(.in-view) .svc-img img { transform: scale(1.14); }
@@ -144,6 +146,7 @@ img { display: block; }
 
 @media (max-width: 1080px) {
   .ph-top .row { grid-template-columns: minmax(0, 1fr); }
+  .ph-act { justify-self: start; justify-items: start; }
   .ph-top { min-height: 0; padding-top: 120px; }
   .trt-row { grid-template-columns: minmax(0, 1fr); }
   .trt, .trt:first-child { padding: 28px 0 36px; }
@@ -172,7 +175,7 @@ img { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .rise, .stmt .ch, .svc, .svc-img img, .trt::before, .trt-span::before, .trt-span::after { transition: none !important; }
   .js .rise:not(.in-view) { transform: none; opacity: 1; }
-  .js .svc:not(.in-view) { clip-path: inset(0 0 0 0 round 4px); }
+  .js .svc:not(.in-view) { clip-path: inset(0 0 0 0 round var(--svc-r)); }
   .js .svc:not(.in-view) .svc-img img { transform: none; }
 }
 </style>
@@ -192,10 +195,7 @@ img { display: block; }
       <div class="ttl"><p class="en-t two" aria-hidden="true">Business<br>Development<i>.</i></p><h1>新規事業開発の支援</h1></div>
       <div class="row">
         <p class="lead"><span class="cl">JILの3つの事業のひとつ、</span><span class="cl">新規事業開発の支援。</span><span class="cl">大企業の新規事業を、</span><span class="cl">構想・検証・開発・立ち上げまで、</span><span class="cl">一貫して支援しています。</span></p>
-        <nav class="toc" aria-label="このページの目次">
-          <a href="#strength"><span><span class="no">01</span>JILの事業開発の特徴</span><span class="en">↓</span></a>
-          <a href="#svc"><span><span class="no">02</span>専用サイトで詳しく</span><span class="en">↓</span></a>
-        </nav>
+        <div class="ph-act"><a class="pill solid" href="service.html" data-local="../../prototype/index.html" target="_blank" rel="noopener">専用サイトを見る<span class="dot">↗</span></a><span class="nt">別のタブで開きます</span></div>
       </div>
     </div>
   </section>

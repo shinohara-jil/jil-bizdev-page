@@ -87,8 +87,10 @@ img { display: block; }
 .stmt { font-size: clamp(32px, 4.4vw, 68px); line-height: 1.4; letter-spacing: -.035em; font-weight: 500; font-feature-settings: "palt" 1; }
 .stmt .ln { display: block; }
 .stmt .w { display: inline-block; }
-.body { display: grid; gap: 1.3em; max-width: 36em; margin-top: clamp(40px, 4.4vw, 64px); color: var(--ink-2); font-size: 16px; line-height: 2.1; }
+.body { display: grid; gap: 1.3em; max-width: 40em; margin-top: clamp(40px, 4.4vw, 64px); color: var(--ink-2); font-size: 16px; line-height: 2.1; }
 .body b { color: var(--ink); font-weight: 700; }
+/* 文の区切り（「、」）の途中では折り返さない。「。」のあとは <br> で改行 */
+.cl { display: inline-block; }
 
 /* プロダクト一覧 */
 .pd-head { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--ink); }
@@ -96,10 +98,17 @@ img { display: block; }
 .pd-head .cnt small { font-size: .32em; color: var(--mute); letter-spacing: .1em; margin-left: .4em; vertical-align: .8em; }
 .pd-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(56px, 6vw, 88px) clamp(24px, 3vw, 48px); padding-top: clamp(40px, 4.4vw, 64px); }
 .pd { display: grid; gap: 28px; align-content: start; }
-.pd-stage { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: #E4E7EE; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; padding: 7% 9%; }
-.pd-stage img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; border-radius: 4px; background: #FFFFFF; outline: 1px solid rgba(14, 16, 19, .08); transform: translateY(10px); transition: transform 1.6s var(--ease); }
+/* 画面写真は台いっぱいに広げず、余白をとって浮かせる。幅は画像の縦横比に合わせて --w で調整（見た目の大きさをそろえる） */
+.pd-stage { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: #E4E7EE; display: grid; place-items: center; }
+.pd-stage img { display: block; width: var(--w, 80%); height: auto; border-radius: 6px; background: #FFFFFF; outline: 1px solid rgba(14, 16, 19, .08); box-shadow: 0 28px 48px -30px rgba(14, 16, 19, .38); transform: translateY(14px); transition: transform 1.6s var(--ease); }
 .pd-stage.in-view img { transform: none; }
 .pd:hover .pd-stage img { transform: translateY(-4px); }
+/* 2枚を重ねる（JWP：つくったサイトが奥、管理画面が手前） */
+.pd-stage.duo { display: block; }
+.pd-stage.duo img { position: absolute; }
+.pd-stage.duo .back { left: 8%; top: 11%; width: 68%; }
+.pd-stage.duo .front { right: 8%; bottom: 12%; width: 56%; transition-delay: .15s; }
+.pd:hover .pd-stage.duo .front { transform: translateY(-8px); }
 .pd-stage .soon { position: absolute; right: 14px; top: 14px; font-family: var(--en); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--white); padding: 4px 12px; border-radius: 999px; }
 .pd-bd { display: grid; gap: 16px; align-content: start; }
 .pd-kind { display: flex; align-items: center; gap: 14px; font-size: 13px; letter-spacing: .08em; color: var(--ink-2); }
@@ -119,9 +128,9 @@ img { display: block; }
 /* つくる→確かめる→社会と顧客に返す */
 /* Why We Build：知見が回るサイクル図（A 円環／B らせん／C ∞ を下部の切替で比較） */
 .cyc { margin-top: clamp(48px, 5vw, 72px); border-top: 1px solid var(--ink); padding-top: clamp(36px, 4vw, 56px); }
-/* 図は見出しの列から出し、左端から広く使う。ボタンは図の下の右の列に */
+/* 図は見出しの列から出し、左端から広く使う。ボタンは3つの段の説明のすぐ下に、左端をそろえて */
 #loop .cyc { grid-column: 1 / -1; }
-#loop .loop-links { grid-column: 2; margin-top: clamp(36px, 4vw, 56px); }
+#loop .loop-links { margin-top: clamp(20px, 2.4vw, 32px); }
 #loop .grid > .cap { position: static; } /* 見出しがスクロールについてきて図に重ならないように */
 .cyc-art { position: relative; display: none; }
 .cyc[data-v="a"] .cyc-art[data-v="a"], .cyc[data-v="b"] .cyc-art[data-v="b"], .cyc[data-v="c"] .cyc-art[data-v="c"] { display: block; }
@@ -190,7 +199,6 @@ img { display: block; }
   .ph-top .row { grid-template-columns: minmax(0, 1fr); }
   .ph-top { min-height: 0; padding-top: 120px; }
   .cyc-list, .cyc[data-v="a"] { grid-template-columns: minmax(0, 1fr); }
-  #loop .loop-links { grid-column: 1 / -1; }
   .cyc-list li, .cyc-list li + li { padding: 20px 0; border-left: 0; }
   .cyc-list li + li::before { left: 0; }
   .cyc[data-v="a"] .cyc-art { max-width: 380px; }
@@ -204,6 +212,9 @@ img { display: block; }
   .body { font-size: 15px; }
   .pd-list { grid-template-columns: minmax(0, 1fr); gap: 56px; padding-top: 32px; }
   .pd { gap: 22px; }
+  .pd-stage img { width: calc(var(--w, 80%) + 8%); }
+  .pd-stage.duo .back { left: 5%; width: 76%; }
+  .pd-stage.duo .front { right: 5%; width: 62%; }
   .pd h3 { font-size: clamp(26px, 7.4vw, 32px); }
   .pd-proof { grid-template-columns: minmax(0, 1fr); }
   .pd-proof b { font-size: 15px; }
@@ -254,8 +265,8 @@ img { display: block; }
       <div>
         <p class="stmt js-fill"><span class="ln"><span class="w">「できない」を、</span></span><span class="ln"><span class="w">AIで、</span><span class="w">当たり前に。</span></span></p>
         <div class="body rise">
-          <p>AIを使ったプロダクト開発で、これまでにない顧客体験をつくります。</p>
-          <p>コスト、スキル、時間。これまで<b>「不可能」</b>とされ、諦められてきた制約にこそ向き合い、テクノロジーの力で越えていく。そうして、さまざまな業界の「当たり前」を、ひとつずつ新しくしています。</p>
+          <p><span class="cl">AIを使ったプロダクト開発で、</span><span class="cl">これまでにない顧客体験をつくります。</span></p>
+          <p><span class="cl">コスト、スキル、時間。</span><br><span class="cl">これまで<b>「不可能」</b>とされ、</span><span class="cl">諦められてきた制約にこそ向き合い、</span><span class="cl">テクノロジーの力で越えていく。</span><br><span class="cl">そうして、</span><span class="cl">さまざまな業界の「当たり前」を、</span><span class="cl">ひとつずつ新しくしています。</span></p>
         </div>
       </div>
     </div>
@@ -266,7 +277,7 @@ img { display: block; }
       <div class="pd-head rise"><span class="cap">Our Products</span></div>
       <div class="pd-list">
         <article class="pd" id="p-ehon">
-          <div class="pd-stage rise"><img src="img/product_ehon.jpg" alt="えほんにおいでよのサイト。絵本の主人公になった子どもたちのイラスト" loading="lazy"></div>
+          <div class="pd-stage rise"><img src="img/pd_ehon.jpg" style="--w: 76%" alt="えほんにおいでよのサイト。絵本の主人公になった子どもたちのイラスト" loading="lazy"></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">01</span>オリジナル絵本製作サービス</span>
             <h3>えほんにおいでよ</h3>
@@ -276,7 +287,7 @@ img { display: block; }
           </div>
         </article>
         <article class="pd" id="p-llabo">
-          <div class="pd-stage rise"><img src="img/product_llabo.jpg" alt="llaboの研修画面。「生成AIの基礎を学ぼう」のコースと受講の進み具合" loading="lazy"></div>
+          <div class="pd-stage rise"><img src="img/pd_llabo.jpg" style="--w: 82%" alt="llaboの研修画面。「生成AIの基礎を学ぼう」のコースと受講の進み具合" loading="lazy"></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">02</span>コンサル伴走型AI研修</span>
             <h3>llabo<span class="sub">AI研修「llabo」</span></h3>
@@ -286,7 +297,7 @@ img { display: block; }
           </div>
         </article>
         <article class="pd" id="p-insight">
-          <div class="pd-stage rise"><img src="img/product_insight.jpg" alt="AIインサイトバンクの画面。ペルソナを作る手順と、AIが考えている様子" loading="lazy"><span class="soon">Coming soon</span></div>
+          <div class="pd-stage rise"><img src="img/pd_insight.jpg" style="--w: 82%" alt="AIインサイトバンクの画面。ペルソナを作る手順と、AIが考えている様子" loading="lazy"><span class="soon">Coming soon</span></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">03</span>AIペルソナ インサイトリサーチ</span>
             <h3>AIインサイトバンク</h3>
@@ -296,7 +307,7 @@ img { display: block; }
           </div>
         </article>
         <article class="pd" id="p-jwp">
-          <div class="pd-stage rise"><img src="img/product_jwp.jpg" alt="JWPでつくったホームページと、顧客を管理する画面" loading="lazy"><span class="soon">Coming soon</span></div>
+          <div class="pd-stage duo rise" role="img" aria-label="JWPでつくったホームページと、顧客を管理する画面"><img class="back" src="img/pd_jwp_site.jpg" alt="" loading="lazy"><img class="front" src="img/pd_jwp_crm.jpg" alt="" loading="lazy"><span class="soon">Coming soon</span></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">04</span>低単価CRMシステム</span>
             <h3>JWP</h3>
@@ -315,20 +326,22 @@ img { display: block; }
       <div>
         <p class="stmt js-fill"><span class="ln"><span class="w">自分たちで</span><span class="w">つくるから、</span></span><span class="ln"><span class="w">支援できる。</span></span></p>
         <div class="body rise">
-          <p>JILが自社でプロダクトをつくるのは、新規事業の難しさを、自分たちの手で知り続けるためです。企画し、つくり、売る。その中で得た手触りのある知見が、お客様の新規事業開発を支える力になります。<span class="kari">文言は仮</span></p>
+          <p><span class="cl">JILが自社でプロダクトをつくるのは、</span><span class="cl">新規事業の難しさを、</span><span class="cl">自分たちの手で知り続けるためです。</span><br><span class="cl">企画し、つくり、売る。</span><br><span class="cl">その中で得た手触りのある知見が、</span><span class="cl">お客様の新規事業開発を支える力になります。</span><span class="kari">文言は仮</span></p>
         </div>
       </div>
       <div class="cyc" id="cyc" data-v="a">
           <div class="cyc-art" data-v="a" role="img" aria-label="Build、Prove、Returnの3つが円の上を回り続ける図"><div class="cyc-mid" aria-hidden="true"><span class="cap">Now</span><b>Build</b></div></div>
           <div class="cyc-art" data-v="b" role="img" aria-label="Build、Prove、Returnと一周するごとに一段上がっていく、らせんの図"></div>
           <div class="cyc-art" data-v="c" role="img" aria-label="プロダクトの輪と、新規事業開発の支援の輪が、Returnでつながる8の字の図"><div class="cyc-lobe" style="left:27%;top:50%"><span class="cap">Products</span><b>プロダクト</b></div><div class="cyc-lobe" style="left:75%;top:50%"><span class="cap">Business Development</span><b>新規事業開発の支援</b></div></div>
+          <div class="cyc-side">
           <ol class="cyc-list">
             <li><span class="cap">Build</span><h3>小さく、速く、つくる。</h3><p>AIを前提に、少人数で形にします。まず出して、使われ方から学びます。</p></li>
             <li><span class="cap">Prove</span><h3>市場で、確かめる。</h3><p>使われ続けるか、お金を払ってもらえるか。数字とお客様の声で確かめます。</p></li>
             <li><span class="cap">Return</span><h3>社会と顧客に、返す。</h3><p>確かめた価値を、お客様と社会に届けます。そこで得た手応えと知見を、次のプロダクトに生かします。</p></li>
           </ol>
+          <div class="links loop-links rise"><a class="pill" href="bizdev.html">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
+          </div>
         </div>
-      <div class="links loop-links rise"><a class="pill" href="bizdev.html">新規事業開発の支援を見る<span class="dot">→</span></a><a class="pill" href="member.html">つくっているメンバー<span class="dot">→</span></a></div>
     </div>
   </section>
 

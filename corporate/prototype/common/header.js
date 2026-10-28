@@ -1,5 +1,5 @@
 /* 全ページ共通のヘッダー。メニューの項目はここだけで管理する
-   使い方：<header class="hd" id="hd" data-page="about"></header> の直後でこのファイルを読み込む（data-page は top / about / product / member / bizdev。お問い合わせの欄がないページは data-contact="index.html" も付ける） */
+   使い方：<header class="hd" id="hd" data-page="about"></header> の直後でこのファイルを読み込む（data-page は top / about / product / member / bizdev / recruit。お問い合わせの欄がないページは data-contact="index.html" も付ける） */
 (() => {
   const hd = document.getElementById("hd"), page = hd.dataset.page || "top", top = page === "top";
   const t = top ? "" : "index.html"; // トップの中の欄へのリンク（トップではページ内移動）
@@ -7,8 +7,8 @@
   const ct = hd.dataset.contact || ""; // お問い合わせの欄がないページ（data-contact="index.html"）はトップの欄へ
   // [リンク先, 名前, そのページの data-page, 追加のクラス, 子メニュー[[リンク先, 名前, 追加の属性]]]
   const items = [
-    ["about.html", "私たちについて", "about", "", [[ab + "#mission", "ミッション・ビジョン・バリュー"], [ab + "#style", "スタイル"], [ab + "#company", "会社概要"]]],
-    [t + "#business", "事業", "", "", [["product.html", "プロダクト"], ["bizdev.html", "新規事業開発支援"], [t + "#biz-3", "採用支援"]]],
+    ["about.html", "私たちについて", "about", "", [[ab + "#mission", "ミッション・ビジョン"], [ab + "#values", "行動指針"], [ab + "#style", "スタイル"], [ab + "#company", "会社概要"]]],
+    [t + "#business", "事業", "", "", [["product.html", "プロダクト"], ["bizdev.html", "新規事業開発支援"], ["recruit.html", "採用支援"]]],
     ["member.html", "メンバー", "member", "", [[mb_ + "#board", "ボードメンバー"], [mb_ + "#team", "チームメンバー"]]],
     [t + "#news", "ニュース", "", "md-hide"],
     [ct + "#contact-recruit", "採用"]
