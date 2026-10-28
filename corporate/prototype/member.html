@@ -101,54 +101,17 @@ img { display: block; }
 .sub-head { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--ink); }
 .sub-head h2 { font-size: clamp(22px, 2vw, 30px); font-weight: 700; letter-spacing: .04em; }
 
-/* Our Team のあしらい：4案を下部の切替で比べる（.ot- はこの欄専用の名前） */
+/* Our Team のあしらい：職種の輪が回る（.ot- はこの欄専用の名前） */
 .ot-row { display: grid; grid-template-columns: minmax(0, 36em) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; margin-top: clamp(40px, 4.4vw, 64px); }
 .ot-row .body { margin-top: 0; }
-.ot-v { display: none; }
-#intro[data-ot="A"] .ot-a, #intro[data-ot="B"] .ot-b, #intro[data-ot="C"] .ot-c, #intro[data-ot="D"] .ot-d, #intro[data-ot="E"] .ot-e, #intro[data-ot="F"] .ot-f, #intro[data-ot="G"] .ot-g { display: block; }
-/* A 職種の帯：8つの職種の英字が、本文の下をゆっくり流れる */
-.ot-a { margin-top: clamp(64px, 7vw, 112px); border-block: 1px solid var(--line); overflow: hidden; padding-block: clamp(20px, 2.2vw, 32px); }
-.ot-a-track { display: flex; width: max-content; animation: ot-a 70s linear infinite; }
-.ot-a-track span { display: inline-flex; align-items: flex-start; padding-right: .7em; font-family: var(--en); font-weight: 500; font-size: clamp(40px, 6vw, 96px); letter-spacing: -.045em; line-height: 1; white-space: nowrap; }
-.ot-a-track span small { font-family: var(--jp); font-size: 12px; font-weight: 500; letter-spacing: .08em; color: var(--mute); margin: .3em 0 0 .9em; }
-.ot-a-track span::after { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); align-self: center; margin-left: .7em; }
-@keyframes ot-a { to { transform: translateX(-50%); } }
-/* B 数字：8つの職種、3つの領域、1つのチーム */
-.ot-b { width: 100%; max-width: 420px; justify-self: end; }
-.ot-b dl { margin: 0; border-top: 1px solid var(--ink); }
-.ot-b dl > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 16px; padding: 16px 0 18px; border-bottom: 1px solid var(--line); }
-.ot-b dt { font-size: 14px; font-weight: 700; letter-spacing: .06em; line-height: 1.5; }
-.ot-b dt .cap { display: block; font-size: 10.5px; font-weight: 500; }
-.ot-b dd { margin: 0; font-family: var(--en); font-weight: 500; font-size: clamp(56px, 6vw, 96px); letter-spacing: -.05em; line-height: .82; font-variant-numeric: tabular-nums; }
-.ot-b dl > div:last-child dd { color: var(--accent); }
-/* C 重なる円：青の濃淡の8つの円が、1点から広がって重なり合う */
-.ot-c { width: 100%; max-width: 440px; justify-self: end; }
-.ot-c svg { display: block; width: 100%; height: auto; overflow: visible; }
-.ot-c circle { mix-blend-mode: multiply; fill-opacity: .9; transition: transform 1.4s var(--ease) calc(.2s + var(--k) * .06s), opacity .6s var(--ease); }
-.js .ot-c:not(.in-view) circle { transform: translateX(var(--x0)); opacity: 0; }
-.ot-c p { display: flex; justify-content: space-between; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); }
-/* D 十字の格子：細い＋が並び、中央に青い×。ところどころの＋が静かに青く灯る */
-.ot-d { width: 100%; max-width: 400px; justify-self: end; }
-.ot-d-g { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); }
-.ot-d-g i { position: relative; aspect-ratio: 1; }
-.ot-d-g i::before, .ot-d-g i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 1px; background: var(--mute-2); transform: translate(-50%, -50%); transition: background .9s var(--ease), width .9s var(--ease); }
-.ot-d-g i::after { transform: translate(-50%, -50%) rotate(90deg); }
-.ot-d-g i.on::before, .ot-d-g i.on::after { background: var(--accent-2); width: 18px; }
-.ot-d-g i.x::before, .ot-d-g i.x::after { width: 30px; height: 2px; background: var(--accent); }
-.ot-d-g i.x::before { transform: translate(-50%, -50%) rotate(45deg); }
-.ot-d-g i.x::after { transform: translate(-50%, -50%) rotate(-45deg); }
-.ot-d-g i { transition: opacity .8s var(--ease) calc(var(--k) * 12ms); }
-.js .ot-d:not(.in-view) .ot-d-g i { opacity: 0; }
-.ot-d p { display: flex; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-
-/* E 回る輪：職種の英字を円に沿って並べて回す。内側の日本語の輪は逆向きに */
+/* 職種の英字を円に沿って並べて回す。内側の日本語の輪は逆向きに */
 .ot-e { width: 100%; max-width: 440px; justify-self: end; }
 .ot-e svg { display: block; width: 100%; height: auto; overflow: visible; }
 .ot-e .ln { fill: none; stroke: var(--line); stroke-width: 1; }
 .ot-e .t1 { font-family: var(--en); font-weight: 500; font-size: 19px; letter-spacing: 0; fill: var(--ink); }
 .ot-e .t2 { font-family: var(--jp); font-weight: 500; font-size: 11.5px; fill: var(--ink-2); }
-.ot-e .sep, .ot-g .sep { fill: var(--accent); font-size: .5em; }
-.ot-e .r1, .ot-e .r2, .ot-g .r { transform-origin: 200px 200px; animation: ot-rot 90s linear infinite; }
+.ot-e .sep { fill: var(--accent); font-size: .5em; }
+.ot-e .r1, .ot-e .r2 { transform-origin: 200px 200px; animation: ot-rot 90s linear infinite; }
 .ot-e .r2 { animation-duration: 140s; animation-direction: reverse; }
 .ot-e .c1 { font-family: var(--en); font-weight: 700; font-size: 46px; letter-spacing: -.04em; fill: var(--ink); }
 .ot-e .c1 tspan { fill: var(--accent); }
@@ -156,33 +119,6 @@ img { display: block; }
 @keyframes ot-rot { to { transform: rotate(360deg); } }
 .ot-e { transition: opacity 1s var(--ease), transform 1.2s var(--ease); }
 .js .ot-e:not(.in-view) { opacity: 0; transform: rotate(-20deg) scale(.94); }
-/* F 軌道：8つの職種の札が、JILのまわりを楕円を描いて回る（手前は大きく濃く、奥は小さく薄く） */
-.ot-f { width: 100%; max-width: 480px; justify-self: end; }
-.ot-f-o { position: relative; aspect-ratio: 4 / 3; }
-.ot-f-o::before { content: ""; position: absolute; left: 6%; right: 6%; top: 20%; bottom: 20%; border: 1px dashed var(--mute-2); border-radius: 50%; }
-.ot-f-core { position: absolute; left: 50%; top: 50%; z-index: 5; width: 104px; aspect-ratio: 1; transform: translate(-50%, -50%); display: grid; place-content: center; gap: 2px; border-radius: 50%; background: var(--b0); color: var(--white); text-align: center; }
-.ot-f-core .cap { color: #9EA4AD; font-size: 9.5px; }
-.ot-f-core b { font-family: var(--en); font-size: 28px; font-weight: 700; line-height: 1.1; }
-.ot-f-p { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); font-size: 14px; letter-spacing: .02em; line-height: 1.4; white-space: nowrap; }
-.ot-f-p::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--tm-c); margin-right: 8px; vertical-align: 2px; }
-.ot-f p { display: flex; justify-content: space-between; margin-top: 8px; padding-top: 12px; border-top: 1px solid var(--line); }
-.ot-f { transition: opacity 1s var(--ease); }
-.js .ot-f:not(.in-view) { opacity: 0; }
-/* G 大きな輪：職種の英字の大きな輪を、画面の右端に半分だけ見せて回す */
-#intro { position: relative; overflow: clip; }
-#intro > .in { position: relative; z-index: 1; }
-.ot-g { position: absolute; top: 0; bottom: 0; right: 0; width: 50%; pointer-events: none; }
-.ot-g svg { position: absolute; top: 50%; left: 100%; width: min(860px, 62vw); height: auto; transform: translate(-50%, -50%); overflow: visible; }
-.ot-g .t { font-family: var(--en); font-weight: 500; font-size: 22px; letter-spacing: -.02em; fill: var(--ink); }
-.ot-g .ln { fill: none; stroke: var(--line); stroke-width: .5; }
-
-/* 比較用の切替（決まったら消す） */
-.cmp { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 90; display: flex; align-items: center; gap: 4px; max-width: calc(100vw - 24px); overflow-x: auto; padding: 6px 6px 6px 16px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 12px; letter-spacing: .04em; }
-.cmp b { font-weight: 500; color: #C3C8CF; white-space: nowrap; margin-right: 6px; }
-.cmp button { border: 0; border-radius: 999px; padding: 7px 12px; background: transparent; color: inherit; font: inherit; cursor: pointer; white-space: nowrap; }
-.cmp button[aria-pressed="true"] { background: var(--white); color: var(--ink); }
-@media (max-width: 720px) { .cmp b { display: none; } .cmp { padding-left: 6px; } .ot-f-p { font-size: 12px; padding: 4px 10px; } .ot-f-core { width: 84px; } .ot-f-core b { font-size: 22px; } }
-
 /* 役員：1人ずつ大きく。写真は白黒、乗せるとカラーに */
 .bm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: clamp(24px, 3vw, 48px); padding-block: clamp(36px, 3.6vw, 56px); border-bottom: 1px solid var(--line); align-items: center; }
 .bm:first-of-type { padding-top: 8px; }
@@ -339,10 +275,7 @@ img { display: block; }
   .bm { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 32px; }
   .tm-c { grid-template-columns: minmax(0, 1fr); }
   .ot-row { grid-template-columns: minmax(0, 1fr); }
-  .ot-b, .ot-c, .ot-d, .ot-e, .ot-f { justify-self: start; max-width: 340px; }
-  .ot-f { max-width: 420px; }
-  .ot-g { position: relative; width: auto; height: 220px; margin-top: 48px; overflow: hidden; }
-  .ot-g svg { left: 50%; top: 0; width: 640px; transform: translateX(-50%); }
+  .ot-e { justify-self: start; max-width: 340px; }
   .tm-flow, .tm-bg { grid-template-columns: minmax(0, 1fr); gap: 16px; }
 }
 @media (max-width: 720px) {
@@ -408,11 +341,9 @@ img { display: block; }
   .tm-co { font-size: clamp(19px, 5.4vw, 24px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rise, .stmt .ch, [class^="tm-"], [class^="tm-"]::before, [class^="tm-"]::after, .tm-c-o .ar, .tm-c-o .sp, .ot-c circle, .ot-d-g i { transition: none !important; }
-  .ph-grad::after, .tm-flow li::after, .ot-a-track, .ot-e .r1, .ot-e .r2, .ot-g .r { animation: none; }
-  .js .ot-e:not(.in-view), .js .ot-f:not(.in-view) { opacity: 1; transform: none; }
-  .js .ot-c:not(.in-view) circle { transform: none; opacity: 1; }
-  .js .ot-d:not(.in-view) .ot-d-g i { opacity: 1; }
+  .rise, .stmt .ch, [class^="tm-"], [class^="tm-"]::before, [class^="tm-"]::after, .tm-c-o .ar, .tm-c-o .sp { transition: none !important; }
+  .ph-grad::after, .tm-flow li::after, .ot-e .r1, .ot-e .r2 { animation: none; }
+  .js .ot-e:not(.in-view) { opacity: 1; transform: none; }
   .js .tm-c:not(.in-view) .tm-flow li { transform: none; opacity: 1; }
   .js .rise:not(.in-view) { transform: none; opacity: 1; }
   .js .tm-v:not(.in-view) .tm-ph ol::before, .js .tm-a:not(.in-view) .tm-a-br::before, .js .tm-a:not(.in-view) .tm-a-br::after, .js .tm-a:not(.in-view) .tm-a-g::before, .js .tm-b:not(.in-view) .tm-b-track::before { transform: none; }
@@ -446,7 +377,7 @@ img { display: block; }
     </div>
   </section>
 
-  <section class="sec" id="intro" data-ot="E">
+  <section class="sec" id="intro">
     <div class="in grid">
       <span class="cap">Our Team</span>
       <div>
@@ -456,12 +387,10 @@ img { display: block; }
             <p><span class="cl">新しい事業は、</span><span class="cl">ひとりの天才ではなく、</span><span class="cl">専門の違う人たちの</span><span class="cl">掛け合わせから生まれます。</span><span class="cl">JILでは、</span><span class="cl">事業をつくるプロと、</span><span class="cl">AIを使いこなすプロが、</span><span class="cl">同じチームにいます。</span></p>
             <p><span class="cl">一人ひとりが</span><span class="cl">当事者として事業に向き合い、</span><span class="cl"><b>お客様の期待を超える価値</b>を</span><span class="cl">届けます。</span></p>
           </div>
-          <div class="ot-v ot-b rise"><dl><div><dt><span class="cap">Specialties</span>専門の職種</dt><dd data-n="8">8</dd></div><div><dt><span class="cap">Domains</span>事業をつくる・形にする・届ける</dt><dd data-n="3">3</dd></div><div><dt><span class="cap">Team</span>ひとつのチームで</dt><dd data-n="1">1</dd></div></dl></div><div class="ot-v ot-c rise" aria-hidden="true"><svg viewBox="0 0 360 88"><circle cx="40" cy="44" r="40" fill="var(--b1)" style="--k:0;--x0:140px"/><circle cx="80" cy="44" r="40" fill="var(--b1)" style="--k:1;--x0:100px"/><circle cx="120" cy="44" r="40" fill="var(--b1)" style="--k:2;--x0:60px"/><circle cx="160" cy="44" r="40" fill="var(--b2)" style="--k:3;--x0:20px"/><circle cx="200" cy="44" r="40" fill="var(--b2)" style="--k:4;--x0:-20px"/><circle cx="240" cy="44" r="40" fill="var(--b2)" style="--k:5;--x0:-60px"/><circle cx="280" cy="44" r="40" fill="var(--b3)" style="--k:6;--x0:-100px"/><circle cx="320" cy="44" r="40" fill="var(--b3)" style="--k:7;--x0:-140px"/></svg><p><span class="cap">8 Specialties</span><span class="cap">One Team</span></p></div><div class="ot-v ot-d rise" aria-hidden="true"><div class="ot-d-g"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i><i style="--k:6"></i><i style="--k:7"></i><i style="--k:8"></i><i style="--k:9"></i><i style="--k:10"></i><i style="--k:11"></i><i style="--k:12"></i><i style="--k:13"></i><i style="--k:14"></i><i style="--k:15"></i><i style="--k:16"></i><i style="--k:17"></i><i style="--k:18"></i><i style="--k:19"></i><i style="--k:20"></i><i style="--k:21"></i><i style="--k:22"></i><i style="--k:23"></i><i style="--k:24"></i><i style="--k:25"></i><i style="--k:26"></i><i style="--k:27"></i><i style="--k:28"></i><i style="--k:29"></i><i style="--k:30"></i><i style="--k:31" class="x"></i><i style="--k:32"></i><i style="--k:33"></i><i style="--k:34"></i><i style="--k:35"></i><i style="--k:36"></i><i style="--k:37"></i><i style="--k:38"></i><i style="--k:39"></i><i style="--k:40"></i><i style="--k:41"></i><i style="--k:42"></i><i style="--k:43"></i><i style="--k:44"></i><i style="--k:45"></i><i style="--k:46"></i><i style="--k:47"></i><i style="--k:48"></i><i style="--k:49"></i><i style="--k:50"></i><i style="--k:51"></i><i style="--k:52"></i><i style="--k:53"></i><i style="--k:54"></i><i style="--k:55"></i><i style="--k:56"></i><i style="--k:57"></i><i style="--k:58"></i><i style="--k:59"></i><i style="--k:60"></i><i style="--k:61"></i><i style="--k:62"></i></div><p><span class="cap">Business</span><span class="cap">× Generative AI</span></p></div><div class="ot-v ot-e rise" aria-hidden="true"><svg viewBox="0 0 400 400"><defs><path id="ot-e-p1" d="M200,200 m-160,0 a160,160 0 1,1 320,0 a160,160 0 1,1 -320,0"/><path id="ot-e-p2" d="M200,200 m-116,0 a116,116 0 1,1 232,0 a116,116 0 1,1 -232,0"/></defs><circle class="ln" cx="200" cy="200" r="188"/><circle class="ln" cx="200" cy="200" r="138"/><circle class="ln" cx="200" cy="200" r="98"/><g class="r1"><text class="t1"><textPath href="#ot-e-p1" textLength="1000" lengthAdjust="spacing">Consultant<tspan class="sep"> ● </tspan>Project Manager<tspan class="sep"> ● </tspan>Planner<tspan class="sep"> ● </tspan>Designer<tspan class="sep"> ● </tspan>AI Engineer<tspan class="sep"> ● </tspan>Web Engineer<tspan class="sep"> ● </tspan>Marketer<tspan class="sep"> ● </tspan>Sales<tspan class="sep"> ● </tspan></textPath></text></g><g class="r2"><text class="t2"><textPath href="#ot-e-p2" textLength="726" lengthAdjust="spacing">コンサルタント・PM・業務設計・企画・デザイナー・AIエンジニア・Webエンジニア・マーケティング・IS／FS・</textPath></text></g><text class="c2" x="200" y="178" text-anchor="middle">ONE TEAM</text><text class="c1" x="200" y="226" text-anchor="middle">JIL<tspan>.</tspan></text></svg></div><div class="ot-v ot-f rise" aria-hidden="true"><div class="ot-f-o"><div class="ot-f-core"><span class="cap">One Team</span><b>JIL</b></div><span class="ot-f-p" style="--tm-c:var(--b1)">コンサルタント</span><span class="ot-f-p" style="--tm-c:var(--b1)">PM</span><span class="ot-f-p" style="--tm-c:var(--b1)">業務設計・企画</span><span class="ot-f-p" style="--tm-c:var(--b2)">デザイナー</span><span class="ot-f-p" style="--tm-c:var(--b2)">AIエンジニア</span><span class="ot-f-p" style="--tm-c:var(--b2)">Webエンジニア</span><span class="ot-f-p" style="--tm-c:var(--b3)">マーケティング</span><span class="ot-f-p" style="--tm-c:var(--b3)">IS／FS</span></div><p><span class="cap">8 Specialties</span><span class="cap">One Team</span></p></div>
+          <div class="ot-e rise" aria-hidden="true"><svg viewBox="0 0 400 400"><defs><path id="ot-e-p1" d="M200,200 m-160,0 a160,160 0 1,1 320,0 a160,160 0 1,1 -320,0"/><path id="ot-e-p2" d="M200,200 m-116,0 a116,116 0 1,1 232,0 a116,116 0 1,1 -232,0"/></defs><circle class="ln" cx="200" cy="200" r="188"/><circle class="ln" cx="200" cy="200" r="138"/><circle class="ln" cx="200" cy="200" r="98"/><g class="r1"><text class="t1"><textPath href="#ot-e-p1" textLength="1000" lengthAdjust="spacing">Consultant<tspan class="sep"> ● </tspan>Project Manager<tspan class="sep"> ● </tspan>Planner<tspan class="sep"> ● </tspan>Designer<tspan class="sep"> ● </tspan>AI Engineer<tspan class="sep"> ● </tspan>Web Engineer<tspan class="sep"> ● </tspan>Marketer<tspan class="sep"> ● </tspan>Sales<tspan class="sep"> ● </tspan></textPath></text></g><g class="r2"><text class="t2"><textPath href="#ot-e-p2" textLength="726" lengthAdjust="spacing">コンサルタント・PM・業務設計・企画・デザイナー・AIエンジニア・Webエンジニア・マーケティング・IS／FS・</textPath></text></g><text class="c2" x="200" y="178" text-anchor="middle">ONE TEAM</text><text class="c1" x="200" y="226" text-anchor="middle">JIL<tspan>.</tspan></text></svg></div>
         </div>
       </div>
     </div>
-    <div class="ot-v ot-a" aria-hidden="true"><div class="ot-a-track"><span>Consultant<small>コンサルタント</small></span><span>Project Manager<small>PM</small></span><span>Planner<small>業務設計・企画</small></span><span>Designer<small>デザイナー</small></span><span>AI Engineer<small>AIエンジニア</small></span><span>Web Engineer<small>Webエンジニア</small></span><span>Marketer<small>マーケティング</small></span><span>Sales<small>IS／FS</small></span><span>Consultant<small>コンサルタント</small></span><span>Project Manager<small>PM</small></span><span>Planner<small>業務設計・企画</small></span><span>Designer<small>デザイナー</small></span><span>AI Engineer<small>AIエンジニア</small></span><span>Web Engineer<small>Webエンジニア</small></span><span>Marketer<small>マーケティング</small></span><span>Sales<small>IS／FS</small></span></div></div>
-    <div class="ot-v ot-g" aria-hidden="true"><svg viewBox="0 0 400 400"><defs><path id="ot-g-p" d="M200,200 m-170,0 a170,170 0 1,1 340,0 a170,170 0 1,1 -340,0"/></defs><circle class="ln" cx="200" cy="200" r="148"/><circle class="ln" cx="200" cy="200" r="196"/><g class="r"><text class="t"><textPath href="#ot-g-p" textLength="1066" lengthAdjust="spacing">Consultant<tspan class="sep"> ● </tspan>Project Manager<tspan class="sep"> ● </tspan>Planner<tspan class="sep"> ● </tspan>Designer<tspan class="sep"> ● </tspan>AI Engineer<tspan class="sep"> ● </tspan>Web Engineer<tspan class="sep"> ● </tspan>Marketer<tspan class="sep"> ● </tspan>Sales<tspan class="sep"> ● </tspan></textPath></text></g></svg></div>
   </section>
 
   <section class="sec alt" id="board" aria-labelledby="board-h">
@@ -536,7 +465,6 @@ img { display: block; }
 
 </main>
 
-<div class="cmp" role="group" aria-label="Our Teamのあしらいを比べる"><b>Our Teamのあしらい</b><button type="button" data-v="A" aria-pressed="false">A 職種の帯</button><button type="button" data-v="B" aria-pressed="false">B 数字</button><button type="button" data-v="C" aria-pressed="false">C 重なる円</button><button type="button" data-v="D" aria-pressed="false">D 十字の格子</button><button type="button" data-v="E" aria-pressed="true">E 回る輪</button><button type="button" data-v="F" aria-pressed="false">F 軌道</button><button type="button" data-v="G" aria-pressed="false">G 大きな輪</button></div>
 
 <footer class="ft" id="ft" data-page="member" data-contact="index.html"></footer>
 <script src="common/footer.js"></script>
@@ -568,46 +496,6 @@ img { display: block; }
   addEventListener("scroll", fill, { passive: true }); fill();
   // チームの図はC（円）に決定。A（組織図）・B（工程×領域）も残してあり、ここを "A" / "B" にすると戻せる
   document.querySelectorAll(".tm-v").forEach(v => v.classList.toggle("tm-on", v.dataset.v === "C"));
-  // Our Team のあしらいの比較：切り替えたら出現の動きをやり直す
-  const intro = document.getElementById("intro");
-  const countUp = () => document.querySelectorAll(".ot-b dd").forEach(d => {
-    const n = +d.dataset.n, t0 = performance.now();
-    if (reduce) { d.textContent = n; return; }
-    const step = now => { const p = Math.min(1, (now - t0) / 1200); d.textContent = Math.round(n * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
-    requestAnimationFrame(step);
-  });
-  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && intro.dataset.ot === "B") countUp(); })).observe(document.querySelector(".ot-b"));
-  document.querySelectorAll(".cmp button").forEach(b => b.addEventListener("click", () => {
-    intro.dataset.ot = b.dataset.v;
-    document.querySelectorAll(".cmp button").forEach(x => x.setAttribute("aria-pressed", x === b));
-    const v = intro.querySelector(".ot-" + b.dataset.v.toLowerCase());
-    if (v.classList.contains("rise")) { v.classList.remove("in-view"); requestAnimationFrame(() => requestAnimationFrame(() => v.classList.add("in-view"))); }
-    if (b.dataset.v === "B") countUp();
-    intro.scrollIntoView({ behavior: "smooth" });
-  }));
-  // F：札を楕円の上で回す。手前（下側）ほど大きく濃く、真ん中のJILより前に出す
-  const fp = [...document.querySelectorAll(".ot-f-p")];
-  let fa = 0, fl = performance.now();
-  const orbit = now => {
-    const dt = Math.min(64, now - fl); fl = now;
-    if (intro.dataset.ot === "F" && !document.hidden) {
-      if (!reduce) fa += dt * .00011;
-      fp.forEach((p, k) => {
-        const a = fa + k / fp.length * Math.PI * 2, z = (Math.sin(a) + 1) / 2;
-        p.style.left = 50 + 44 * Math.cos(a) + "%"; p.style.top = 50 + 30 * Math.sin(a) + "%";
-        p.style.transform = `translate(-50%, -50%) scale(${.74 + .26 * z})`; p.style.opacity = .35 + .65 * z; p.style.zIndex = z > .5 ? 6 : 4;
-      });
-    }
-    requestAnimationFrame(orbit);
-  };
-  requestAnimationFrame(orbit);
-  // D：ところどころの＋が静かに青く灯る
-  const cells = [...document.querySelectorAll(".ot-d-g i:not(.x)")];
-  if (!reduce) setInterval(() => {
-    if (intro.dataset.ot !== "D" || document.hidden) return;
-    cells.forEach(c => c.classList.remove("on"));
-    for (let k = 0; k < 5; k++) cells[Math.floor(Math.random() * cells.length)].classList.add("on");
-  }, 1600);
   if (location.hash) { const t = document.querySelector(location.hash); if (t) setTimeout(() => t.scrollIntoView(), 50); }
 })();
 </script>
