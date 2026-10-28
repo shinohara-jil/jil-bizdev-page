@@ -139,6 +139,10 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
 .vl.c .cap { color: var(--accent); font-size: 10.5px; }
 .vl.c b { font-family: var(--en); font-size: clamp(26px, 2.4vw, 36px); font-weight: 700; line-height: 1.1; letter-spacing: -.01em; color: var(--accent); }
 .style-venn { margin-top: clamp(40px, 4vw, 56px); }
+/* Our Style：図と3列は見出しの列から出し、左端から広く使う。ボタンは右の列に */
+#style .style-venn, #style .style { grid-column: 1 / -1; }
+#style .style-links { grid-column: 2; }
+#style .grid > .cap { position: static; } /* 見出しがスクロールについてきて図に重ならないように */
 .style { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); margin-top: clamp(48px, 5vw, 72px); }
 .style > div { padding: 28px 28px 8px 0; display: grid; gap: 12px; align-content: start; }
 .style > div + div { padding-left: 28px; border-left: 1px solid var(--line); }
@@ -206,6 +210,7 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
   :root { --gl: max(20px, env(safe-area-inset-left, 0px)); --gr: max(20px, env(safe-area-inset-right, 0px)); }
   body { font-size: 14.5px; }
   .grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  #style .style-links { grid-column: 1 / -1; }
   .grid > .cap { position: static; padding-top: 0; }
   .stmt { font-size: clamp(28px, 8.4vw, 36px); }
   .stmt .ln.s { font-size: .6em; }
@@ -311,19 +316,19 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
         <div class="body rise">
           <p>JILでは、事業開発の仕事だけでなく、営業も、採用も、バックオフィスも、AIを前提に組み立てています。AIに任せられることは任せ切る。そのぶん、人は判断すること、お客様と向き合うこと、仲間を育てることに、時間と熱量を注ぎます。</p>
         </div>
+      </div>
       <div class="venn style-venn" id="venn" role="img" aria-label="人の円とAIの円が重なり、重なったところがJILである図">
         <canvas id="cv-venn" aria-hidden="true"></canvas>
         <span class="vl l"><span class="cap">Human-Driven</span><b>人</b><small>判断する・向き合う・育てる</small></span>
         <span class="vl r"><span class="cap">AI-Driven</span><b>AI</b><small>調べる・つくる・回す</small></span>
         <span class="vl c"><span class="cap">Human × AI</span><b class="en">JIL</b></span>
-        </div>
-        <div class="style">
-          <div class="rise"><span class="cap">Human-Driven</span><h3>事業をつくるプロが、真ん中にいる。</h3><p>コンサルタント、PM、マーケター、デザイナー、エンジニア。専門の違うメンバーが、一人ひとり当事者として事業に向き合います。</p></div>
-          <div class="rise"><span class="cap">AI-Driven</span><h3>すべての仕事を、AI前提で。</h3><p>調べる、つくる、届ける、採る、支える。社内のあらゆる仕事にAIを組み込み、少人数でも大きく、速く動きます。</p></div>
-          <div class="rise"><span class="cap">Business</span><h3>3つの事業で、知見を返し合う。</h3><p>プロダクトで試したことを支援に生かし、支援で得た知見を、次のプロダクトと採用に生かします。</p></div>
-        </div>
-        <div class="links rise"><a class="pill" href="index.html#business">事業を見る<span class="dot">→</span></a><a class="pill" href="member.html">メンバーを見る<span class="dot">→</span></a></div>
       </div>
+      <div class="style">
+        <div class="rise"><span class="cap">Human-Driven</span><h3>事業をつくるプロが、真ん中にいる。</h3><p>コンサルタント、PM、マーケター、デザイナー、エンジニア。専門の違うメンバーが、一人ひとり当事者として事業に向き合います。</p></div>
+        <div class="rise"><span class="cap">AI-Driven</span><h3>すべての仕事を、AI前提で。</h3><p>調べる、つくる、届ける、採る、支える。社内のあらゆる仕事にAIを組み込み、少人数でも大きく、速く動きます。</p></div>
+        <div class="rise"><span class="cap">Business</span><h3>3つの事業で、知見を返し合う。</h3><p>プロダクトで試したことを支援に生かし、支援で得た知見を、次のプロダクトと採用に生かします。</p></div>
+      </div>
+      <div class="links style-links rise"><a class="pill" href="index.html#business">事業を見る<span class="dot">→</span></a><a class="pill" href="member.html">メンバーを見る<span class="dot">→</span></a></div>
     </div>
   </section>
 
