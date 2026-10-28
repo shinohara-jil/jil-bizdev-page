@@ -24,6 +24,9 @@
 .hd .sub a:hover .ar { transform: translateX(4px); color: var(--ink); }
 .hd .nav a.pill { padding: 0 8px 0 22px; }
 .hd .nav a.pill::after { display: none; }
+/* 右上のお問い合わせはフォームを別のタブで開くので、矢印は「↗」のまま回さず、右上へ少しだけ動かす */
+.hd .nav a.pill:hover .dot { transform: translate(2px, -2px); }
+.hd .nav a.pill .dot { font-family: var(--en); }
 .hd .menu-btn { display: none; }
 .hd .m-note { display: none; }
 /* 読み進み具合：ヘッダーの下の細い青い線（背景が敷かれてから見える） */

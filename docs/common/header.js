@@ -8,6 +8,8 @@
   const ab = page === "about" ? "" : R + "about/", mb_ = page === "member" ? "" : R + "member/";
   const ct = hd.hasAttribute("data-contact") ? R : ""; // お問い合わせの欄がないページ（data-contact）はトップの欄へ
   const biz = ["product", "bizdev", "recruit"];
+  // お問い合わせのフォーム（今の会社サイトと同じGoogleフォーム。右上のボタンから直接開く。footer.js にも同じものがある）
+  const FORM = "https://docs.google.com/forms/d/e/1FAIpQLSdAXunAozpcLmemfDljHNJKcEWXTtktF8tV6RECRALBNyaGhQ/viewform";
   // [リンク先, 名前, そのページの data-page, 追加のクラス, 子メニュー[[リンク先, 名前, そのページの data-page]]]
   const items = [
     [R + "about/", "私たちについて", "about", "", [[ab + "#mission", "ミッション・ビジョン"], [ab + "#values", "行動指針"], [ab + "#style", "スタイル"], [ab + "#company", "会社概要"]]],
@@ -24,7 +26,7 @@
     <a class="logo" href="${top ? "#top" : R}" aria-label="JIL トップへ">JIL<i></i></a>
     <nav class="nav" id="nav" aria-label="メインメニュー">
       ${items.map(([h, l, p, c, ks]) => `<div class="grp${ks ? " has" : ""}${c ? " " + c : ""}"><a class="p" href="${h}"${cur(p)}>${l}${ks ? '<i class="cv" aria-hidden="true"></i>' : ""}</a>${sub(ks)}</div>`).join("")}
-      <a class="pill" href="${ct}#contact">お問い合わせ<span class="dot" aria-hidden="true">→</span></a>
+      <a class="pill" href="${FORM}" target="_blank" rel="noopener">お問い合わせ<span class="vh">（別のタブでお問い合わせフォームが開きます）</span><span class="dot" aria-hidden="true">↗</span></a>
       <p class="m-note"><b>Japan Is Lovely<i>.</i></b>株式会社JIL　東京都渋谷区神宮前</p>
     </nav>
     <button class="pill menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="nav"><span class="hd-mlb">Menu</span><i class="bars" aria-hidden="true"></i></button>
