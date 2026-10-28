@@ -53,10 +53,17 @@ img { display: block; }
 .pill:hover { background: var(--ink); color: var(--paper); }
 .pill:hover .dot { background: var(--paper); color: var(--ink); transform: rotate(-45deg); }
 
-/* 下層ページ共通の冒頭：大きな英字のページ名、日本語の見出し、パンくず、目次。背景はピリオドから伸びる線（common/ph-lines.js） */
+/* 下層ページ共通の冒頭：大きな英字のページ名、日本語の見出し、パンくず、目次。背景は青のグラデーション（.ph-grad） */
 .ph-top { position: relative; overflow: hidden; min-height: min(78svh, 760px); display: grid; align-items: end; padding-top: 140px; padding-bottom: clamp(56px, 6vw, 88px); background: var(--paper); }
 .ph-top > .in { position: relative; z-index: 2; width: 100%; }
 .ph-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.ph-grad { background:
+  radial-gradient(60% 70% at 88% 18%, color-mix(in srgb, var(--accent) 42%, transparent), transparent 70%),
+  radial-gradient(45% 55% at 66% 92%, color-mix(in srgb, var(--accent-2) 38%, transparent), transparent 70%),
+  radial-gradient(40% 50% at 8% 10%, rgba(255,255,255,.9), rgba(255,255,255,0) 70%),
+  linear-gradient(165deg, #F4F6F9 0%, #E2E7F0 55%, #D5DCEB 100%); }
+.ph-grad::after { content: ""; position: absolute; inset: -20%; background: linear-gradient(115deg, rgba(255,255,255,0) 40%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 60%); animation: sheen 9s var(--ease) infinite; }
+@keyframes sheen { from { transform: translateX(-30%); } to { transform: translateX(30%); } }
 .crumb { display: flex; gap: 10px; font-size: 12px; color: var(--mute); letter-spacing: .08em; margin-bottom: clamp(20px, 2.4vw, 36px); }
 .crumb a:hover { color: var(--ink); }
 .ph-top .ttl { display: grid; gap: 10px; }
@@ -173,6 +180,7 @@ img { display: block; }
   .svc .cap .pc { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .ph-grad::after { animation: none; }
   .rise, .stmt .ch, .svc, .svc-img img, .trt::before, .trt-span::before, .trt-span::after { transition: none !important; }
   .js .rise:not(.in-view) { transform: none; opacity: 1; }
   .js .svc:not(.in-view) { clip-path: inset(0 0 0 0 round var(--svc-r)); }
@@ -189,7 +197,7 @@ img { display: block; }
 
 <main>
   <section class="ph-top" aria-label="新規事業開発支援">
-    <div class="ph-bg ph-lines" aria-hidden="true"><canvas></canvas></div>
+    <div class="ph-bg ph-grad" aria-hidden="true"></div>
     <div class="in">
       <div class="crumb"><a href="index.html">トップ</a><span aria-hidden="true">／</span><a href="index.html#business">事業</a><span aria-hidden="true">／</span><span>新規事業開発支援</span></div>
       <div class="ttl"><p class="en-t two" aria-hidden="true">Business<br>Development<i>.</i></p><h1>新規事業開発支援</h1></div>
@@ -247,7 +255,6 @@ img { display: block; }
 
 <footer class="ft" id="ft" data-page="bizdev" data-contact="index.html"></footer>
 <script src="common/footer.js"></script>
-<script src="common/ph-lines.js"></script>
 <script>
 (() => {
   const nav = performance.getEntriesByType("navigation")[0];
