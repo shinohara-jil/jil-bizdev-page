@@ -98,17 +98,16 @@ img { display: block; }
 .pd-head .cnt small { font-size: .32em; color: var(--mute); letter-spacing: .1em; margin-left: .4em; vertical-align: .8em; }
 .pd-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(56px, 6vw, 88px) clamp(24px, 3vw, 48px); padding-top: clamp(40px, 4.4vw, 64px); }
 .pd { display: grid; gap: 28px; align-content: start; }
-/* 画面写真は台いっぱいに広げず、余白をとって浮かせる。幅は画像の縦横比に合わせて --w で調整（見た目の大きさをそろえる） */
-.pd-stage { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 4px; background: #E4E7EE; display: grid; place-items: center; }
-.pd-stage img { display: block; width: var(--w, 80%); height: auto; border-radius: 6px; background: #FFFFFF; outline: 1px solid rgba(14, 16, 19, .08); box-shadow: 0 28px 48px -30px rgba(14, 16, 19, .38); transform: translateY(14px); transition: transform 1.6s var(--ease); }
+/* 画面写真は枠いっぱいに敷き詰める。元画像の大きさ・縦横比がバラバラでも、枠の形（16:9）をそろえて余りを出さない。横長の画面写真は、ふちの色を書き足して16:9にした画像（*_fit.jpg）を使う */
+.pd-stage { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; background: #FFFFFF; }
+.pd-stage::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(14, 16, 19, .1); pointer-events: none; }
+.pd-stage img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, center top); transform: scale(1.06); transition: transform 1.6s var(--ease); }
 .pd-stage.in-view img { transform: none; }
-.pd:hover .pd-stage img { transform: translateY(-4px); }
-/* 2枚を重ねる（JWP：つくったサイトが奥、管理画面が手前） */
-.pd-stage.duo { display: block; }
-.pd-stage.duo img { position: absolute; }
-.pd-stage.duo .back { left: 8%; top: 11%; width: 68%; }
-.pd-stage.duo .front { right: 8%; bottom: 12%; width: 56%; transition-delay: .15s; }
-.pd:hover .pd-stage.duo .front { transform: translateY(-8px); }
+.pd:hover .pd-stage img { transform: scale(1.03); }
+/* 2枚を重ねる（JWP：つくったサイトを敷き詰め、管理画面を右下に浮かせる） */
+.pd-stage.duo .front { position: absolute; right: 3%; bottom: -5%; width: 37%; height: auto; border-radius: 4px; outline: 1px solid rgba(14, 16, 19, .1); box-shadow: 0 24px 40px -24px rgba(14, 16, 19, .45); transform: translateY(14px); transition-delay: .15s; }
+.pd-stage.duo.in-view .front { transform: none; }
+.pd:hover .pd-stage.duo .front { transform: translateY(-6px); }
 .pd-stage .soon { position: absolute; right: 14px; top: 14px; font-family: var(--en); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; background: var(--ink); color: var(--white); padding: 4px 12px; border-radius: 999px; }
 .pd-bd { display: grid; gap: 16px; align-content: start; }
 .pd-kind { display: flex; align-items: center; gap: 14px; font-size: 13px; letter-spacing: .08em; color: var(--ink-2); }
@@ -212,9 +211,6 @@ img { display: block; }
   .body { font-size: 15px; }
   .pd-list { grid-template-columns: minmax(0, 1fr); gap: 56px; padding-top: 32px; }
   .pd { gap: 22px; }
-  .pd-stage img { width: calc(var(--w, 80%) + 8%); }
-  .pd-stage.duo .back { left: 5%; width: 76%; }
-  .pd-stage.duo .front { right: 5%; width: 62%; }
   .pd h3 { font-size: clamp(26px, 7.4vw, 32px); }
   .pd-proof { grid-template-columns: minmax(0, 1fr); }
   .pd-proof b { font-size: 15px; }
@@ -277,7 +273,7 @@ img { display: block; }
       <div class="pd-head rise"><span class="cap">Our Products</span></div>
       <div class="pd-list">
         <article class="pd" id="p-ehon">
-          <div class="pd-stage rise"><img src="img/pd_ehon.jpg" style="--w: 76%" alt="えほんにおいでよのサイト。絵本の主人公になった子どもたちのイラスト" loading="lazy"></div>
+          <div class="pd-stage rise"><img src="img/pd_ehon.jpg" style="--pos: center" alt="えほんにおいでよのサイト。絵本の主人公になった子どもたちのイラスト" loading="lazy"></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">01</span>オリジナル絵本製作サービス</span>
             <h3>えほんにおいでよ</h3>
@@ -287,7 +283,7 @@ img { display: block; }
           </div>
         </article>
         <article class="pd" id="p-llabo">
-          <div class="pd-stage rise"><img src="img/pd_llabo.jpg" style="--w: 82%" alt="llaboの研修画面。「生成AIの基礎を学ぼう」のコースと受講の進み具合" loading="lazy"></div>
+          <div class="pd-stage rise"><img src="img/pd_llabo_fit.jpg" alt="llaboの研修画面。「生成AIの基礎を学ぼう」のコースと受講の進み具合" loading="lazy"></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">02</span>コンサル伴走型AI研修</span>
             <h3>llabo<span class="sub">AI研修「llabo」</span></h3>
@@ -297,7 +293,7 @@ img { display: block; }
           </div>
         </article>
         <article class="pd" id="p-insight">
-          <div class="pd-stage rise"><img src="img/pd_insight.jpg" style="--w: 82%" alt="AIインサイトバンクの画面。ペルソナを作る手順と、AIが考えている様子" loading="lazy"><span class="soon">Coming soon</span></div>
+          <div class="pd-stage rise"><img src="img/pd_insight_fit.jpg" alt="AIインサイトバンクの画面。ペルソナを作る手順と、AIが考えている様子" loading="lazy"><span class="soon">Coming soon</span></div>
           <div class="pd-bd rise">
             <span class="pd-kind"><span class="no">03</span>AIペルソナ インサイトリサーチ</span>
             <h3>AIインサイトバンク</h3>
