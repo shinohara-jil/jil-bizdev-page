@@ -4,7 +4,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 from playwright.sync_api import sync_playwright
 from PIL import Image
-S=sys.argv[1]; src='file:///C:/Users/shino/dev/261016_HPリファレンス/prototype/index.html'
+S=sys.argv[1]; src='file:///C:/Users/shino/dev/261016_HPリファレンス/docs/bizdev/service/index.html'
 names=sys.argv[2:]
 with sync_playwright() as p:
     b=p.chromium.launch()
