@@ -9,7 +9,8 @@
 .hd .nav .grp { position: relative; }
 .hd .nav .p { position: relative; display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; }
 .hd .nav .p::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
-.hd .nav .grp:hover > .p::after, .hd .nav .p.cur::after, .hd .nav .p[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+/* 今いるページ（事業の3ページでは「事業」）と、トップで今読んでいる欄に下線 */
+.hd .nav .grp:hover > .p::after, .hd .nav .p.cur::after, .hd .nav .p[aria-current]::after { transform: scaleX(1); transform-origin: left; }
 .hd .nav .cv { width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-2px) rotate(45deg); opacity: .55; transition: transform .4s var(--ease); }
 .hd .nav .grp:hover .cv { transform: translateY(1px) rotate(225deg); }
 /* 子メニュー：ホバー（キーボードではフォーカス）で開く。上の余白は、親から子へマウスを動かすあいだに閉じないための橋 */
@@ -18,12 +19,17 @@
 .hd .grp.shut .sub { opacity: 0; visibility: hidden; }
 .hd .sub ul { list-style: none; margin: 0; padding: 8px 0; min-width: 232px; background: rgba(251, 251, 252, .97); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 20px 40px -28px rgba(14, 16, 19, .45); }
 .hd .sub a { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 11px 22px; white-space: nowrap; color: var(--ink); transition: background .3s var(--ease); }
-.hd .sub a:hover { background: var(--paper-2); }
+.hd .sub a:hover, .hd .sub a[aria-current="page"] { background: var(--paper-2); }
 .hd .sub .ar { font-family: var(--en); font-size: 12px; color: var(--mute); transition: transform .4s var(--ease), color .3s; }
 .hd .sub a:hover .ar { transform: translateX(4px); color: var(--ink); }
 .hd .nav a.pill { padding: 0 8px 0 22px; }
 .hd .nav a.pill::after { display: none; }
 .hd .menu-btn { display: none; }
+.hd .m-note { display: none; }
+/* 読み進み具合：ヘッダーの下の細い青い線（背景が敷かれてから見える） */
+.hd .hd-pg { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform-origin: left; transform: scaleX(var(--pg, 0)); opacity: 0; transition: opacity .4s var(--ease); pointer-events: none; }
+.hd.solid .hd-pg { opacity: 1; }
+.hd.open .hd-pg { opacity: 0; }
 
 @media (max-width: 1080px) {
   .hd .nav .md-hide { display: none; }
@@ -32,23 +38,41 @@
 @media (max-width: 720px) {
   .hd .in { height: 64px; }
   .hd .nav { display: none; }
-  .hd .menu-btn { display: inline-flex; height: 40px; padding: 0 18px; }
-  .hd.open { background: var(--paper); }
-  .hd.open .nav { display: grid; align-content: start; position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); left: 0; right: 0; bottom: 0; overflow-y: auto; background: var(--paper); padding: 12px var(--gr) calc(32px + env(safe-area-inset-bottom, 0px)) var(--gl); gap: 0; font-size: 22px; letter-spacing: .04em; counter-reset: m; animation: menu-in .45s var(--ease); }
-  .hd.open .nav .grp { padding: 16px 0; border-bottom: 1px solid var(--line); }
-  .hd.open .nav .p { display: flex; align-items: baseline; gap: 16px; padding: 0; }
-  .hd.open .nav .p::before { counter-increment: m; content: counter(m, decimal-leading-zero); font-family: var(--en); font-size: 12px; font-weight: 700; color: var(--mute); letter-spacing: .1em; }
+  .hd .menu-btn { display: inline-flex; height: 40px; padding: 0 16px 0 18px; gap: 12px; }
+  /* 2本線のアイコン。開くと×になる */
+  .hd .menu-btn .bars { position: relative; width: 16px; height: 8px; }
+  .hd .menu-btn .bars::before, .hd .menu-btn .bars::after { content: ""; position: absolute; left: 0; right: 0; height: 1.4px; border-radius: 1px; background: currentColor; transition: transform .45s var(--ease), top .45s var(--ease); }
+  .hd .menu-btn .bars::before { top: 0; }
+  .hd .menu-btn .bars::after { top: calc(100% - 1.4px); }
+  .hd.open .menu-btn { background: var(--ink); color: var(--paper); }
+  .hd.open .menu-btn .bars::before { top: calc(50% - .7px); transform: rotate(45deg); }
+  .hd.open .menu-btn .bars::after { top: calc(50% - .7px); transform: rotate(-45deg); }
+  /* 開いているあいだは、ヘッダーの「すりガラスのぼかし」を外す。
+     ぼかし（backdrop-filter）が付いていると、中のメニューの「画面いっぱい」の基準がヘッダーの細い枠に変わり、
+     スクロールした後に開くとメニューが高さ44pxほどに潰れて、中身が見えなかった */
+  .hd.open { background: var(--paper); -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: var(--line); }
+  .hd.open .nav { display: flex; flex-direction: column; align-items: stretch; position: fixed; top: calc(64px + env(safe-area-inset-top, 0px)); left: 0; right: 0; bottom: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: var(--paper); padding: 8px var(--gr) calc(32px + env(safe-area-inset-bottom, 0px)) var(--gl); gap: 0; font-size: 22px; letter-spacing: .04em; counter-reset: m; }
+  .hd.open .nav > * { animation: menu-in .55s var(--ease) both; animation-delay: calc(var(--i, 0) * 45ms + 40ms); }
+  .hd.open .nav .grp { padding: 12px 0 10px; border-bottom: 1px solid var(--line); }
+  .hd.open .nav .p { display: flex; align-items: center; gap: 16px; padding: 4px 0; min-height: 44px; }
+  .hd.open .nav .p::before { counter-increment: m; content: counter(m, decimal-leading-zero); font-family: var(--en); font-size: 12px; font-weight: 700; color: var(--mute); letter-spacing: .1em; width: 20px; }
+  .hd.open .nav .p[aria-current]::before { color: var(--accent); }
+  .hd.open .nav .p[aria-current] { font-weight: 500; }
   .hd.open .nav .p::after, .hd.open .nav .cv { display: none; }
-  /* スマホでは子メニューを親の下に並べておく */
-  .hd.open .sub { position: static; opacity: 1; visibility: visible; transform: none; padding: 10px 0 0 34px; }
-  .hd.open .sub ul { display: flex; flex-wrap: wrap; gap: 4px 22px; padding: 0; min-width: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; border-radius: 0; box-shadow: none; }
-  .hd.open .sub a { padding: 4px 0; gap: 6px; font-size: 14px; letter-spacing: .06em; color: var(--ink-2); }
+  /* 子メニューは親の下に並べておく。指で押しやすいよう、1つずつ高さ40px以上に */
+  .hd.open .sub { position: static; opacity: 1; visibility: visible; transform: none; padding: 4px 0 0 36px; }
+  .hd.open .sub ul { display: flex; flex-wrap: wrap; gap: 0 22px; padding: 0; min-width: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; border-radius: 0; box-shadow: none; }
+  .hd.open .sub a { min-height: 40px; padding: 0; gap: 6px; font-size: 14px; letter-spacing: .06em; color: var(--ink-2); }
   .hd.open .sub a:hover { background: none; }
+  .hd.open .sub a[aria-current="page"] { background: none; color: var(--accent); }
   .hd.open .nav .md-hide { display: block; }
-  .hd.open .nav a.pill { margin-top: 28px; justify-self: start; height: 52px; font-size: 15px; padding-left: 26px; }
-  body.lock { overflow: hidden; }
+  .hd.open .nav a.pill { margin-top: 24px; align-self: flex-start; height: 52px; font-size: 15px; padding-left: 26px; }
+  .hd.open .m-note { display: block; margin-top: auto; padding-top: 28px; font-size: 12px; line-height: 1.8; color: var(--mute); letter-spacing: .04em; }
+  .hd.open .m-note b { display: block; font-family: var(--en); font-size: 20px; font-weight: 500; letter-spacing: -.02em; color: var(--ink); margin-bottom: 4px; }
+  .hd.open .m-note b i { font-style: normal; color: var(--accent); }
 }
-@keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } }
+@keyframes menu-in { from { opacity: 0; transform: translateY(10px); } }
 @media (prefers-reduced-motion: reduce) {
-  .hd.open .nav { animation: none; }
+  .hd.open .nav > * { animation: none; }
+  .hd .menu-btn .bars::before, .hd .menu-btn .bars::after { transition: none; }
 }

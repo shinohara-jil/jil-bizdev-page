@@ -1,0 +1,98 @@
+/* 全ページ共通の仕上げ。各ページの <style>・header.css・footer.css より後に読み込む
+   （英字の書体、読みやすさのための色の調整、押したときの手ごたえ、ページの切り替わり、次のページへの案内など） */
+
+/* 英字の書体（もとは各ページに埋め込んでいたものを、1か所のファイルにして使い回す） */
+@font-face { font-family: "Satoshi"; font-weight: 500; font-display: swap; src: url(fonts/satoshi-500.woff2) format("woff2"); }
+@font-face { font-family: "Satoshi"; font-weight: 700; font-display: swap; src: url(fonts/satoshi-700.woff2) format("woff2"); }
+
+/* 補足の灰色の文字を一段濃く（背景とのコントラスト比 3.5 → 5.2。小さな文字でも読める基準の 4.5 以上に） */
+:root { --mute: #5F6670; }
+
+/* 文章の最後の行に1〜2文字だけ残らないように */
+p, li, dd { text-wrap: pretty; }
+::selection { background: rgba(45, 68, 224, .16); }
+
+/* 本文へ移動（キーボードで最初にTabを押すと現れる） */
+.skip { position: fixed; left: 12px; top: 12px; z-index: 90; padding: 10px 18px; background: var(--ink); color: var(--white); border-radius: 999px; font-size: 13px; letter-spacing: .06em; transform: translateY(-160%); transition: transform .3s var(--ease); }
+.skip:focus-visible { left: 12px; transform: none; }
+
+/* 押したときの手ごたえ：ボタンと丸い矢印が少しだけ沈む */
+.pill { transition: background .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease), transform .25s var(--ease); }
+.pill:active { transform: scale(.97); }
+a, button, summary { -webkit-tap-highlight-color: rgba(45, 68, 224, .08); }
+a:active .go, a:active .svc-go .c, a:active .cta-go .c { transform: scale(.94); }
+
+/* 小さすぎる日本語を一段大きく（12px未満の日本語をなくす） */
+.news .c { font-size: 12px; }
+.kari { font-size: 11px; }
+
+/* 外部のフォームへ移動するお問い合わせの注記 */
+.ext-note { display: flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 12.5px; color: var(--mute); letter-spacing: .04em; }
+.ext-note::before { content: "↗"; font-family: var(--en); font-size: 12px; }
+.on-dark .ext-note { color: #AEB4BD; }
+
+/* ページの切り替わり：同じサイトの中を移動するとき、ふっと切り替える（対応しているブラウザだけ） */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out .28s cubic-bezier(.4, 0, 1, 1) both; }
+::view-transition-new(root) { animation: vt-in .5s var(--ease, ease) both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(10px); } }
+
+/* 次のページへ（フッターの直前。footer.js がつくる） */
+.nx { position: relative; background: var(--paper); border-top: 1px solid var(--line); }
+.nx a { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 9fr) auto; gap: 24px; align-items: center; padding-block: clamp(56px, 7vw, 112px); }
+.nx .cap { align-self: start; padding-top: 8px; display: flex; gap: 12px; align-items: center; }
+.nx .cap::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.nx .t { display: grid; gap: 10px; min-width: 0; }
+.nx .en-n { font-family: var(--en); font-weight: 500; font-size: clamp(52px, 8.4vw, 136px); line-height: .9; letter-spacing: -.06em; margin-left: -.04em; white-space: nowrap; transition: transform .7s var(--ease); }
+.nx .en-n i { font-style: normal; color: var(--accent); }
+.nx .jp { font-size: 15px; font-weight: 700; letter-spacing: .08em; color: var(--ink-2); }
+.nx .jp small { font-weight: 400; color: var(--mute); margin-left: 14px; letter-spacing: .04em; }
+.nx .go { width: clamp(64px, 6vw, 88px); height: clamp(64px, 6vw, 88px); flex: none; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font-family: var(--en); font-size: clamp(18px, 1.6vw, 24px); transition: background .4s var(--ease), color .4s var(--ease), transform .5s var(--ease); }
+.nx a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .9s var(--ease); }
+@media (hover: hover) {
+  .nx a:hover .en-n { transform: translateX(14px); }
+  .nx a:hover .go { background: var(--ink); color: var(--paper); transform: rotate(-45deg); }
+  .nx a:hover::after { transform: scaleX(1); }
+}
+
+/* トップの最初の画面：下へ読み進められることを示す小さな目印（広い画面だけ） */
+.scue { position: absolute; left: 50%; bottom: 28px; z-index: 3; display: grid; justify-items: center; gap: 10px; transform: translateX(-50%); font-family: var(--en); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); transition: opacity .6s var(--ease); }
+.scue i { position: relative; width: 1px; height: 44px; overflow: hidden; background: rgba(14, 16, 19, .14); }
+.scue i::after { content: ""; position: absolute; left: 0; top: 0; width: 1px; height: 100%; background: var(--ink); animation: scue 2.4s var(--ease) infinite; }
+@keyframes scue { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
+.scue.gone { opacity: 0; }
+@media (max-width: 1080px) { .scue { display: none; } }
+
+@media (max-width: 720px) {
+  .nx a { grid-template-columns: minmax(0, 1fr) auto; gap: 18px 16px; padding-block: 48px 56px; }
+  .nx .cap { grid-column: 1 / -1; padding-top: 0; }
+  .nx .en-n { font-size: clamp(44px, 13.4vw, 64px); }
+  .nx .jp small { display: block; margin: 4px 0 0; }
+  .nx .go { width: 56px; height: 56px; font-size: 18px; }
+  /* フッターのリンクを指で押しやすく（高さ40px以上） */
+  .ft ul { gap: 0; }
+  .ft ul a { display: flex; align-items: center; min-height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  .scue i::after { animation: none; }
+  .pill:active { transform: none; }
+  .nx .en-n, .nx .go { transition: none; }
+}
+
+/* 画面には出さず、読み上げにだけ伝える文字 */
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* お問い合わせの矢印（↗＝別のタブで開く）は、ホバーで右上へ少しだけ動かす */
+.contact a:hover .go { transform: translate(3px, -3px); }
+/* 「↗」は英字の書体で（日本語の書体だと斜線のように見える） */
+.ft .ext { font-family: var(--en); }
+
+/* 先頭へ戻る小さなボタン（footer.js がつくる） */
+.totop { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 50; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: rgba(251, 251, 252, .86); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid var(--line); box-shadow: 0 10px 28px -16px rgba(14, 16, 19, .5); font-family: var(--en); font-size: 17px; color: var(--ink); opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity .4s var(--ease), transform .5s var(--ease), visibility 0s .5s, background .3s; }
+.totop.on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.totop:active { transform: scale(.94); }
+@media (hover: hover) { .totop:hover { background: var(--ink); color: var(--white); } }
+@media (min-width: 1081px) { .totop { right: 28px; bottom: 28px; } }
+@media (prefers-reduced-motion: reduce) { .totop { transition: none; } }

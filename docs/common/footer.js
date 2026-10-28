@@ -1,30 +1,59 @@
 /* 全ページ共通のフッター。リンクと、人の線とAIの線の動き（もとは採用の欄の動き）はここだけで管理する
-   使い方：<footer class="ft" id="ft" data-page="top"></footer> の直後でこのファイルを読み込む（data-page は top / about / product / member / bizdev / recruit） */
+   使い方：<footer class="ft" id="ft" data-page="top"></footer> の直後でこのファイルを読み込む（data-page は top / about / product / member / bizdev / recruit）
+   フッターの直前には「次のページへ」の案内も入れる（トップ以外） */
 (() => {
   const ft = document.getElementById("ft"), page = ft.dataset.page || "top";
   const R = page === "top" ? "" : "../"; // サイトの一番上（docs/）への道のり
   const t = R, ab = page === "about" ? "" : R + "about/";
-  const ct = ft.hasAttribute("data-contact") ? R : ""; // お問い合わせの欄がないページはトップの欄へ
+  // お問い合わせのフォーム（今の会社サイトと同じGoogleフォーム。業務・採用どちらもここで受け付ける）
+  const FORM = "https://docs.google.com/forms/d/e/1FAIpQLSdAXunAozpcLmemfDljHNJKcEWXTtktF8tV6RECRALBNyaGhQ/viewform";
+  const ext = ' target="_blank" rel="noopener"';
   const li = (h, l, x = "") => `<li><a href="${h}"${x}>${l}</a></li>`;
+
+  // 次のページへ：私たちについて → プロダクト → 新規事業開発支援 → 採用支援 → メンバー → 私たちについて の順に一周する
+  const NEXT = {
+    about: ["product/", "Product", "プロダクト", "AIで、これまでにない体験をつくる。"],
+    product: ["bizdev/", "Business", "新規事業開発支援", "戦略から、実行まで。ひとつのチームで。"],
+    bizdev: ["recruit/", "Recruitment", "採用支援", "採用を、事業をつくる力に。"],
+    recruit: ["member/", "Member", "メンバー", "JILをつくる人たち。"],
+    member: ["about/", "About", "私たちについて", "日本の可能性を、解き放つ。"]
+  };
+  const nx = NEXT[page];
+  if (nx) ft.insertAdjacentHTML("beforebegin", `<nav class="nx" aria-label="次のページ"><div class="in"><a href="${R + nx[0]}"><span class="cap">Next Page</span><span class="t"><span class="en-n" aria-hidden="true">${nx[1]}<i>.</i></span><span class="jp">${nx[2]}<small>${nx[3]}</small></span></span><span class="go" aria-hidden="true">→</span></a></div></nav>`);
+
   ft.innerHTML = `<canvas class="ft-cv" aria-hidden="true"></canvas>
   <div class="in">
     <div class="top">
       <dl><dt>会社名</dt><dd>株式会社JIL（JIL Inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
       <div><h4>私たちについて</h4><ul>${li(ab + "#mission", "ミッション・ビジョン")}${li(ab + "#values", "行動指針")}${li(ab + "#style", "スタイル")}${li(ab + "#company", "会社概要")}</ul></div>
       <div><h4>事業</h4><ul>${li(R + "product/", "プロダクト")}${li(R + "bizdev/", "新規事業開発支援")}${li(R + "recruit/", "採用支援")}</ul></div>
-      <div><h4>組織</h4><ul>${li(R + "member/", "メンバー")}${li(t + "#news", "ニュース")}${li(ct + "#contact", "事業のお問い合わせ")}${li(ct + "#contact-recruit", "採用のお問い合わせ")}</ul></div>
+      <div><h4>組織</h4><ul>${li(R + "member/", "メンバー")}${li(t + "#news", "ニュース")}${li(FORM, 'お問い合わせ<span class="ext" aria-label="（別のタブで開きます）"> ↗</span>', ext)}</ul></div>
     </div>
     <div class="mark" aria-hidden="true">Japan Is Lovely<i>.</i></div>
     <div class="bt"><span>© 2026 JIL Inc.</span><span class="r"><a href="#" id="ft-top">Page Top ↑</a></span></div>
   </div>`;
-  document.getElementById("ft-top").addEventListener("click", e => { e.preventDefault(); scrollTo({ top: 0, behavior: "smooth" }); });
+  document.getElementById("ft-top").addEventListener("click", e => {
+    e.preventDefault();
+    scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    // 一番上に戻ったら、キーボードの位置も先頭へ
+    const s = document.querySelector(".skip"); if (s) s.focus({ preventScroll: true });
+  });
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 先頭へ戻る小さなボタン（画面の1.5倍ほど読み進めたら右下に出る。フッターが見えたら引っ込める）
+  document.body.insertAdjacentHTML("beforeend", `<a class="totop" id="totop" href="#" aria-label="ページの先頭へ戻る" tabindex="-1"><span aria-hidden="true">↑</span></a>`);
+  const tt = document.getElementById("totop");
+  tt.addEventListener("click", e => { e.preventDefault(); document.getElementById("ft-top").click(); });
+  let ftIn = false;
+  new IntersectionObserver(es => es.forEach(e => { ftIn = e.isIntersecting; showTop(); })).observe(ft);
+  const showTop = () => { const o = scrollY > innerHeight * 1.5 && !ftIn && !document.body.classList.contains("lock"); tt.classList.toggle("on", o); };
+  addEventListener("scroll", showTop, { passive: true });
+
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const ss = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
   const eo = t => 1 - Math.pow(1 - t, 3);
   const TAU = Math.PI * 2;
-  const rnd = s => () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
   const mob = () => innerWidth < 720;
   const fit = cv => {
     const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
@@ -108,5 +137,7 @@
   new IntersectionObserver(es => es.forEach(e => { on = e.isIntersecting; if (on) foot.reset(); }), { rootMargin: "80px" }).observe(foot.el);
   if (reduce) foot.draw(performance.now());
   else { const loop = now => { if (on && !document.hidden) foot.draw(now); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
-  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { foot.resize(); if (reduce) foot.draw(performance.now()); }, 150); });
+  let rt, lw = innerWidth;
+  // スマホでは、スクロール中に上下のバーが出入りするだけでも「大きさが変わった」と知らされるので、横幅が変わったときだけ描き直す
+  addEventListener("resize", () => { if (innerWidth === lw) return; lw = innerWidth; clearTimeout(rt); rt = setTimeout(() => { foot.resize(); if (reduce) foot.draw(performance.now()); }, 150); });
 })();
