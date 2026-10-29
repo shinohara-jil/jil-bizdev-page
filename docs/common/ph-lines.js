@@ -14,14 +14,19 @@
 
   // [分かれる位置, 広がり（マイナスは上へ）, 青か]
   const BR = [[.05, -.48, 1], [.11, -.24, 0], [.17, .24, 0], [.24, -.6, 0], [.31, .42, 1], [.39, -.36, 0], [.47, .12, 0], [.56, -.5, 1], [.64, .3, 0]];
+  // スマホはピリオドから右端までが短いので、本数を減らし、早めに分かれて上下へ小さく広がる形にする（急に跳ね上がって絡まって見えないように）
+  const BR_SP = [[.08, -.55, 1], [.16, .5, 0], [.26, -.25, 0], [.36, .85, 1], [.46, -.85, 0], [.56, .2, 0]];
   const draw = (c, w, h, t, p) => {
     // 起点はピリオドの点の中心（文字の箱の下寄り）
-    const r = period.getBoundingClientRect(), hr = hero.getBoundingClientRect();
+    const r = period.getBoundingClientRect(), hr = hero.getBoundingClientRect(), m = mob();
     const ox = r.left + r.width / 2 - hr.left, oy = r.top + r.height * .755 - hr.top, L = w - ox, X = ox + (L + 20) * p;
-    const S = Math.min(h * .42, mob() ? 160 : 250);
-    const main = u => oy - S * .35 * ss(0, 1, u) + S * .05 * Math.sin(u * 5 + t * .4) * ss(0, .2, u);
+    // 広がりの大きさ。スマホはごく控えめに。タブレット幅では上のメニューにかからない高さまでに抑える
+    const S = m ? Math.min(L * .2, 32) : Math.min(h * .42, 250, oy - 90);
+    const main = m
+      ? u => oy - S * .12 * ss(0, 1, u) + S * .04 * Math.sin(u * 4 + t * .4) * ss(0, .3, u)
+      : u => oy - S * .35 * ss(0, 1, u) + S * .05 * Math.sin(u * 5 + t * .4) * ss(0, .2, u);
     c.clearRect(0, 0, w, h);
-    BR.forEach(([u0, sp, blue], k) => {
+    (m ? BR_SP : BR).forEach(([u0, sp, blue], k) => {
       const x0 = ox + L * u0; if (x0 > X) return;
       c.beginPath();
       for (let x = x0; x <= X; x += 5) {
