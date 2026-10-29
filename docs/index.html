@@ -210,6 +210,7 @@ canvas { display: block; }
 .mem .pic { display: block; aspect-ratio: 4 / 5; max-width: 100%; overflow: hidden; background: #E9EBEE; border-radius: 3px; }
 .mem .pic img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.02); transform: scale(1.02); transition: filter .8s var(--ease), transform 1.2s var(--ease); }
 .mem-btn:hover .pic img, .mem.open .pic img { filter: grayscale(0); transform: scale(1.05); }
+@media (max-width: 720px), (hover: none) { .mem .pic.is-on img { filter: grayscale(0); transform: scale(1.05); } } /* スマホ：画面の真ん中あたりに来た写真に色を付ける（メンバーページと同じ） */
 .mem .role { font-size: 12px; color: var(--mute); letter-spacing: .1em; }
 .mem .who { display: flex; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
 .mem .mn { font-size: 24px; letter-spacing: .02em; font-weight: 500; line-height: 1.5; }
@@ -835,6 +836,9 @@ canvas { display: block; }
   requestAnimationFrame(() => setTimeout(() => heroSec.classList.add("ready"), 120));
   const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in-view"); rio.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".rise").forEach(el => rio.observe(el));
+  // メンバーの写真：画面の真ん中の帯（上下35%を除いた部分）にあるあいだ is-on を付ける。色が付くのはスマホなど乗せられない端末だけ（CSS側で指定）
+  const pio = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("is-on", e.isIntersecting)), { rootMargin: "-35% 0px -35% 0px" });
+  document.querySelectorAll(".mem .pic").forEach(el => pio.observe(el));
   const stmt = document.getElementById("stmt");
   stmt.querySelectorAll(".ph").forEach(ph => { const cs = [...ph.textContent]; ph.textContent = ""; cs.forEach(c => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; ph.appendChild(s); }); });
   const spans = [...stmt.querySelectorAll(".ch")];
