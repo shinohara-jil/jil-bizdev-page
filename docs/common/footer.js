@@ -10,12 +10,12 @@
   const ext = ' target="_blank" rel="noopener"';
   const li = (h, l, x = "") => `<li><a href="${h}"${x}>${l}</a></li>`;
 
-  // 次のページへ：私たちについて → プロダクト → 新規事業開発支援 → 採用支援 → メンバー → 私たちについて の順に一周する
+  // 次のページへ：私たちについて → 新規事業開発支援 → 採用支援 → プロダクト → メンバー → 私たちについて の順に一周する
   const NEXT = {
-    about: ["product/", "Product", "プロダクト", "AIで、これまでにない体験をつくる。"],
-    product: ["bizdev/", "Business", "新規事業開発支援", "戦略から、実行まで。ひとつのチームで。"],
+    about: ["bizdev/", "Business", "新規事業開発支援", "戦略から、実行まで。ひとつのチームで。"],
     bizdev: ["recruit/", "Recruitment", "採用支援", "採用を、事業をつくる力に。"],
-    recruit: ["member/", "Member", "メンバー", "JILをつくる人たち。"],
+    recruit: ["product/", "Product", "プロダクト", "AIで、これまでにない体験をつくる。"],
+    product: ["member/", "Member", "メンバー", "JILをつくる人たち。"],
     member: ["about/", "About", "私たちについて", "日本の可能性を、解き放つ。"]
   };
   const nx = NEXT[page];
@@ -26,7 +26,7 @@
     <div class="top">
       <dl><dt>会社名</dt><dd>株式会社JIL（JIL Inc.）</dd><dt>設立</dt><dd>2024年5月</dd><dt>所在地</dt><dd>〒150-0001 東京都渋谷区神宮前六丁目23番4号 桑野ビル2階</dd></dl>
       <div><h4>私たちについて</h4><ul>${li(ab + "#mission", "ミッション・ビジョン")}${li(ab + "#values", "行動指針")}${li(ab + "#style", "スタイル")}${li(ab + "#company", "会社概要")}</ul></div>
-      <div><h4>事業</h4><ul>${li(R + "product/", "プロダクト")}${li(R + "bizdev/", "新規事業開発支援")}${li(R + "recruit/", "採用支援")}</ul></div>
+      <div><h4>事業</h4><ul>${li(R + "bizdev/", "新規事業開発支援")}${li(R + "recruit/", "採用支援")}${li(R + "product/", "プロダクト")}</ul></div>
       <div><h4>組織</h4><ul>${li(R + "member/", "メンバー")}${li(t + "#news", "ニュース")}${li(FORM, 'お問い合わせ<span class="ext" aria-label="（別のタブで開きます）"> ↗</span>', ext)}</ul></div>
     </div>
     <div class="mark" aria-hidden="true">Japan Is Lovely<i>.</i></div>

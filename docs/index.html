@@ -6,12 +6,12 @@
 <!-- 動きの最初の状態（隠す）を、本文が表示される前に決めておく。ページ末尾で付けると、一度表示された文字が沈んでから出直して見える -->
 <script>document.documentElement.classList.add("js");</script>
 <title>株式会社JIL｜日本の可能性を、解き放つ。</title>
-<meta name="description" content="株式会社JILは、事業をつくる会社です。プロダクト、新規事業開発支援、採用支援の3つの事業で、AI時代を生きる私たちの手と意思で、日本の可能性を解き放ちます。">
+<meta name="description" content="株式会社JILは、事業をつくる会社です。新規事業開発支援、採用支援、プロダクトの3つの事業で、AI時代を生きる私たちの手と意思で、日本の可能性を解き放ちます。">
 <meta name="theme-color" content="#F1F2F4">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="株式会社JIL">
 <meta property="og:title" content="株式会社JIL｜日本の可能性を、解き放つ。">
-<meta property="og:description" content="株式会社JILは、事業をつくる会社です。プロダクト、新規事業開発支援、採用支援の3つの事業で、AI時代を生きる私たちの手と意思で、日本の可能性を解き放ちます。">
+<meta property="og:description" content="株式会社JILは、事業をつくる会社です。新規事業開発支援、採用支援、プロダクトの3つの事業で、AI時代を生きる私たちの手と意思で、日本の可能性を解き放ちます。">
 <meta property="og:image" content="https://shinohara-jil.github.io/jil-bizdev-page/common/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="common/favicon.svg" type="image/svg+xml">
@@ -224,6 +224,7 @@ canvas { display: block; }
 .mem.open .mem-cv { grid-template-rows: 1fr; }
 .mem-cv > div { min-height: 0; overflow: hidden; visibility: hidden; transition: visibility 0s .55s; }
 .mem.open .mem-cv > div { visibility: visible; transition-delay: 0s; }
+.mem .org { margin-top: -4px; font-size: 16px; font-weight: 700; letter-spacing: .04em; color: var(--ink); }
 .mem ul { margin: 0; padding: 18px 0 4px; list-style: none; display: grid; gap: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.75; }
 .mem li { display: grid; grid-template-columns: 14px minmax(0, 1fr); }
 .mem li::before { content: ""; width: 6px; height: 1px; background: var(--mute); margin-top: .9em; }
@@ -313,6 +314,7 @@ canvas { display: block; }
   .mem-btn { grid-template-columns: 34% minmax(0, 1fr); gap: 4px 18px; align-items: end; }
   .mem .pic { grid-row: 1 / span 2; }
   .mem .role, .mem .who { grid-column: 2; }
+  .mem .org { grid-column: 1 / -1; margin-top: 12px; font-size: 15px; }
   .mem .who { flex-wrap: wrap; gap: 2px 12px; }
   .mem .mn { flex: 1; font-size: 22px; }
   .mem .who .cap { order: 3; flex: 0 0 100%; }
@@ -349,9 +351,9 @@ canvas { display: block; }
         <span class="cap">Human-Driven × AI-Driven</span>
         <p><span class="cl">JILは、</span><span class="cl">事業をつくる会社です。</span><span class="cl">自ら事業を立ち上げ、</span><span class="cl">お客様の事業づくりにも</span><span class="cl">最後までコミットします。</span></p>
         <nav class="idx" aria-label="事業">
-          <a href="#biz-1">プロダクト<span class="en">→</span></a>
-          <a href="#biz-2">新規事業開発支援<span class="en">→</span></a>
-          <a href="#biz-3">採用支援<span class="en">→</span></a>
+          <a href="#biz-1">新規事業開発支援<span class="en">→</span></a>
+          <a href="#biz-2">採用支援<span class="en">→</span></a>
+          <a href="#biz-3">プロダクト<span class="en">→</span></a>
         </nav>
       </div>
     </div>
@@ -399,9 +401,9 @@ canvas { display: block; }
     <div class="in">
       <div class="head rise"><span class="cap"><i class="no">03</i>Business</span><h2>3つの事業</h2></div>
       <div class="biz-list">
-        <a class="biz rise" id="biz-1" href="product/"><span class="th"><img src="img/biz_product.jpg" alt="アプリの画面をスマートフォンで確かめる手元" loading="lazy"></span><span class="bd"><span class="cap">01 — Products</span><span class="nm">プロダクト</span><span class="ds"><b>AIで、これまでにない体験をつくる。</b><span class="nw">「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。</span></span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="biz rise" id="biz-2" href="bizdev/"><span class="th"><img src="img/biz_service.jpg" alt="エスカレーターを行き交う人たち" loading="lazy"></span><span class="bd"><span class="cap">02 — Business Development</span><span class="nm">新規事業開発支援</span><span class="ds"><b>戦略から、実行まで。ひとつのチームで。</b>新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目が強みです。</span><span class="bst"><span class="st"><b><span data-to="1500" data-comma>1,500</span>+<small>件</small></b><span>年間の事業審査</span></span><span class="st"><b><span data-to="10">10</span><small>件／年</small></b><span>新規事業の立ち上げ支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="biz rise" id="biz-3" href="recruit/"><span class="th"><img src="img/biz_recruit.jpg" alt="書類を手に向き合う面談の手元" loading="lazy"></span><span class="bd"><span class="cap">03 — Recruitment</span><span class="nm">採用支援</span><span class="ds"><b>採用を、事業をつくる力に。</b>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。</span><span class="bst"><span class="st"><b><span data-to="300">300</span>+<small>社</small></b><span>HRコンサルティングの支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-1" href="bizdev/"><span class="th"><img src="img/biz_service.jpg" alt="エスカレーターを行き交う人たち" loading="lazy"></span><span class="bd"><span class="cap">01 — Business Development</span><span class="nm">新規事業開発支援</span><span class="ds"><b>戦略から、実行まで。ひとつのチームで。</b>新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目が強みです。</span><span class="bst"><span class="st"><b><span data-to="1500" data-comma>1,500</span>+<small>件</small></b><span>年間の事業審査</span></span><span class="st"><b><span data-to="10">10</span><small>件／年</small></b><span>新規事業の立ち上げ支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-2" href="recruit/"><span class="th"><img src="img/biz_recruit.jpg" alt="書類を手に向き合う面談の手元" loading="lazy"></span><span class="bd"><span class="cap">02 — Recruitment</span><span class="nm">採用支援</span><span class="ds"><b>採用を、事業をつくる力に。</b>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。</span><span class="bst"><span class="st"><b><span data-to="300">300</span>+<small>社</small></b><span>HRコンサルティングの支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-3" href="product/"><span class="th"><img src="img/biz_product.jpg" alt="アプリの画面をスマートフォンで確かめる手元" loading="lazy"></span><span class="bd"><span class="cap">03 — Products</span><span class="nm">プロダクト</span><span class="ds"><b>AIで、これまでにない体験をつくる。</b><span class="nw">「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。</span></span></span><span class="go" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -423,9 +425,9 @@ canvas { display: block; }
     <div class="in">
       <div class="head rise"><span class="cap"><i class="no">05</i>People</span><h2>JILをつくる人たち</h2></div>
       <div class="members">
-        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-takei"><span class="pic"><img src="img/member_takei.jpg" alt=""></span><span class="role">代表取締役</span><span class="who"><span class="mn">武井 遼太郎</span><span class="cap">Ryotaro Takei</span><i class="pl" aria-hidden="true"></i></span></button><div class="mem-cv" id="cv-takei"><div><ul><li>300社を超える企業のHRコンサルティングと事業開発</li><li>AIを活用したHR Tech事業</li><li>ベンチャー企業のCOO・CHROを経て、上場企業へ事業売却</li></ul></div></div></article>
-        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-shinohara"><span class="pic"><img src="img/member_shinohara.jpg" alt=""></span><span class="role">取締役</span><span class="who"><span class="mn">篠原 孝弘</span><span class="cap">Takahiro Shinohara</span><i class="pl" aria-hidden="true"></i></span></button><div class="mem-cv" id="cv-shinohara"><div><ul><li>2020年〜 リーガル系SaaSの新規事業立ち上げ</li><li>年間1,500件を超える事業審査、累計10件の立ち上げ支援</li><li>さまざまな業種のAI活用支援を推進</li></ul></div></div></article>
-        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-tanaka"><span class="pic"><img src="img/member_tanaka.jpg" alt=""></span><span class="role">監査役</span><span class="who"><span class="mn">田中 伸英</span><span class="cap">Nobuhide Tanaka</span><i class="pl" aria-hidden="true"></i></span></button><div class="mem-cv" id="cv-tanaka"><div><ul><li>2010年から企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など幅広く支援</li><li>テクノロジー企業・VCとの協業実績が豊富</li></ul></div></div></article>
+        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-takei"><span class="pic"><img src="img/member_takei.jpg" alt=""></span><span class="role">代表取締役</span><span class="who"><span class="mn">武井 遼太郎</span><span class="cap">Ryotaro Takei</span><i class="pl" aria-hidden="true"></i></span><span class="org">株式会社リクルート出身</span></button><div class="mem-cv" id="cv-takei"><div><ul><li>300社を超える企業のHRコンサルティングと事業開発</li><li>AIを活用したHR Tech事業</li><li>ベンチャー企業のCOO・CHROを経て、上場企業へ事業売却</li></ul></div></div></article>
+        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-shinohara"><span class="pic"><img src="img/member_shinohara.jpg" alt=""></span><span class="role">取締役</span><span class="who"><span class="mn">篠原 孝弘</span><span class="cap">Takahiro Shinohara</span><i class="pl" aria-hidden="true"></i></span><span class="org">株式会社リクルート出身</span></button><div class="mem-cv" id="cv-shinohara"><div><ul><li>2020年〜 リーガル系SaaSの新規事業立ち上げ</li><li>年間1,500件を超える事業審査、累計10件の立ち上げ支援</li><li>さまざまな業種のAI活用支援を推進</li></ul></div></div></article>
+        <article class="mem rise"><button class="mem-btn" type="button" aria-expanded="false" aria-controls="cv-tanaka"><span class="pic"><img src="img/member_tanaka.jpg" alt=""></span><span class="role">監査役</span><span class="who"><span class="mn">田中 伸英</span><span class="cap">Nobuhide Tanaka</span><i class="pl" aria-hidden="true"></i></span><span class="org">プロアクト法律事務所出身</span></button><div class="mem-cv" id="cv-tanaka"><div><ul><li>2010年から企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など幅広く支援</li><li>テクノロジー企業・VCとの協業実績が豊富</li></ul></div></div></article>
       </div>
       <div class="mem-more rise"><a class="pill" href="member/">メンバーについて詳しく<span class="dot">→</span></a></div>
     </div>

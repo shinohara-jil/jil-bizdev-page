@@ -137,7 +137,7 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .trait h3{font-size:clamp(26px,2.6vw,36px);font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
 .trait .num{font-family:var(--en);font-weight:500;font-size:clamp(30px,3vw,44px);letter-spacing:-.03em;line-height:1.1;margin:22px 0 4px;color:var(--accent-ink)}
 @media (min-width:901px){
-  .feat-head .h2,.flow-head .h2,.ai-head .h2{grid-column:4 / -1}
+  .feat-head .h2,.cons-head .h2,.flow-head .h2,.ai-head .h2{grid-column:4 / -1}
   /* AI欄の説明は右に置かず、見出しの下に導入の文として置く */
   .ai-head .note{grid-column:4 / span 7;align-self:start;font-size:16px}
 }
@@ -163,6 +163,47 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .box .to{font-size:15px;font-weight:700;margin-top:10px;line-height:1.6}
 .box .d{font-size:14px;color:var(--sub);margin-top:6px;line-height:1.8}
 .ai-foot{margin-top:18px;font-size:13px;color:var(--sub)}
+
+/* consultants：ボードメンバー3人と「ほか多数」。PCは4列、タブレットは2列、スマホは写真を左に置いた1列 */
+.cons{padding-block:clamp(88px,9vw,136px) clamp(40px,4vw,64px)}
+.cons-head{margin-bottom:clamp(40px,4vw,56px)}
+.people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink)}
+.person{padding:24px 22px 32px;border-right:1px solid var(--line);min-width:0}
+.person:last-child{border-right:0}
+/* 4列のときは、両端を上の線の端にそろえつつ、4人の写真の大きさをそろえる（区切り線は列のすき間の真ん中に引く） */
+@media (min-width:1001px){.people{column-gap:44px}.person{position:relative;padding-inline:0;border-right:0}.person+.person::before{content:"";position:absolute;left:-22px;top:0;bottom:0;width:1px;background:var(--line)}}
+.person .pic{display:block;aspect-ratio:4 / 5;overflow:hidden;border-radius:2px;background:var(--gray);margin-bottom:18px}
+.person .pic img{display:block;width:100%;height:100%;object-fit:cover}
+.person .mono{display:flex;justify-content:space-between;gap:8px;font-size:12px}
+.person .mono .ja{font-family:var(--jp);font-weight:700;letter-spacing:.04em;text-transform:none}
+.person h3{font-size:clamp(22px,2vw,28px);font-weight:700;letter-spacing:-.01em;line-height:1.35;margin-top:10px}
+.person h3 .en{display:block;font-family:var(--en);font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--sub);margin-top:2px}
+.person .org{display:inline-block;justify-self:start;margin-top:14px;font-size:15px;font-weight:700;letter-spacing:.04em;background:var(--em-bg)}
+.person ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:14px;color:var(--sub);line-height:1.75}
+.person:not(.etc){cursor:pointer}
+.person .tog{margin-top:12px}
+.person li{display:grid;grid-template-columns:14px minmax(0,1fr)}
+.person li::before{content:"";width:6px;height:1px;background:var(--line-2);margin-top:.9em}
+.etc .pic{display:grid;place-items:center}
+.etc-mark{font-family:var(--en);font-weight:700;font-size:clamp(40px,4vw,64px);letter-spacing:-.03em;line-height:1}
+.etc .d{font-size:14px;color:var(--sub);margin-top:14px;line-height:1.75}
+@media (max-width:1000px){
+  .people{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .person:nth-child(2){border-right:0}
+  .person:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media (max-width:560px){
+  .people{grid-template-columns:minmax(0,1fr)}
+  .person{display:grid;grid-template-columns:112px minmax(0,1fr);gap:0 16px;align-content:start;padding:20px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .person:last-child{border-bottom:0}
+  .person>*{grid-column:2}
+  .person .pic{grid-column:1;grid-row:1 / span 4;margin:0;align-self:start}
+  .person .more{grid-column:1 / -1}
+  .person .mono{flex-direction:column;gap:0}
+  .person h3{margin-top:4px}
+  .etc .d{margin-top:8px}
+  .etc-mark{font-size:32px}
+}
 
 /* flow */
 .flow{padding-block:clamp(72px,7vw,112px) clamp(64px,7vw,96px)}
@@ -204,15 +245,15 @@ a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--line-accent);ou
 .card dt{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--sub)}
 .card dd{margin:2px 0 0}
 /* ステップと土台の詳細（箇条書きとMEMBERS）は閉じておき、クリックすると開く */
-:is(.card,.base) .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
-:is(.card,.base) .more>div{overflow:hidden;min-height:0}
-:is(.card,.base).open .more{grid-template-rows:1fr}
-:is(.card,.base) .tog{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13px;color:var(--sub)}
+:is(.card,.base,.person) .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s ease}
+:is(.card,.base,.person) .more>div{overflow:hidden;min-height:0}
+:is(.card,.base,.person).open .more{grid-template-rows:1fr}
+:is(.card,.base,.person) .tog{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13px;color:var(--sub)}
 .base .tog{padding:0 22px}
-:is(.card,.base) .tog::before{content:"+";display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:50%;font-family:var(--en);font-size:14px;line-height:1}
-:is(.card,.base) .tog .t2,:is(.card,.base).open .tog .t1{display:none}
-:is(.card,.base).open .tog .t2{display:inline}
-:is(.card,.base):hover .tog,:is(.card,.base).open .tog{color:var(--ink)}
+:is(.card,.base,.person) .tog::before{content:"+";display:inline-grid;place-items:center;width:20px;height:20px;border:1px solid currentColor;border-radius:50%;font-family:var(--en);font-size:14px;line-height:1}
+:is(.card,.base,.person) .tog .t2,:is(.card,.base,.person).open .tog .t1{display:none}
+:is(.card,.base,.person).open .tog .t2{display:inline}
+:is(.card,.base,.person):hover .tog,:is(.card,.base,.person).open .tog{color:var(--ink)}
 /* 土台：見出しを1行にまとめ、項目は上の4つのステップと同じ4列に並べて「全体を支える帯」に見せる */
 .base{padding:24px 0 26px;cursor:pointer;border-top:1px solid var(--line);border-bottom:2px solid var(--ink);transition:background .25s}
 .base:hover,.base.on{background:var(--gray)}
@@ -443,12 +484,12 @@ p,li{text-wrap:pretty}
 .chart .tag rect{transition:fill .35s var(--ease),stroke .35s var(--ease)}
 .chart .tag:not(.on):hover rect{stroke:var(--ink)}
 /* 「詳しく見る」：本物のボタン。開くと＋が×に回る */
-:is(.card,.base) .tog{background:none;border:0;padding:0;font:inherit;font-size:13px;cursor:pointer;transition:color .25s}
-:is(.card,.base) .tog::before{transition:transform .5s var(--ease),background-color .3s,color .3s}
-:is(.card,.base).open .tog::before{transform:rotate(135deg);background:var(--ink);color:#fff;border-color:var(--ink)}
-:is(.card,.base) .more>div{opacity:0;transition:opacity .35s ease}
-:is(.card,.base).open .more>div{opacity:1;transition-delay:.1s}
-:is(.card,.base) .more{transition:grid-template-rows .55s var(--ease)}
+:is(.card,.base,.person) .tog{background:none;border:0;padding:0;font:inherit;font-size:13px;cursor:pointer;transition:color .25s}
+:is(.card,.base,.person) .tog::before{transition:transform .5s var(--ease),background-color .3s,color .3s}
+:is(.card,.base,.person).open .tog::before{transform:rotate(135deg);background:var(--ink);color:#fff;border-color:var(--ink)}
+:is(.card,.base,.person) .more>div{opacity:0;transition:opacity .35s ease}
+:is(.card,.base,.person).open .more>div{opacity:1;transition-delay:.1s}
+:is(.card,.base,.person) .more{transition:grid-template-rows .55s var(--ease)}
 .base{position:relative}
 @media (min-width:721px){
   .base .t{padding-right:150px}
@@ -508,7 +549,7 @@ p,li{text-wrap:pretty}
 .trait p.d{margin-top:22px;padding-top:20px;border-top:1px solid #DADAD6}
 
 /* 「詳しく見る」：指で押しやすい大きさに（見た目は同じ、押せる範囲を広げる） */
-:is(.card,.base) .tog{min-height:44px;margin-top:6px}
+:is(.card,.base,.person) .tog{min-height:44px;margin-top:6px}
 @media (min-width:721px){.base .tog{top:18px}}
 
 /* 余白のリズム：欄と欄の間の空きすぎを詰める */
@@ -568,7 +609,7 @@ p,li{text-wrap:pretty}
     <header class="in hd">
       <a class="logo" href="#top" aria-label="JIL ページの先頭へ">JIL</a>
       <nav class="nav" aria-label="ページ内">
-        <a href="#concept">コンセプト</a><a href="#feature">JILの特徴</a><a href="#flow">事業づくりの流れ</a><a href="#ai">事業開発×AI</a>
+        <a href="#concept">コンセプト</a><a href="#feature">JILの特徴</a><a href="#consultant">コンサルタント</a><a href="#flow">事業づくりの流れ</a><a href="#ai">事業開発×AI</a>
         <a class="pill" href="https://timerex.net/s/shinohara_d6ab_42c9/f5d52d61/" target="_blank" rel="noopener">無料相談<span class="dot" aria-hidden="true"><i>→</i></span></a>
       </nav>
     </header>
@@ -684,6 +725,47 @@ p,li{text-wrap:pretty}
           </g>
         </svg></div>
         <h3>動かす</h3><div class="num txt">仕組みの設計～人材まで</div><p class="cap">事業を立ち上げ、伸ばすところまで</p><p class="d">つくって終わりにせず、マーケティング・営業・CS・業務設計まで、事業が回る仕組みを。</p></div>
+    </div>
+  </div></div>
+</section>
+
+<section id="consultant" aria-label="コンサルタント">
+  <div class="wrap"><div class="in cons">
+    <div class="cons-head grid12">
+      <p class="lbl rv-up"><span class="jl">コンサルタント</span></p>
+      <h2 class="h2 rv-h" style="--d0:.12s"><span class="ph">事業を見てきた</span><span class="ph"><em>プロ</em>が、</span><span class="ph">伴走します。</span></h2>
+    </div>
+    <div class="people rv-g" style="--d:.1s">
+      <article class="person">
+        <span class="pic"><img src="../../img/member_takei.jpg" alt="武井 遼太郎の写真" loading="lazy"></span>
+        <p class="mono"><span>Board Member 01</span><span class="ja">代表取締役</span></p>
+        <h3>武井 遼太郎<span class="en">Ryotaro Takei</span></h3>
+        <p class="org">株式会社リクルート出身</p>
+        <button class="tog" type="button" aria-expanded="false"><span class="t1">実績を見る</span><span class="t2">閉じる</span></button>
+        <div class="more"><div><ul><li>300社を超える企業のHRコンサルティングと事業開発</li><li>AIを活用したHR Tech事業</li><li>ベンチャー企業のCOO・CHROを経て、上場企業へ事業を売却</li></ul></div></div>
+      </article>
+      <article class="person">
+        <span class="pic"><img src="../../img/member_shinohara.jpg" alt="篠原 孝弘の写真" loading="lazy"></span>
+        <p class="mono"><span>Board Member 02</span><span class="ja">取締役</span></p>
+        <h3>篠原 孝弘<span class="en">Takahiro Shinohara</span></h3>
+        <p class="org">株式会社リクルート出身</p>
+        <button class="tog" type="button" aria-expanded="false"><span class="t1">実績を見る</span><span class="t2">閉じる</span></button>
+        <div class="more"><div><ul><li>2020年から、リーガル系SaaSの新規事業を立ち上げ</li><li>年間1,500件を超える事業の審査、累計10件の立ち上げを支援</li><li>さまざまな業種のAI活用支援を推進</li></ul></div></div>
+      </article>
+      <article class="person">
+        <span class="pic"><img src="../../img/member_tanaka.jpg" alt="田中 伸英の写真" loading="lazy"></span>
+        <p class="mono"><span>Board Member 03</span><span class="ja">監査役</span></p>
+        <h3>田中 伸英<span class="en">Nobuhide Tanaka</span></h3>
+        <p class="org">プロアクト法律事務所出身</p>
+        <button class="tog" type="button" aria-expanded="false"><span class="t1">実績を見る</span><span class="t2">閉じる</span></button>
+        <div class="more"><div><ul><li>2010年から、企業法務のスペシャリスト</li><li>M&amp;A、契約交渉、知的財産、労務問題など、幅広い領域で支援</li><li>テクノロジー企業やベンチャーキャピタルとの協業実績が豊富</li></ul></div></div>
+      </article>
+      <div class="person etc">
+        <span class="pic" aria-hidden="true"><span class="etc-mark">etc.</span></span>
+        <p class="mono"><span>And More</span></p>
+        <h3>ほか、多数</h3>
+        <p class="d">事業開発・リサーチ・PMなど、専門の違うメンバーが一緒に伴走します。</p>
+      </div>
     </div>
   </div></div>
 </section>
@@ -832,7 +914,7 @@ p,li{text-wrap:pretty}
   <div class="wrap"><div class="in">
     <div class="ft">
       <span class="logo">JIL</span>
-      <nav aria-label="フッター"><a href="#feature">JILの特徴</a><a href="#flow">事業づくりの流れ</a><a href="#ai">事業開発×AI</a><a href="#contact">ご相談</a><a href="../../">会社サイト</a></nav>
+      <nav aria-label="フッター"><a href="#feature">JILの特徴</a><a href="#consultant">コンサルタント</a><a href="#flow">事業づくりの流れ</a><a href="#ai">事業開発×AI</a><a href="#contact">ご相談</a><a href="../../">会社サイト</a></nav>
     </div>
     <div class="ft-sub"><span>株式会社JIL</span><span class="mono">© JIL Inc.</span></div>
   </div></div>
@@ -847,8 +929,8 @@ p,li{text-wrap:pretty}
     r.addEventListener('focusin',()=>setStep(r.dataset.k));
   });
   setStep(0);
-  // カードや土台のどこを押しても詳細を開け閉めする（「詳しく見る」はボタンなので、キーボードのEnterでも同じ）
-  document.querySelectorAll('.card[data-k],.base[data-k]').forEach((c,i)=>{
+  // カードや土台、コンサルタントの枠のどこを押しても詳細を開け閉めする（「詳しく見る」はボタンなので、キーボードのEnterでも同じ）
+  document.querySelectorAll('.card[data-k],.base[data-k],.person:not(.etc)').forEach((c,i)=>{
     const b=c.querySelector('.tog'),m=c.querySelector('.more');
     m.id='more-'+i; b.setAttribute('aria-controls',m.id);
     c.addEventListener('click',()=>b.setAttribute('aria-expanded',c.classList.toggle('open')));

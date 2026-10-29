@@ -14,8 +14,8 @@
   // リンク先を null にすると、押しても移動しない見出しになる（「サービス」：子メニューを開くだけ）
   const items = [
     [R + "about/", "私たちについて", "about", "", [[ab + "#mission", "ミッション・ビジョン"], [ab + "#values", "行動指針"], [ab + "#style", "スタイル"], [ab + "#company", "会社概要"]]],
-    [R + "product/", "プロダクト", "product"],
     [null, "サービス", svc, "", [[R + "bizdev/", "新規事業開発支援", "bizdev"], [R + "recruit/", "採用支援", "recruit"]]],
+    [R + "product/", "プロダクト", "product"],
     [R + "member/", "メンバー", "member", "", [[mb_ + "#board", "ボードメンバー"], [mb_ + "#team", "チームメンバー"]]],
     [t + "#news", "ニュース", "", "md-hide"],
     [ct + "#contact-recruit", "採用"]
