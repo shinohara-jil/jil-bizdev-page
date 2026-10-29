@@ -7,9 +7,11 @@
 .hd .logo i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; transform: translateY(-1px); }
 .hd .nav { display: flex; align-items: center; gap: 32px; font-size: 13px; letter-spacing: .08em; }
 .hd .nav .grp { position: relative; }
-.hd .nav .p { position: relative; display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; }
+.hd .nav .p { position: relative; display: inline-flex; align-items: center; gap: 7px; padding: 4px 0; white-space: nowrap; }
+/* 押しても移動しない見出し（「サービス」）はボタン。見た目はリンクとそろえる */
+.hd .nav button.p { font: inherit; letter-spacing: inherit; color: inherit; background: none; border: 0; cursor: default; text-align: left; }
 .hd .nav .p::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
-/* 今いるページ（事業の3ページでは「事業」）と、トップで今読んでいる欄に下線 */
+/* 今いるページ（サービスの2ページでは「サービス」）と、トップで今読んでいる欄に下線 */
 .hd .nav .grp:hover > .p::after, .hd .nav .p.cur::after, .hd .nav .p[aria-current]::after { transform: scaleX(1); transform-origin: left; }
 .hd .nav .cv { width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: translateY(-2px) rotate(45deg); opacity: .55; transition: transform .4s var(--ease); }
 .hd .nav .grp:hover .cv { transform: translateY(1px) rotate(225deg); }
@@ -36,6 +38,7 @@
 
 @media (max-width: 1080px) {
   .hd .nav .md-hide { display: none; }
+  .hd .nav { gap: 22px; } /* タブレット幅では項目の間隔を詰めて、項目名が2行に折れないように */
 }
 /* スマホ：メニューは画面いっぱいに大きな文字で */
 @media (max-width: 720px) {

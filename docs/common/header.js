@@ -7,25 +7,30 @@
   const t = top ? "" : R; // トップの中の欄へのリンク（トップではページ内移動）
   const ab = page === "about" ? "" : R + "about/", mb_ = page === "member" ? "" : R + "member/";
   const ct = hd.hasAttribute("data-contact") ? R : ""; // お問い合わせの欄がないページ（data-contact）はトップの欄へ
-  const biz = ["product", "bizdev", "recruit"];
+  const svc = ["bizdev", "recruit"];
   // お問い合わせのフォーム（今の会社サイトと同じGoogleフォーム。右上のボタンから直接開く。footer.js にも同じものがある）
   const FORM = "https://docs.google.com/forms/d/e/1FAIpQLSdAXunAozpcLmemfDljHNJKcEWXTtktF8tV6RECRALBNyaGhQ/viewform";
   // [リンク先, 名前, そのページの data-page, 追加のクラス, 子メニュー[[リンク先, 名前, そのページの data-page]]]
+  // リンク先を null にすると、押しても移動しない見出しになる（「サービス」：子メニューを開くだけ）
   const items = [
     [R + "about/", "私たちについて", "about", "", [[ab + "#mission", "ミッション・ビジョン"], [ab + "#values", "行動指針"], [ab + "#style", "スタイル"], [ab + "#company", "会社概要"]]],
-    [t + "#business", "事業", biz, "", [[R + "product/", "プロダクト", "product"], [R + "bizdev/", "新規事業開発支援", "bizdev"], [R + "recruit/", "採用支援", "recruit"]]],
+    [R + "product/", "プロダクト", "product"],
+    [null, "サービス", svc, "", [[R + "bizdev/", "新規事業開発支援", "bizdev"], [R + "recruit/", "採用支援", "recruit"]]],
     [R + "member/", "メンバー", "member", "", [[mb_ + "#board", "ボードメンバー"], [mb_ + "#team", "チームメンバー"]]],
     [t + "#news", "ニュース", "", "md-hide"],
     [ct + "#contact-recruit", "採用"]
   ];
-  // 今いるページ：そのページ自身は aria-current="page"、事業の3ページにいるときの「事業」は aria-current="true"
+  // 今いるページ：そのページ自身は aria-current="page"、サービスの2ページにいるときの「サービス」は aria-current="true"
   const cur = p => !p ? "" : p === page ? ' aria-current="page"' : Array.isArray(p) && p.includes(page) ? ' aria-current="true"' : "";
   const sub = ks => ks ? `<div class="sub"><ul>${ks.map(([h, l, p]) => `<li><a href="${h}"${cur(p)}>${l}<span class="ar" aria-hidden="true">→</span></a></li>`).join("")}</ul></div>` : "";
+  // 親の項目：リンク先がなければ、押しても移動しないボタン（キーボードで選ぶと子メニューが開く）
+  const parent = (h, l, p, ks) => { const cv = ks ? '<i class="cv" aria-hidden="true"></i>' : "";
+    return h ? `<a class="p" href="${h}"${cur(p)}>${l}${cv}</a>` : `<button class="p" type="button"${cur(p)}>${l}${cv}</button>`; };
   hd.insertAdjacentHTML("beforebegin", `<a class="skip" href="#main">本文へ移動</a>`);
   hd.innerHTML = `<div class="in">
     <a class="logo" href="${top ? "#top" : R}" aria-label="JIL トップへ">JIL<i></i></a>
     <nav class="nav" id="nav" aria-label="メインメニュー">
-      ${items.map(([h, l, p, c, ks]) => `<div class="grp${ks ? " has" : ""}${c ? " " + c : ""}"><a class="p" href="${h}"${cur(p)}>${l}${ks ? '<i class="cv" aria-hidden="true"></i>' : ""}</a>${sub(ks)}</div>`).join("")}
+      ${items.map(([h, l, p, c, ks]) => `<div class="grp${ks ? " has" : ""}${c ? " " + c : ""}">${parent(h, l, p, ks)}${sub(ks)}</div>`).join("")}
       <a class="pill" href="${FORM}" target="_blank" rel="noopener">お問い合わせ<span class="vh">（別のタブでお問い合わせフォームが開きます）</span><span class="dot" aria-hidden="true">↗</span></a>
       <p class="m-note"><b>Japan Is Lovely<i>.</i></b>株式会社JIL　東京都渋谷区神宮前</p>
     </nav>
