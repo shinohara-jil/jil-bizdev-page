@@ -35,9 +35,13 @@
   for (let n; (n = tw.nextNode());) if (JA.test(n.textContent) && !n.parentElement.closest(SKIP)) nodes.push(n);
   nodes.forEach(n => {
     const ps = phrases(n.textContent), b = blockOf(n);
-    if (ps.length < 2 || !b) return;
+    // 句読点で終わる文は、後ろにも目印を入れる。iPhoneは、句読点と次の span の中の言葉との間を改行できる所と見なさず、
+    // 「仕事だけでなく、営業も、採用も、」がひとかたまりになって、前の行に「事業開発の」だけが残っていた
+    const tail = /[、。，．！？!?」』）)]\s*$/.test(n.textContent);
+    if ((ps.length < 2 && !tail) || !b) return;
     const f = document.createDocumentFragment();
     ps.forEach((p, i) => { if (i) f.appendChild(document.createElement("wbr")); f.appendChild(document.createTextNode(p)); });
+    if (tail) f.appendChild(document.createElement("wbr"));
     // 横並び・格子の枠に直接入っている文は、区切ると別々の段になってしまうので、ひとつの span にまとめてから差し込む
     if (/flex|grid/.test(disp(n.parentElement))) { const s = document.createElement("span"); s.appendChild(f); n.replaceWith(s); }
     else n.replaceWith(f);

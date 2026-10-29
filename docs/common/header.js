@@ -66,7 +66,8 @@
   // 開いているあいだは後ろのページを止める。iPhone では overflow: hidden だけでは止まらないので、本文を今の位置のまま固定する
   let sy = 0;
   const others = () => [document.querySelector("main"), document.getElementById("ft"), document.querySelector(".nx")].filter(Boolean);
-  const menu = o => {
+  // kb：キーボードで開いたときだけ、最初の項目に移る（指で開いたときに移すと、ブラウザによっては青い枠が出てしまう）
+  const menu = (o, kb) => {
     if (o === hd.classList.contains("open")) return;
     const b = document.body;
     if (o) {
@@ -80,10 +81,11 @@
     // 開いているあいだは、メニューの外（本文・フッター）にキーボードや読み上げが移らないように
     others().forEach(el => el.inert = o);
     mb.setAttribute("aria-expanded", String(o)); mb.setAttribute("aria-label", o ? "メニューを閉じる" : "メニューを開く"); lb.textContent = o ? "Close" : "Menu";
-    if (o) { hd.classList.add("solid"); const f = hd.querySelector(".nav a"); f && f.focus({ preventScroll: true }); } else onScroll();
+    if (o) { hd.classList.add("solid"); const f = hd.querySelector(".nav a"); kb && f && f.focus({ preventScroll: true }); } else onScroll();
   };
   mb.setAttribute("aria-label", "メニューを開く");
-  mb.addEventListener("click", () => menu(!hd.classList.contains("open")));
+  // e.detail が 0 ならキーボード（Enter・スペース）で押された
+  mb.addEventListener("click", e => menu(!hd.classList.contains("open"), e.detail === 0));
   hd.querySelectorAll(".nav a").forEach(a => a.addEventListener("click", () => menu(false)));
   addEventListener("keydown", e => {
     if (!hd.classList.contains("open")) return;
