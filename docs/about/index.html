@@ -134,8 +134,10 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
 /* 行動指針 */
 .values { border-top: 1px solid var(--ink); }
 .value { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 8px 40px; align-items: center; padding: clamp(28px, 3vw, 44px) 0; border-bottom: 1px solid var(--line); }
-.value .w { grid-row: span 2; font-family: var(--en); font-size: clamp(34px, 4.2vw, 64px); font-weight: 500; letter-spacing: -.045em; line-height: 1; transition: transform .7s var(--ease); }
+.value .w { grid-row: span 2; font-family: var(--en); font-size: clamp(34px, 4.2vw, 64px); font-weight: 500; letter-spacing: -.045em; line-height: 1; transition: transform .7s var(--ease), color .5s; }
 .value:hover .w { transform: translateX(12px); }
+/* スマホなど乗せられない端末では、画面の真ん中あたりを通るあいだ、乗せたときと同じ動きに */
+@media (max-width: 720px), (hover: none) { .value.is-on .w { color: var(--accent); transform: translateX(12px); } }
 .value .jp { font-weight: 700; font-size: 17px; align-self: end; letter-spacing: .06em; }
 .value p { color: var(--ink-2); font-size: 14px; align-self: start; }
 
@@ -372,6 +374,7 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
 
 <footer class="ft" id="ft" data-page="about"></footer>
 <script src="../common/footer.js"></script>
+<script src="../common/linebreak.js"></script>
 <script>
 (() => {
   const nav = performance.getEntriesByType("navigation")[0];
@@ -385,6 +388,9 @@ h1, h2, h3, .stmt, .say, .jp { word-break: auto-phrase; }
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in-view"); rio.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
   document.querySelectorAll(".rise").forEach(el => rio.observe(el));
+  // 行動指針：画面のちょうど真ん中の細い帯（上下46%を除いた部分）にあるあいだ is-on を付ける（行の間隔が短いので、1つずつ光るように細く）。動くのはスマホなど乗せられない端末だけ（CSS側で指定）
+  const vio = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("is-on", e.isIntersecting)), { rootMargin: "-46% 0px -46% 0px" });
+  document.querySelectorAll(".value").forEach(el => vio.observe(el));
   // 読んだところから文字が濃くなる一文（文節の途中では改行しない）
   const fills = [...document.querySelectorAll(".js-fill")].map(el => {
     el.querySelectorAll(".w").forEach(w => { const cs = [...w.textContent]; w.textContent = ""; cs.forEach(c => { const s = document.createElement("span"); s.className = "ch"; s.textContent = c; w.appendChild(s); }); });

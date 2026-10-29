@@ -180,8 +180,6 @@ canvas { display: block; }
 .biz .ds b { color: var(--ink); font-size: 17px; font-weight: 700; letter-spacing: .04em; }
 /* PCでは途中で改行しない一文（プロダクトの説明） */
 @media (min-width: 1081px) { .biz .ds:has(.nw) { max-width: none; } .biz .ds .nw { white-space: nowrap; } }
-.biz .tg { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-.biz .tg i { font-style: normal; font-size: 12px; letter-spacing: .06em; color: var(--ink-2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; line-height: 1.9; }
 .biz .go { align-self: center; width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font-family: var(--en); font-size: 18px; transition: background .4s var(--ease), color .4s var(--ease), transform .5s var(--ease); }
 .biz:hover .go { background: var(--ink); color: var(--paper); transform: rotate(-45deg); }
 /* 事業の数字（画面に入ると数え上がる） */
@@ -278,6 +276,7 @@ canvas { display: block; }
   .head .cap, .mission .cap { padding-top: 0; }
   .head h2 { font-size: 26px; letter-spacing: -.03em; }
   .head .lead { grid-column: 1; font-size: 14.5px; }
+  .lead.sn .cl { display: inline; } /* Human × AI のリード：スマホでは決まった位置で改行せず、自然に流す */
   .stmt { font-size: clamp(26px, 8vw, 34px); }
   .stmt .ln.s { font-size: .62em; }
   .mission .body { grid-column: 1; font-size: 15px; }
@@ -398,9 +397,9 @@ canvas { display: block; }
     <div class="in">
       <div class="head rise"><span class="cap"><i class="no">03</i>Business</span><h2>3つの事業</h2></div>
       <div class="biz-list">
-        <a class="biz rise" id="biz-1" href="product/"><span class="th"><img src="img/biz_product.jpg" alt="アプリの画面をスマートフォンで確かめる手元" loading="lazy"></span><span class="bd"><span class="cap">01 — Products</span><span class="nm">プロダクト</span><span class="ds"><b>AIで、これまでにない体験をつくる。</b><span class="nw">「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。</span><span class="tg"><i>えほんにおいでよ</i><i>llabo</i><i>AIインサイトバンク</i><i>JWP</i></span></span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="biz rise" id="biz-2" href="bizdev/"><span class="th"><img src="img/biz_service.jpg" alt="エスカレーターを行き交う人たち" loading="lazy"></span><span class="bd"><span class="cap">02 — Business Development</span><span class="nm">新規事業開発支援</span><span class="ds"><b>戦略から、実行まで。ひとつのチームで。</b>新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目が強みです。<span class="tg"><i>構想・戦略</i><i>検証</i><i>開発</i><i>立ち上げ</i><i>AI活用</i></span></span><span class="bst"><span class="st"><b><span data-to="1500" data-comma>1,500</span>+<small>件</small></b><span>年間の事業審査</span></span><span class="st"><b><span data-to="10">10</span><small>件／年</small></b><span>新規事業の立ち上げ支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
-        <a class="biz rise" id="biz-3" href="recruit/"><span class="th"><img src="img/biz_recruit.jpg" alt="書類を手に向き合う面談の手元" loading="lazy"></span><span class="bd"><span class="cap">03 — Recruitment</span><span class="nm">採用支援</span><span class="ds"><b>採用を、事業をつくる力に。</b>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。<span class="tg"><i>採用設計</i><i>採用実務</i><i>AI活用</i></span></span><span class="bst"><span class="st"><b><span data-to="300">300</span>+<small>社</small></b><span>HRコンサルティングの支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-1" href="product/"><span class="th"><img src="img/biz_product.jpg" alt="アプリの画面をスマートフォンで確かめる手元" loading="lazy"></span><span class="bd"><span class="cap">01 — Products</span><span class="nm">プロダクト</span><span class="ds"><b>AIで、これまでにない体験をつくる。</b><span class="nw">「Japan is Lovely」を体現するプロダクトを、自分たちの手で開発しています。</span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-2" href="bizdev/"><span class="th"><img src="img/biz_service.jpg" alt="エスカレーターを行き交う人たち" loading="lazy"></span><span class="bd"><span class="cap">02 — Business Development</span><span class="nm">新規事業開発支援</span><span class="ds"><b>戦略から、実行まで。ひとつのチームで。</b>新規事業を、構想・検証・開発・立ち上げまで一貫して支援します。年間1,500件を超える事業審査で培った目が強みです。</span><span class="bst"><span class="st"><b><span data-to="1500" data-comma>1,500</span>+<small>件</small></b><span>年間の事業審査</span></span><span class="st"><b><span data-to="10">10</span><small>件／年</small></b><span>新規事業の立ち上げ支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
+        <a class="biz rise" id="biz-3" href="recruit/"><span class="th"><img src="img/biz_recruit.jpg" alt="書類を手に向き合う面談の手元" loading="lazy"></span><span class="bd"><span class="cap">03 — Recruitment</span><span class="nm">採用支援</span><span class="ds"><b>採用を、事業をつくる力に。</b>300社を超えるHRコンサルティングの知見とAIを掛け合わせ、採用の設計から実務まで支援します。</span><span class="bst"><span class="st"><b><span data-to="300">300</span>+<small>社</small></b><span>HRコンサルティングの支援</span></span></span></span><span class="go" aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -454,6 +453,7 @@ canvas { display: block; }
 
 <footer class="ft" id="ft" data-page="top"></footer>
 <script src="common/footer.js"></script>
+<script src="common/linebreak.js"></script>
 <script>
 (() => {
   const root = document.documentElement; root.classList.add("js");
