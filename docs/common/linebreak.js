@@ -1,7 +1,8 @@
 /* スマホで日本語の改行を整える：言葉の途中（「つく／る。」など）で折り返さないようにする
-   文節の切れ目にだけ改行の目印（<wbr>）を入れ、そこでしか折り返さない（「ます。」なども前の言葉と\u4e00緒に送られる）
+   文節の切れ目にだけ改行の目印（<wbr>）を入れ、そこでしか折り返さない（「ます。」なども前の言葉と一緒に送られる）
    iPhoneのSafariは「文節で改行する」CSS（word-break: auto-phrase）に対応していないため、ブラウザの辞書（Intl.Segmenter）で区切る
-   使い方：各ページで footer.js の直後に読み込む。効くのはスマホ幅（720px以下）だけで、見た目の指定は site.css の .lb-p */
+   使い方：各ページで footer.js の直後に読み込む。効くのはスマホ幅（720px以下）だけ。
+   改行の指定は各文に直接付ける（CSSファイルが古いまま残っていたり、ほかの改行の指定が優先されたりしても効くように） */
 (() => {
   if (!matchMedia("(max-width: 720px)").matches || !(window.Intl && Intl.Segmenter)) return;
   const seg = new Intl.Segmenter("ja", { granularity: "word" });
@@ -40,6 +41,6 @@
     // 横並び・格子の枠に直接入っている文は、区切ると別々の段になってしまうので、ひとつの span にまとめてから差し込む
     if (/flex|grid/.test(disp(n.parentElement))) { const s = document.createElement("span"); s.appendChild(f); n.replaceWith(s); }
     else n.replaceWith(f);
-    b.classList.add("lb-p");
+    b.classList.add("lb-p"); b.style.wordBreak = "keep-all"; b.style.overflowWrap = "break-word";
   });
 })();

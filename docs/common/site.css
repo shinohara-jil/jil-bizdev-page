@@ -96,5 +96,3 @@ a:active .go, a:active .svc-go .c, a:active .cta-go .c { transform: scale(.94); 
 @media (hover: hover) { .totop:hover { background: var(--ink); color: var(--white); } }
 @media (min-width: 1081px) { .totop { right: 28px; bottom: 28px; } }
 @media (prefers-reduced-motion: reduce) { .totop { transition: none; } }
-/* スマホの日本語の改行（common/linebreak.js が付ける）：文節の切れ目でだけ折り返す */
-@media (max-width: 720px) { .lb-p { word-break: keep-all; overflow-wrap: break-word; } }

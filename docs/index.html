@@ -289,6 +289,7 @@ canvas { display: block; }
   .sq { max-width: min(78vw, 46svh); }
   .layer { min-height: 34svh; align-content: start; padding-top: 24px; }
   .layer:last-child { min-height: 0; padding-bottom: 32px; }
+  .layer.on { padding-left: 0; } /* スマホでは右へずらさない（幅が変わると改行位置が変わり、スクロールのたびに文字が横に揺れて見える） */
   .lb.core { font-size: 20px; }
   .lb.ai b, .lb.bz { font-size: 12px; }
   .lb.ai small { font-size: 10px; }
